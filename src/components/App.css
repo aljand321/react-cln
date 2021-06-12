@@ -1,0 +1,32 @@
+body{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: #eaecef;
+}
+header{
+    padding: 30px;
+    background: #011627;
+    height: 98px;
+    color: #eaecef;
+}
+header svg{
+    font-size: 30px;
+}
+
+.content{
+    margin: 15px;
+    padding: 20px;
+    border: 1px solid rgb(0, 0, 0);  
+    position: absolute;
+    right: 0;
+    width: 98.4%;
+    height: 87%;
+    background: violet;
+    transition: all 0.3s;
+    z-index:-1; 
+}
+.content.active{
+    width: 83.5%;
+    transition: all 0.7s;
+}
