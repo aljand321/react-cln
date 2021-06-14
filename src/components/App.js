@@ -8,15 +8,18 @@ import About from '../pages/About';
 import Layout from './Layout';
 import './App.css';
 
+//login form
+import Login from '../pages/Login';
+
 function App(){
     const [showNav, setShowNav] = useState(true);
      function modalShow(){
         setShowNav(!showNav)
     }
     var esto = false;
-    if(esto === true){
+    if(esto === false){
         return(
-            <h1>formulario de login</h1>
+            <Login/>
         );
     }else{
         return (
