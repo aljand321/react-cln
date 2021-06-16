@@ -1,4 +1,4 @@
-.sidenav{
+/* .sidenav{
     width: 15%;
     background: #011627;
     position: absolute;
@@ -10,8 +10,8 @@
 .sidenav.active {
     left:0;
     transition: all 0.5s;
-}
-ul{
+} */
+/* ul{
     padding: 0;
 }
 ul li{
@@ -29,5 +29,9 @@ ul li a{
 
 ul li a:hover,
 ul li a.active{
-    background: #172b4d;
+    background: #172b4d4f;
+} */
+
+aside a{
+    text-decoration: none; 
 }
