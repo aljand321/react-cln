@@ -16,7 +16,7 @@ function FormLogin(props) {
             <input
                 onChange={props.onchanges}
                 className="form-control"
-                type="text"
+                type="password"
                 name="password"
                 placeholder="Inserte su contraceña"
                 value={props.password}

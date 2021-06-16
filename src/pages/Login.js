@@ -6,6 +6,7 @@ import MedicoUser from '../components/Forms/MedicoUser';
 //routes
 import Routes from '../Routes/index'; 
 class Login extends React.Component{
+    _isMounted = false;
     state = {
         isDataBaseNull:false,
         msg:{
@@ -14,7 +15,8 @@ class Login extends React.Component{
           msg:''  
         },
         loading: false,
-        error:null,        
+        error:null,  
+        bdConet:null,      
         form:{
             ci:'',
             password:''
@@ -32,28 +34,33 @@ class Login extends React.Component{
         }
     }
     componentDidMount(){
+        this._isMounted = true;
         this.fetchGetList();
     }
     //funcion que ve si la bd esta null se procede a crear el primer usario
     //que tendra el rol de admin
     fetchGetList = async () =>{
-        this.setState({ loading: true, error: null });        
-        const resp = await Routes.isBDNull();   
-        console.log(resp.resp.data.success)     
-        if(resp.success === true){
-            this.setState({ loading: false, error: null });
-            if(resp.resp.data.success === true){
-                this.setState({
-                    isDataBaseNull:true
-                })
+        
+        this.setState({ loading: true, error: null });     
+        
+        const resp = await Routes.isBDNull(); 
+        if(this._isMounted){
+            if(resp.success === true){
+                this.setState({ loading: false, error: null });
+                if(resp.resp.data.success === true){
+                    this.setState({
+                        isDataBaseNull:true
+                    })
+                }else{
+                    this.setState({
+                        isDataBaseNull:false
+                    })
+                }
             }else{
-                this.setState({
-                    isDataBaseNull:false
-                })
+                this.setState({ loading: false, error: null,bdConet:false });
             }
-        }else{
-            this.setState({ loading: false, error: true });
-        }
+        }    
+        
     }
     handleChangeCreate = e =>{
         this.setState({
@@ -84,25 +91,28 @@ class Login extends React.Component{
                     msg:'Cargando.......'
                 }
             })
-            const resp = await Routes.createMedico(this.state.formCreate)
-            if(resp.data.success ===false){
-                this.setState({
-                    msg:{
-                        success:true,
-                        alert:'warning',
-                        msg:resp.data.msg
-                    }
-                })        
-            }else{
-                this.setState({
-                    msg:{
-                        success:true,
-                        alert:'success',
-                        msg:resp.data.msg
-                    }
-                })
-                this.fetchGetList();
+            const resp = await Routes.createMedico(this.state.formCreate);
+            if(this._isMounted){
+                if(resp.data.success ===false){
+                    this.setState({
+                        msg:{
+                            success:true,
+                            alert:'warning',
+                            msg:resp.data.msg
+                        }
+                    })        
+                }else{
+                    this.setState({
+                        msg:{
+                            success:true,
+                            alert:'success',
+                            msg:resp.data.msg
+                        }
+                    })
+                    this.fetchGetList();
+                }
             }
+            
         }
         this.timeOut();  
     }
@@ -128,29 +138,64 @@ class Login extends React.Component{
             }
         })
     }
-    clickForm = (e) => {
+    clickForm = async (e) => {
         e.preventDefault();
         let datas = this.state.form
         if(!datas.ci){
             this.setState({
-                msg:{success:true,msg:'C.I es obligatorio'}
+                msg:{success:true,alert:'warning', msg:'C.I es obligatorio'}
             })
         }else if(!datas.password){
             this.setState({
-                msg:{success:true,msg:'Contraceña es obligatorio'}
+                msg:{success:true,alert:'warning', msg:'Contraceña es obligatorio'}
             })
         }else{
-            console.log('no hay errores')
+            this.setState({
+                msg:{
+                    success:true,
+                    alert:'info',
+                    msg:'Cargando.......'
+                }
+            })
+            
+            if(this._isMounted){
+                const resp = await Routes.login(this.state.form); 
+                console.log(resp, ' ssasdjahsdkjahskd')
+                if(resp.data.success === false){
+                    this.setState({
+                        msg:{
+                            success:true,
+                            alert:'warning',
+                            msg:resp.data.msg
+                        }
+                    });
+                }else{
+                    const parsed = JSON.stringify({
+                        loged:true,
+                        user:resp.data.data,
+                        t: resp.data.token
+                    });
+                    localStorage.setItem('tok',parsed);
+                    this.props.parentCallback()
+                }
+            }
+            
         }
         this.timeOut();  
                 
     }
-    timeOut = () =>{        
-        setTimeout(() => {           
-            this.setState({
-                msg:{success:false,msg:''}
-            })
-        }, 3000);
+    timeOut = () =>{      
+        if(this._isMounted){
+            setTimeout(() => {           
+                this.setState({
+                    msg:{success:false,msg:''}
+                })
+            }, 3000);
+        }
+        
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
     }
     render(){
         if(this.state.loading){
@@ -161,6 +206,11 @@ class Login extends React.Component{
         if(this.state.error){
             return (
                 <h1>error 500</h1>
+            );
+        }
+        if(this.state.bdConet === false){
+            return (
+                <h1>No hay coneccion con la base de datos</h1>
             );
         }
         return(

@@ -1,0 +1,12 @@
+.head{   
+    padding: 30px;
+    background: #011627;
+    height: 98px;
+    color: #eaecef;
+}
+.head svg{
+    font-size: 30px;
+}
+.col{
+    background: red;
+}
