@@ -16,11 +16,11 @@
     transition: height 0.15s ease-out;
 }
 .form-container.active{
-    height: 80.5%;
+    height: 95.5%;
     transition: height 0.25s ease-in;
 }
 .header{    
-    margin-top: 25px;
+    margin-top: 15px;
 }
 .body{
    /*  background: violet; */
@@ -30,7 +30,7 @@
     left: 10%;
 }
 .body input{
-    margin-top: 10px;
+    margin-top: 2px;
 }
 .body button{
     margin-top: 15px;    

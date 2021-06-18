@@ -28,6 +28,8 @@ class Login extends React.Component{
             email:'',
             telefono:'',
             direccion:'',
+            edad:'',
+            especialidad:'',
             password:'',
             password1:'',
             role:'admin'
@@ -74,7 +76,6 @@ class Login extends React.Component{
     clikcFormCreate = async e =>{        
         e.preventDefault();        
         const verifyDatas = this.validateDatas();
-        
         if(verifyDatas.success === false){
             this.setState({
                 msg:{
@@ -116,13 +117,15 @@ class Login extends React.Component{
         }
         this.timeOut();  
     }
-    validateDatas = () =>{
-        let datas = this.state.formCreate;
+    validateDatas = () =>{        
+        let datas = this.state.formCreate;        
         if(!datas.nombres)return {success:false,msg:"Nombre es obligatorio"};
         if(!datas.apellidos)return {success:false,msg:"Apellido es obligatorio"};
         if(!datas.ci)return {success:false,msg:"C.I. es obligatorio"};
         if(!datas.telefono)return {success:false,msg:"Celular es obligatorio"};
         if(!datas.direccion)return {success:false,msg:"Direccion es obligatorio"};
+        if(!datas.edad)return {success:false,msg:"Fecha de nacimineto es obligatorio"};
+        if(!datas.especialidad)return {success:false,msg:"Esoecialidad es obligatorio"};
         if(!datas.password)return {success:false,msg:"Contraceña es obligatorio"};
         if(!datas.password1)return {success:false,msg:"Contraceña de confirmacion es obligatorio"};
         if(datas.password !== datas.password1) return{success:false, msg:"Las contraceñas no son iguales"}

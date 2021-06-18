@@ -2,7 +2,7 @@ import Url from './Routes/Url';
 import axios from 'axios';
 class Token {
     static async getToken(){
-        const token = await localStorage.getItem("tok")
+        const token = await JSON.parse(localStorage.getItem("tok"))
         return token
     }
     static async validateToken(){

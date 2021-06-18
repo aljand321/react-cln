@@ -51,6 +51,24 @@ function MedicoUser (props){
                     placeholder="Direccion"
                     value={props.password}
                 />
+                <label >Fecha de nacimiento</label>
+                <input
+                    onChange={props.onchanges}
+                    className="form-control"
+                    type="date"
+                    name="edad"
+                    placeholder="Fecha nacimiento"
+                    value={props.edad}
+                />
+                <label >Inserte especilidad del medico</label>
+                <input
+                    onChange={props.onchanges}
+                    className="form-control"
+                    type="text"
+                    name="especialidad"
+                    placeholder="Especilidad"
+                    value={props.especialidad}
+                />
                 <label >inserte su Email</label>
                 <input
                     onChange={props.onchanges}

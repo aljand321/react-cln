@@ -11,12 +11,12 @@ function Header(props) {
             <li className="nav-item">
                 <Link to='#' className="nav-link" data-widget="pushmenu" role="button"><i className="fas fa-bars"></i></Link>
             </li>
-            <li className="nav-item d-none d-sm-inline-block">
+            {/* <li className="nav-item d-none d-sm-inline-block">
                 <Link to='/' className="nav-link">Home</Link>
             </li>
             <li className="nav-item d-none d-sm-inline-block">
                 <Link to='/about' className="nav-link">About</Link>
-            </li>
+            </li> */}
         </ul>
         {/* <!-- Right navbar links --> */}
         <ul className="navbar-nav ml-auto">

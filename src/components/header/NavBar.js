@@ -21,7 +21,12 @@ class NavBar extends React.Component{
             }
         })
     }
-    selectRoute = (ruta, selector) =>{
+    selectRoute = async (ruta, selector) =>{
+        const parsed = await JSON.stringify({
+            route:ruta,
+            selected:selector
+        });
+        localStorage.setItem('path',parsed);
         this.setState({
             path:{
                 route:ruta,
@@ -32,7 +37,7 @@ class NavBar extends React.Component{
     
     render(){  
         return (
-            <React.Fragment>
+            <div>
                 {/* <!-- Main Sidebar Container --> */}            
                 <aside className="main-sidebar sidebar-dark-primary elevation-4">
                     {/*  <!-- Brand Logo --> */}
@@ -56,17 +61,17 @@ class NavBar extends React.Component{
                             <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             {/* Add icons to the links using the .nav-icon class
                                 with font-awesome or any other icon font library */}
-                                <li className="nav-item menu-open">
+                                <li className={this.state.path.selected === 'dash' ? "nav-item menu-open" : "nav-item"}>
 
                                     {/* terner encuenta el active para el bacground */}
                                     
-                                    <Link to="#" className={this.state.path.selected === 'dash' ? "nav-link active" : "nav-link"}>
+                                    <div className={this.state.path.selected === 'dash' ? "nav-link active" : "nav-link"}>
                                         <i className="nav-icon fas fa-tachometer-alt" />
                                         <p>
                                             Administrador
                                             <i className="right fas fa-angle-left" />
                                         </p>
-                                    </Link>
+                                    </div>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">
                                             {/* para activar y desactivar el bacground es el active */}
@@ -84,13 +89,13 @@ class NavBar extends React.Component{
                                                 className={this.state.path.route === '/about' ? "nav-link active":"nav-link"}
                                             >
                                                 <i className="far fa-circle nav-icon" />
-                                                <p>Dashboard v2</p>
+                                                <p>Registrar medico</p>
                                             </Link>
                                         </li>
                                     </ul>
                                 </li>
 
-                                <li className="nav-item">
+                                <li className={this.state.path.selected === 'med' ? "nav-item menu-open" : "nav-item"}>
                                     <Link to="#" className={this.state.path.selected === 'med' ? "nav-link active" : "nav-link"}>
                                         <i className="nav-icon fas fa-copy" />
                                         <p>
@@ -117,7 +122,7 @@ class NavBar extends React.Component{
                     </div>
 
                 </aside>
-            </React.Fragment>
+            </div>
         );
     }
 }
