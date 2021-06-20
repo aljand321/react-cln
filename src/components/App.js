@@ -9,6 +9,7 @@ import Consulta from '../pages/Consulta';
 import Layout from './Layout';
 import './App.css';
 import Token from '../token';
+import Alergias from '../pages/Alergias';
 //login form
 import Login from '../pages/Login';   
 class App extends React.Component{  
@@ -72,6 +73,7 @@ class App extends React.Component{
                                 <Route path='/' exact={true} component={Home}></Route>
                                 <Route path='/about' exact={true} component={About}></Route>
                                 <Route path='/consulta' exact={true} component={Consulta}></Route>
+                                <Route path='/alergias' exact={true} component={Alergias}></Route>
                             </Switch>
                         </Layout>               
                     </BrowserRouter> 

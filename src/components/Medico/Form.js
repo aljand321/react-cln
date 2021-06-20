@@ -79,8 +79,8 @@ function FormMed (props){
         handleSubmit,
         
     } = useForm(initForm,validationsForm);
-    function resp (){
-        props.parentCallback();
+    function resp (){       
+        setTimeout(() => props.parentCallback(), 1000);         
     }
     
     return(
@@ -258,7 +258,7 @@ function FormMed (props){
                         <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                     <div className="p-2">
-                        <button type="submit" onClick={resp} className="btn btn-primary" data-dismiss={response === true ? "modal" : ''}>Registrar</button>
+                        <button type="submit" onClick={resp} className="btn btn-primary">Registrar</button>
                     </div>
                 </div>                   
                 
@@ -311,10 +311,8 @@ const useForm = (initilForm,validateForm) =>{
                 setForm(initilForm);
                 setTimeout(() => setResponse(false), 5000);
                 return true;
-            }
-            
+            }            
         }else{
-            console.log('22222',Object.keys(errors).length)
             return false;
         }
     }

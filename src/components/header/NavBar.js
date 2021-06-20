@@ -114,7 +114,17 @@ class NavBar extends React.Component{
                                                 <i className="far fa-circle nav-icon" />
                                                 <p>Cunsulta</p>
                                             </Link>
-                                        </li>                                                          
+                                        </li>   
+                                        <li className="nav-item">
+                                            <Link 
+                                                to="/alergias" 
+                                                onClick={() => this.selectRoute('/alergias','med')} 
+                                                className={this.state.path.route === '/alergias' ? "nav-link active":"nav-link"}
+                                            >
+                                                <i className="far fa-circle nav-icon" />
+                                                <p>Alergias</p>
+                                            </Link>
+                                        </li>                                                        
                                     </ul>
                                 </li>
                             </ul>
