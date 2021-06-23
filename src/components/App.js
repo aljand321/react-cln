@@ -7,7 +7,7 @@ import Home from '../pages/Home';
 import About from '../pages/About';
 import Consulta from '../pages/Consulta';
 import Layout from './Layout';
-import './App.css';
+
 import Token from '../token';
 import Alergias from '../pages/Alergias';
 //login form

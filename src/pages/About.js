@@ -69,8 +69,8 @@ class About extends React.Component{
     render() {
         return(
             <React.Fragment>                
-                <ContHeader>
-                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
+                <ContHeader name='Medicos'>
+                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#medico">
                         Registrar Medico
                     </button>
                 </ContHeader>
@@ -108,7 +108,7 @@ class About extends React.Component{
                     </div>
                 </div>
 
-                <ModalLarge>                   
+                <ModalLarge title='Registrar medico' idModal="medico">                   
                     <FormMed 
                         parentCallback={this.callBack}                        
                     />                  

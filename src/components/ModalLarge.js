@@ -3,11 +3,11 @@ const React = require("react");
 function ModalLarge(props) {
     return(
         <React.Fragment>
-            <div className="modal fade" id="modal-lg">
+            <div className="modal fade" id={props.idModal}>
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h4 className="modal-title">Registrar Medico</h4>
+                            <h4 className="modal-title">{props.title}</h4>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>

@@ -10,9 +10,9 @@ class MedicoRoutes {
                 headers: {
                   'c_token': token.t
                 }
-              })
-              if(resp.status === 200) return resp
-              if(resp.status === 500) return {data:{success:false,msg:"error 500"}};
+            })
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false,msg:"error 500"}};
         } catch (error) {
             return {data:{success:false,msg:"error 500"}};
         }
