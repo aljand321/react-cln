@@ -13,7 +13,7 @@ function  DataPaciente(props){
                    
                     <div className="row">
 
-                        <div className="col-md-3">
+                        <div className="col-md-2">
                         {/* Profile Image */}
                             <div className="card card-primary card-outline">
                                 <div className="card-body box-profile">                            
@@ -33,42 +33,9 @@ function  DataPaciente(props){
                                 </div>
                                 {/* /.card-body */}
                             </div>
-                        {/* /.card */}
-                        {/* About Me Box */}
-                        {/* <div className="card card-primary">
-                            <div className="card-header">
-                            <h3 className="card-title">About Me</h3>
-                            </div>
-                           
-                            <div className="card-body">
-                            <strong><i className="fas fa-book mr-1" /> Education</strong>
-                            <p className="text-muted">
-                                B.S. in Computer Science from the University of Tennessee at Knoxville
-                            </p>
-                            <hr />
-                            <strong><i className="fas fa-map-marker-alt mr-1" /> Location</strong>
-                            <p className="text-muted">Malibu, California</p>
-                            <hr />
-                            <strong><i className="fas fa-pencil-alt mr-1" /> Skills</strong>
-                            <p className="text-muted">
-                                <span className="tag tag-danger">UI Design</span>
-                                <span className="tag tag-success">Coding</span>
-                                <span className="tag tag-info">Javascript</span>
-                                <span className="tag tag-warning">PHP</span>
-                                <span className="tag tag-primary">Node.js</span>
-                            </p>
-                            <hr />
-                            <strong><i className="far fa-file-alt mr-1" /> Notes</strong>
-                            <p className="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-                            </div>
-                           
-                        </div> */}
-                        {/* /.card */}
-                        </div>
-
-                        
+                        </div>                        
                         {/* /.col */}
-                        <div className="col-md-9">
+                        <div className="col-md-10">
                             <div className="card">
                                 <div className="card-header p-2">
                                     <ul className="nav nav-pills">
@@ -92,7 +59,7 @@ function  DataPaciente(props){
                                         {/* /.tab-pane */}
                                         <div className="tab-pane" id="patologicos">
                                             <div className="overlay-wrapper">
-                                                <Patologicos/>
+                                                <Patologicos dataPaciente={dataPaciente}/>
                                             </div>
                                         </div>
                                         {/* /.tab-pane */}
