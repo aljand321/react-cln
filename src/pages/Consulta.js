@@ -77,7 +77,6 @@ class Consulta extends React.Component{
         if (e){
             const { value } = e.target  
             data = value
-            //console.log(value)
         }  
         this.setState({
             success:{
@@ -336,19 +335,5 @@ class Consulta extends React.Component{
         );
     }        
 }
-
-/* function List(props) {
-    console.log(props,Object.keys(props.data).length);
-    let item = [];
-    
-    for(let i = 0; i < Object.keys(props.data).length; i++){
-        if(props.data)
-        item.push(props.children(i));
-    }
-        
-    console.log(item);
-    
-    return item
-} */
 
 export default Consulta;

@@ -42,7 +42,6 @@ class List extends React.Component{
     const medicos =  props.listMedicos;
     const {buscar,setBuscar,filter} = Buscar(medicos);
     function data(id_medico){
-        //console.log(id_medico, 'esto es el click')
         props.idMedico(id_medico);
     }
     if(!medicos){        

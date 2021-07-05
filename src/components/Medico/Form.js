@@ -295,8 +295,7 @@ const useForm = (initilForm,validateForm) =>{
         setErrors(validateForm(form));
         if(Object.keys(errors).length === 0){
             setloading(true);
-            const resp = await MedicoRoutes.create(form);
-            console.log(resp)
+            const resp = await MedicoRoutes.create(form);          
             if(resp.data.success === false){
                 setloading(false);
                 setErrors({

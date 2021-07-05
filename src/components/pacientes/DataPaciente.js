@@ -1,9 +1,14 @@
 import DataConsulta from "./Consultas";
 import Patologicos from "./Antece/AntPatologicos";
-function  DataPaciente(props){
-    
+import AntNoPatologicos from "./Antece/AntNoPatologicos";
+import Inmunizaciones from "./Antece/Inmunizaciones";
+import AntecedentesFml from "./Antece/AntecedentesFml";
+import ExamenFisico from "./Antece/ExamenFisico";
+import AntGincoObs from "./Antece/AntGincoObs";
+function  DataPaciente(props){    
     if(props.dataPaciente !== undefined){
         const dataPaciente = props.dataPaciente.data;
+        console.log(dataPaciente, 'esto es lo que quiero ver')
         let hoy = new Date();
         let fechaNacimiento = new Date(dataPaciente.edad)
         let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
@@ -44,50 +49,47 @@ function  DataPaciente(props){
                                         <li className="nav-item"><a className="nav-link" href="#noPatologicos" data-toggle="tab">No patologicos</a></li>
                                         <li className="nav-item"><a className="nav-link" href="#inmunizaciones" data-toggle="tab">Inmunizaciones</a></li>
                                         <li className="nav-item"><a className="nav-link" href="#antFamiliares" data-toggle="tab">Ant. Familiares</a></li>
-                                        <li className="nav-item"><a className="nav-link" href="#ginecoObstetricos" data-toggle="tab">Gineco Obstetricos</a></li>
+                                        {dataPaciente.sexo === 'mujer' && 
+                                            <li className="nav-item"><a className="nav-link" href="#ginecoObstetricos" data-toggle="tab">Gineco Obstetricos</a></li>
+                                        }                                        
                                         <li className="nav-item"><a className="nav-link" href="#examenFisico" data-toggle="tab">Examen Fisico</a></li>
                                     </ul>
-                                </div>{/* /.card-header */}
+                                </div>
                                 <div className="card-body">
                                     <div className="tab-content">
                                         <div className="active tab-pane" id="consultas">
-                                            <div className="overlay-wrapper">
-                                               {/*  <div className="overlay"><i className="fas fa-3x fa-sync-alt fa-spin" /><div className="text-bold pt-2">Loading...</div></div> */}
-                                                <DataConsulta/>
+                                            <div className="overlay-wrapper">                                               
+                                                <DataConsulta dataPaciente={dataPaciente}/>
                                             </div>
-                                        </div>
-                                        {/* /.tab-pane */}
-                                        <div className="tab-pane" id="patologicos">
-                                            <div className="overlay-wrapper">
-                                                <Patologicos dataPaciente={dataPaciente}/>
-                                            </div>
-                                        </div>
-                                        {/* /.tab-pane */}
+                                        </div>                    
+                                        <div className="tab-pane" id="patologicos">                                            
+                                            <Patologicos dataPaciente={dataPaciente}/>                                            
+                                        </div>                                        
                                         <div className="tab-pane" id="noPatologicos">
-                                            <h1>antecedentes no patologicos</h1>
+                                            <AntNoPatologicos dataPaciente={dataPaciente}/>
                                         </div>
                                         <div className="tab-pane" id="inmunizaciones">
-                                            <h1>inmunizaciones</h1>
+                                            <div className="overlay-wrapper">
+                                                <Inmunizaciones dataPaciente={dataPaciente}/>
+                                            </div>
                                         </div>
                                         <div className="tab-pane" id="antFamiliares">
-                                            <h1>Antecedentes familiares</h1>
+                                            <AntecedentesFml dataPaciente={dataPaciente}/>
                                         </div>
                                         <div className="tab-pane" id="ginecoObstetricos">
-                                            <h1>Antecedentes gineco obstetricos</h1>
+                                            <div className="overlay-wrapper">
+                                                <AntGincoObs dataPaciente={dataPaciente}/>
+                                            </div>
                                         </div>
                                         <div className="tab-pane" id="examenFisico">
-                                            <h1>examen fisico</h1>
+                                            <div className="overlay-wrapper">
+                                                <ExamenFisico dataPaciente={dataPaciente}/>
+                                            </div>
                                         </div>
-                                        {/* /.tab-pane */}
                                     </div>
-                                    {/* /.tab-content */}
-                                </div>{/* /.card-body */}
+                                </div>
                             </div>
-                            {/* /.card */}
                         </div>
-                        {/* /.col */}
-
-                        
                     </div>
                    
                 </section>

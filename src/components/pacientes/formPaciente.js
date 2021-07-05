@@ -4,6 +4,7 @@ const  { useState } = require("react");
 const contendForm = {    
     ci:'',
     telefono:'',  
+    sexo:'',
     inputs:[
         {
             label:'Nombres',
@@ -18,13 +19,6 @@ const contendForm = {
             type:'text',
             placeholder:'Apellido del paciente',
             msg:"Apellido es necesario"
-        },
-        {
-            label:'Sexo',
-            name:'sexo',
-            type:'text',
-            placeholder:'Sexo del paciente',
-            msg:"Sexo del paciente es obligatorio"
         },
         {
             label:'Direccion',
@@ -62,7 +56,6 @@ function FormPaciente(props){
     const [form, setForm] = useState(contendForm);
     const [formErr, setFormErr] = useState(contErros);
     const onSubmit = async (data) => {
-        //console.log(data)
         const body = {
             apellidos: data.apellidos,
             direccion: data.direccion,
@@ -73,7 +66,7 @@ function FormPaciente(props){
             ci: form.ci,
             telefono: form.telefono
         }
-        //console.log(body)
+      
         setFormErr({           
             errCI:'',
             errTel:'',
@@ -85,7 +78,6 @@ function FormPaciente(props){
             const resp = await Pacientes.create(body);
             if(resp.data.success === false){
                 if(resp.data.error === '500'){
-                    console.log(' esto es ')
                     setFormErr({                    
                         errCI:'',
                         errTel:'',
@@ -192,6 +184,15 @@ function FormPaciente(props){
                             </div>
                         );
                     })}
+                    <div className="form-group">
+                        <label htmlFor="exampleInputBorderWidth2">Sexo<code></code></label>
+                        <select {...register("sexo", {required:'Selecione sexo del paciente'})} className="custom-select form-control-border">
+                            <option value="">Selecione</option>
+                            <option value="hombre">Hombre</option>
+                            <option value="mujer">Mujer</option>
+                        </select>
+                        {errors.sexo && <label htmlFor="exampleInputBorder"><code>Selecione sexo del paciente</code></label>}
+                    </div>
                     <div className="form-group">
                         <label htmlFor="exampleInputBorderWidth2">C.I.<code></code></label>
                         <input type="text" name='ci' onChange={handleChange} value={form.ci} className="form-control form-control-border border-width-2" placeholder="C.I. Del paciente" />

@@ -26,12 +26,9 @@ function Patologicos(props) {
 
     
     function callList() {
-        //console.log('llamando al padre')
         setCAllGetList(!callGetlist);
-        //setTimeout(() => setCAllGetList(false),100)
     }
-    function callListTrans(p) {
-        //console.log('llamando al padre')
+    function callListTrans(p) {       
         if(p === 1){
             setCAllGetListTrans(!callGetListTrans);
         }
@@ -41,13 +38,12 @@ function Patologicos(props) {
         if(p === 3){
             setCAllGetListEnf(!callGetListEnf)
         }
-        //setTimeout(() => setCAllGetList(false),100)
     }
     useEffect(() => {
         async function  getList () {
             setLoading(true)
             const resp = await Alergias.listAlergiasPaciente(dataP.id)
-            //console.log(resp.data.resp[0].alergias)
+            
             if(resp.data.success === false){
                 setLoading(false);
                 setErro(true);
@@ -67,7 +63,7 @@ function Patologicos(props) {
         async function  getList () {
             setLoading(true)
             const resp = await Transfuciones.listTransfucionPaciente(dataP.id)
-            //console.log(resp.data.resp[0].alergias)
+           
             if(resp.data.success === false){
                 setLoading(false);
                 setErro(true);
@@ -86,7 +82,6 @@ function Patologicos(props) {
         async function  getList () {
             setLoading(true)
             const resp = await Cirugias.listCirugiasPaciente(dataP.id)
-            console.log(resp.data.resp[0].cirugiasPrevias)
             if(resp.data.success === false){
                 setLoading(false);
                 setErro(true);
@@ -105,7 +100,6 @@ function Patologicos(props) {
         async function  getList () {
             setLoading(true)
             const resp = await OtrasEnfermedades.listEnfPaciente(dataP.id)
-            console.log(resp.data.resp[0].OtrasEnfermedades)
             if(resp.data.success === false){
                 setLoading(false);
                 setErro(true);

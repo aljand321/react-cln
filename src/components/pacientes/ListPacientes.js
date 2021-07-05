@@ -1,6 +1,7 @@
 
 //import { useState } from 'react';
 import avatarH from '../../images/avatarH.png'
+import avatarM from '../../images/avatarM.png'
 function Paciente(props){
     const paciente = props.paciente;
     return (
@@ -26,7 +27,7 @@ function Paciente(props){
                             </ul>
                             </div>
                             <div className="col-5 text-center">
-                            <img src={avatarH} alt="user-avatar" className="img-circle img-fluid" />
+                            <img src={paciente.sexo === 'hombre' ? avatarH : avatarM} alt="user-avatar" className="img-circle img-fluid" />
                             </div>
                         </div>
                     </div>
