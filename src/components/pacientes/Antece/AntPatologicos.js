@@ -148,30 +148,43 @@ function Patologicos(props) {
                                             </div>
                                         </div> 
                                     }
-                                    <table className="table">                              
-                                        <thead>
-                                            <tr>
-                                                <th style={{width: 10}}>#</th>
-                                                <th>Nombre</th>
-                                                <th>Descripcion</th>
+                                    {list.length === 0 ? 
+                                        <div className="card-body">
+                                            <div className="alert alert-danger alert-dismissible">
+                                                <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <h5><i className="icon fas fa-ban" /> Alerta!</h5>
+                                                El paciente no tiene alergias registradas
+                                                Registre nuevas alergias al paciente, si es que las tiene
+                                            </div>
+                                        </div>
+                                    
+                                    :   <table className="table">                              
+                                            <thead>
+                                                <tr>
+                                                    <th style={{width: 10}}>#</th>
+                                                    <th>Nombre</th>
+                                                    <th>Descripcion</th>
+                                                
+                                                </tr>
+                                            </thead>
                                             
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {list.map((data,key) =>{
-                                                return(
-                                                    <tr key={key}>
-                                                        <td>{key+1}</td>
-                                                        <td>{data.nombre}</td>
-                                                        <td>
-                                                            {data.descripcion}
-                                                        </td>                                            
-                                                    </tr>
-                                                );
-                                            })}                              
-                                        </tbody>
-                                        
-                                    </table>
+                                            <tbody>
+                                            
+                                                {list.map((data,key) =>{
+                                                    return(
+                                                        <tr key={key}>
+                                                            <td>{key+1}</td>
+                                                            <td>{data.nombre}</td>
+                                                            <td>
+                                                                {data.descripcion}
+                                                            </td>                                            
+                                                        </tr>
+                                                    );
+                                                })}                              
+                                            </tbody>
+                                            
+                                        </table>
+                                    }
                                 </div>
                             </div>
                             {/* /.card-body */}
@@ -205,7 +218,17 @@ function Patologicos(props) {
                                             </div>
                                         </div> 
                                     }
-                                    <table className="table">
+                                    
+                                    {listT.length === 0 ? 
+                                        <div className="card-body">
+                                            <div className="alert alert-danger alert-dismissible">
+                                                <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <h5><i className="icon fas fa-ban" /> Alerta!</h5>
+                                                El paciente no tiene tranfuciones registradas
+                                                Registre nuevas tranfuciones al paciente, si es que las tiene
+                                            </div>
+                                        </div>
+                                    :   <table className="table">
                                         <thead>
                                             <tr>
                                                 <th style={{width: 10}}>#</th>
@@ -226,7 +249,7 @@ function Patologicos(props) {
                                                 );
                                             })}                                    
                                         </tbody>
-                                    </table>
+                                    </table>}
                                 </div>
 
 
@@ -265,28 +288,39 @@ function Patologicos(props) {
                                             </div>
                                         </div> 
                                     }
-                                    <table className="table">
-                                        <thead>
-                                        <tr>
-                                            <th style={{width: 10}}>#</th>
-                                            <th>Nombre</th>
-                                            <th>Descripcion</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            {listC.map((data,key) =>{
-                                                return(
-                                                    <tr key={key}>
-                                                        <td>{key+1}</td>
-                                                        <td>{data.nombre}</td>
-                                                        <td>
-                                                            {data.descripcion}
-                                                        </td>                                            
-                                                    </tr>
-                                                );
-                                            })}                                         
-                                        </tbody>
-                                    </table>
+
+                                    {listC.length === 0 ?
+                                        <div className="card-body">
+                                            <div className="alert alert-danger alert-dismissible">
+                                                <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <h5><i className="icon fas fa-ban" /> Alerta!</h5>
+                                                El paciente no tiene cirugias registradas
+                                                Registre nuevas cirugias al paciente, si es que las tiene
+                                            </div>
+                                        </div>
+                                    :    <table className="table">
+                                            <thead>
+                                            <tr>
+                                                <th style={{width: 10}}>#</th>
+                                                <th>Nombre</th>
+                                                <th>Descripcion</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                {listC.map((data,key) =>{
+                                                    return(
+                                                        <tr key={key}>
+                                                            <td>{key+1}</td>
+                                                            <td>{data.nombre}</td>
+                                                            <td>
+                                                                {data.descripcion}
+                                                            </td>                                            
+                                                        </tr>
+                                                    );
+                                                })}                                         
+                                            </tbody>
+                                        </table>
+                                    }
                                 </div>
                             </div>
                             {/* /.card-body */}
@@ -320,29 +354,40 @@ function Patologicos(props) {
                                             </div>
                                         </div> 
                                     }
-                                    <table className="table">
-                                        <thead>
-                                            <tr>
-                                                <th style={{width: 10}}>#</th>
-                                                <th>Nombre</th>
-                                                <th>Descripcion</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                {listE.map((data,key) =>{
-                                                    return(
-                                                        <tr key={key}>
-                                                            <td>{key+1}</td>
-                                                            <td>{data.nombre}</td>
-                                                            <td>
-                                                                {data.descripcion}
-                                                            </td>                                            
-                                                        </tr>
-                                                    );
-                                                })}
                                         
-                                        </tbody>
-                                    </table>
+                                    {listE.length === 0 ?
+                                        <div className="card-body">
+                                            <div className="alert alert-danger alert-dismissible">
+                                                <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <h5><i className="icon fas fa-ban" /> Alerta!</h5>
+                                                El paciente no tiene registrado otras enfermedades.
+                                                Registre una nueva enfermedad al paciente si es que lo tiene
+                                            </div>
+                                        </div>
+                                    :   <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style={{width: 10}}>#</th>
+                                                    <th>Nombre</th>
+                                                    <th>Descripcion</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    {listE.map((data,key) =>{
+                                                        return(
+                                                            <tr key={key}>
+                                                                <td>{key+1}</td>
+                                                                <td>{data.nombre}</td>
+                                                                <td>
+                                                                    {data.descripcion}
+                                                                </td>                                            
+                                                            </tr>
+                                                        );
+                                                    })}
+                                            
+                                            </tbody>
+                                        </table>
+                                    }
                                 </div>
 
                             </div>

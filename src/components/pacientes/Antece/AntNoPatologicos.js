@@ -57,44 +57,54 @@ function AntNoPatologicos(props) {
                 </div>
                 {/* /.card-header */}
                 <div className="card-body p-0">
-                    <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th style={{width: 10}}>#</th>
-                                <th>Instruccion</th>
-                                <th>funa</th>
-                                <th>Cigarrillos por dia</th>
-                                <th>Desde hace...</th>
-                                <th>Bebe</th>
-                                <th>A la semana</th>
-                                <th>Desde hace...</th>
-                                <th>Alimentacion</th>
-                                <th>Fecha de Registro</th>
-                                {/* <th style={{width: 40}}>Label</th> */}
-                            </tr>
-                        </thead>
-                        <tbody>
+
+                    {list.length === 0 ?
+                        <div className="card-body">
+                            <div className="alert alert-danger alert-dismissible">
+                                <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i className="icon fas fa-ban" /> Alerta!</h5>
+                                No hay registros de antecedentes no patologicos 
+                            </div>
+                        </div>
+                    :   <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style={{width: 10}}>#</th>
+                                    <th>Instruccion</th>
+                                    <th>funa</th>
+                                    <th>Cigarrillos por dia</th>
+                                    <th>Desde hace...</th>
+                                    <th>Bebe</th>
+                                    <th>A la semana</th>
+                                    <th>Desde hace...</th>
+                                    <th>Alimentacion</th>
+                                    <th>Fecha de Registro</th>
+                                    {/* <th style={{width: 40}}>Label</th> */}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {list.map((data,key)=>{
+                                    return(
+                                        <tr key={key}>
+                                            <td>{key+1}</td>
+                                            <td>{data.instruccion}</td>
+                                            <td>{data.fuma.fuma}</td>
+                                            <td>{data.fuma.diaF}</td>
+                                            <td>{data.fuma.desdeF}</td>
+                                            <td>{data.bebe.bebe}</td>
+                                            <td>{data.bebe.diaB}</td>
+                                            <td>{data.bebe.desdeB}</td>
+                                            <td>{data.alimentacion}</td>        
+                                            <td>{data.createdAt.split('T')[0]}</td>                            
+                                        </tr>
+                                    );
+                                })}
                             
-                            {list.map((data,key)=>{
-                                return(
-                                    <tr key={key}>
-                                        <td>{key+1}</td>
-                                        <td>{data.instruccion}</td>
-                                        <td>{data.fuma.fuma}</td>
-                                        <td>{data.fuma.diaF}</td>
-                                        <td>{data.fuma.desdeF}</td>
-                                        <td>{data.bebe.bebe}</td>
-                                        <td>{data.bebe.diaB}</td>
-                                        <td>{data.bebe.desdeB}</td>
-                                        <td>{data.alimentacion}</td>        
-                                        <td>{data.createdAt.split('T')[0]}</td>                            
-                                    </tr>
-                                );
-                            })}
-                           
-                            
-                        </tbody>
-                    </table>
+                                
+                            </tbody>
+                        </table>
+                    }
                 </div>
                 {/* /.card-body */}
             </div>

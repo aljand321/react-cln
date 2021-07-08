@@ -59,7 +59,16 @@ function ExamenFisico(props) {
                 {/* /.card-header */}
                 <br/>
                 <div className="card-body p-0">
-                    <div className="col-12" id="accordion">
+
+                {list.length === 0 ?
+                    <div className="card-body">
+                        <div className="alert alert-danger alert-dismissible">
+                            <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i className="icon fas fa-ban" /> Alerta!</h5>
+                            No se registro examen fisico del paciente
+                        </div>
+                    </div>
+                :   <div className="col-12" id="accordion">
                         {list.map((data,key) =>{
                             return(
                                 <div key={key} className="card card-primary card-outline">
@@ -144,11 +153,8 @@ function ExamenFisico(props) {
                                 </div>
                             );
                         })}
-                        
-
-                        
-
                     </div>
+                }
 
                 </div>
                 {/* /.card-body */}

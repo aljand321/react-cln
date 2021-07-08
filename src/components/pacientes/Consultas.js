@@ -68,7 +68,7 @@ function DataConsulta(props) {
                             </div>
                         </div>
                         {/* /.card-header */}
-                        <div className="card-body table-responsive p-0" style={{height: 500}}>
+                        <div className="card-body table-responsive p-0" style={list.length === 0 ? {height: 200} :{height: 500}}>
                             <div className="overlay-wrapper">
                                 {load && 
                                     <div className="overlay"><i className="fas fa-3x fa-sync-alt fa-spin" /><div className="text-bold pt-2">Loading...</div></div>
@@ -85,9 +85,20 @@ function DataConsulta(props) {
                                 }
                                 <br/>
                                 <div className="col-12" id="accordion">
-                                    {list.map((data,key) =>{
+                                    {list.length === 0 && 
+                                        <div className="card-body">
+                                            <div className="alert alert-danger alert-dismissible">
+                                                <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <h5><i className="icon fas fa-ban" /> Alerta!</h5>
+                                                No hay pacientes para mostrar. 
+                                                Registre nuevos pacientes
+                                            </div>
+                                        </div>
+                                    }
+
+                                    {list.length > 0 &&  list.map((data,key) =>{
                                         return (
-                                            <div className="card card-primary card-outline">
+                                            <div key={key} className="card card-primary card-outline">
                                                 
                                                     <div className="card-header">
                                                         <div className="d-flex">

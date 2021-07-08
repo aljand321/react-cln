@@ -55,40 +55,46 @@ function Inmunizaciones(props) {
                 </div>
                 {/* /.card-header */}
                 <br/>
-                <div className="col-12" id="accordion">
-                    {lis.map((data,key)=>{
-                        return(
-                            <div key={key} className="card card-primary card-outline">                                
-                                <a className="d-block w-100" data-toggle="collapse" href={`#collap${key}`}>                                
-                                       
-                                    <div className="card-header">
-                                        <div className="d-flex">
-                                            <div className="mr-auto p-2">
-                                                <h4 className="card-title w-100">
-                                                    {key+1} {data.nombre}  {data.vacunasPaciente.description}
-                                                </h4>
-                                               
-                                            </div>
-                                            <div className="p-2">
-                                                <h5 className="card-title "> {data.vacunasPaciente.fecha.split('T')[0]}</h5>
-                                            </div>
-                                        </div>                                                
-                                    </div>
-   
-                                </a>
-                                <div id={`collap${key}`} className="collapse" data-parent="#accordion">
-                                    <div className="card-body">
-                                        {data.descripcion}
+                {lis.length === 0 ?
+                    <div className="card-body">
+                        <div className="alert alert-danger alert-dismissible">
+                            <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h5><i className="icon fas fa-ban" /> Alerta!</h5>
+                            No tiene vacunas registradas
+                        </div>
+                    </div>
+                :   <div className="col-12" id="accordion">
+                        {lis.map((data,key)=>{
+                            return(
+                                <div key={key} className="card card-primary card-outline">                                
+                                    <a className="d-block w-100" data-toggle="collapse" href={`#collap${key}`}>                                
+                                        
+                                        <div className="card-header">
+                                            <div className="d-flex">
+                                                <div className="mr-auto p-2">
+                                                    <h4 className="card-title w-100">
+                                                        {key+1} {data.nombre}  {data.vacunasPaciente.description}
+                                                    </h4>
+                                                
+                                                </div>
+                                                <div className="p-2">
+                                                    <h5 className="card-title "> {data.vacunasPaciente.fecha.split('T')[0]}</h5>
+                                                </div>
+                                            </div>                                                
+                                        </div>
+    
+                                    </a>
+                                    <div id={`collap${key}`} className="collapse" data-parent="#accordion">
+                                        <div className="card-body">
+                                            {data.descripcion}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
-                    })}
-                    
-                    
-                </div>
-
-                {/* /.card-body */}
+                            );
+                        })}                        
+                    </div>
+                }
+               
             </div>
             <ModalLarge title='Inmunizaciones' idModal='inmu'>
                 <FormInmunizaciones dataPaciente={props.dataPaciente.id} callList={callList}/>

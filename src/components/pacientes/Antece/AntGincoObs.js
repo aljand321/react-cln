@@ -57,41 +57,51 @@ function AntGincoObs(props) {
                 </div>
                 {/* /.card-header */}
                 <div className="card-body p-0">
-                    <table className="table table-striped">
-                        <thead>
-                            <tr>
-                                <th style={{width: 10}}>#</th>
-                                <th>Menarca</th>
-                                <th>Rtimo</th>
-                                <th>FMU</th>
-                                <th>Gesta para Cesaria</th>
-                                <th>Abortos</th>
-                                <th>Nacidos vivos</th>
-                                <th>Mortinatos</th>
-                                <th>Metodos de Planificacion Familiar</th>
-                                <th>Fecha</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {list.map((data,key) => {
-                                return(
-                                    <tr key={key}>
-                                        <td>{key+1}</td>
-                                        <td>{data.menarca}</td>
-                                        <td>{data.ritmo}</td>
-                                        <td>{data.fmu}</td>
-                                        <td>{data.gestaCesaria}</td>
-                                        <td>{data.abortos}</td>
-                                        <td>{data.nacidoVivos}</td>
-                                        <td>{data.mortinatos}</td>
-                                        <td>{data.plfcFamiliar}</td>
-                                        <td>{data.fecha}</td>
-                                    </tr>
-                                );
-                            })}
-                                                       
-                        </tbody>
-                    </table>
+                    
+                    {list.length === 0 ?
+                        <div className="card-body">
+                            <div className="alert alert-danger alert-dismissible">
+                                <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h5><i className="icon fas fa-ban" /> Alerta!</h5>
+                                No se resgistro Antecedentes Gineco Obstetricos
+                            </div>
+                        </div>
+                    :    <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style={{width: 10}}>#</th>
+                                    <th>Menarca</th>
+                                    <th>Rtimo</th>
+                                    <th>FMU</th>
+                                    <th>Gesta para Cesaria</th>
+                                    <th>Abortos</th>
+                                    <th>Nacidos vivos</th>
+                                    <th>Mortinatos</th>
+                                    <th>Metodos de Planificacion Familiar</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {list.map((data,key) => {
+                                    return(
+                                        <tr key={key}>
+                                            <td>{key+1}</td>
+                                            <td>{data.menarca}</td>
+                                            <td>{data.ritmo}</td>
+                                            <td>{data.fmu}</td>
+                                            <td>{data.gestaCesaria}</td>
+                                            <td>{data.abortos}</td>
+                                            <td>{data.nacidoVivos}</td>
+                                            <td>{data.mortinatos}</td>
+                                            <td>{data.plfcFamiliar}</td>
+                                            <td>{data.fecha}</td>
+                                        </tr>
+                                    );
+                                })}
+                                                        
+                            </tbody>
+                        </table>
+                    }
                 </div>
                 {/* /.card-body */}
             </div>
