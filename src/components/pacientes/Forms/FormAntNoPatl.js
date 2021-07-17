@@ -16,35 +16,6 @@ const dataB ={
     diaB:'',
     desdeB:'',
 }
-const validateData = (data)=>{
-    let err = {}    
-    for(const p in data){
-        if(!data[p]){
-            err[p] = `obligatorio`
-        }
-    }
-    return err;
-}
-
-const validateF1 = (data)=>{
-    let err = {};
-    for(const p in data){
-        if(!data[p]){
-            err[p] = `obligatorio`
-        }
-    }
-    return err;
-}
-const validateB1 = (data)=>{
-    let err = {};
-    for(const p in data){
-        if(!data[p]){
-            err[p] = `obligatorio`
-        }
-    }
-    return err;
-}
-
 function FormAntNoPatl(props) {
     const [data, setData] = useState(form);
     const [err, setErr] = useState({});
@@ -61,7 +32,11 @@ function FormAntNoPatl(props) {
         setData({
             ...data,
             [name]:value
-        })        
+        })  
+        setErr({
+            ...err,
+            [name]:value.length === 0 ? 'Obligatorio' : ''
+        })             
     }
     const changeF =(e) =>{
         const {value, name} = e.target;        
@@ -69,26 +44,21 @@ function FormAntNoPatl(props) {
             ...f,
             [name]:value
         }) 
+        seterrF({
+            ...errF,
+            [name]:value.length === 0 ? 'Obligatorio' : ''
+        });
     }
     const changeb =(e) =>{
-        const {value, name} = e.target;
-      
+        const {value, name} = e.target;      
         setB({
             ...b,
             [name]:value
         }) 
-    }
-    const validateDatas =  (e) =>{        
-        handleChange1(e);
-        setErr(validateData(data))
-    }
-    const validateFuma =  (e) =>{        
-        changeF(e);
-        seterrF(validateF1(f))
-    }
-    const validateBebe =  (e) =>{        
-        changeb(e);
-        seterrB(validateB1(b))
+        seterrB({
+            ...errB,
+            [name]:value.length === 0 ? 'Obligatorio' : ''
+        })
     }
     const handleSubmit = async (e) =>{
         e.preventDefault();
@@ -207,7 +177,7 @@ function FormAntNoPatl(props) {
                            
                                 <div className="form-check d-inline">
                                 <input
-                                    onBlur={validateDatas} 
+                                     
                                     className="form-check-input"
                                     onChange={handleChange1} 
                                     id="radioPrimary3" 
@@ -222,17 +192,26 @@ function FormAntNoPatl(props) {
                                     </label>
                                 </div>
                                 <div className="form-check d-inline">
-                                    <input onBlur={validateDatas}  className="form-check-input"  id="flexRadioDefault2" onChange={handleChange1}    type="radio" checked={data.instruccion === 'secundaria'} name="instruccion" value="secundaria"/>
+                                    <input 
+                                      
+                                    className="form-check-input"  
+                                    id="flexRadioDefault2" onChange={handleChange1}    
+                                    type="radio" checked={data.instruccion === 'secundaria'} name="instruccion" value="secundaria"/>
                                     <label htmlFor="radioPrimary2">Secundaria
                                     </label>
                                 </div>
                                 <div className="form-check d-inline">
-                                    <input onBlur={validateDatas}  className="form-check-input"  id="flexRadioDefault3" onChange={handleChange1} type="radio" checked={data.instruccion === 'tecnico'} name="instruccion" value="tecnico" />
+                                    <input 
+                                      
+                                    className="form-check-input"  
+                                    id="flexRadioDefault3" 
+                                    onChange={handleChange1} type="radio" checked={data.instruccion === 'tecnico'} name="instruccion" value="tecnico" />
                                     <label htmlFor="radioPrimary2">Tecnico
                                     </label>
                                 </div>
                                 <div className="form-check d-inline">
-                                    <input onBlur={validateDatas}  className="form-check-input"  id="flexRadioDefault4" onChange={handleChange1}  type="radio" checked={data.instruccion === 'profecional'} name="instruccion" value="profecional"/>
+                                    <input   
+                                    className="form-check-input"  id="flexRadioDefault4" onChange={handleChange1}  type="radio" checked={data.instruccion === 'profecional'} name="instruccion" value="profecional"/>
                                     <label htmlFor="radioPrimary2">Profecional
                                     </label>
                                 </div>
@@ -245,7 +224,7 @@ function FormAntNoPatl(props) {
                                                         
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={validateDatas} 
+                                         
                                         onChange={handleChange1}
                                         value="si"
                                         name="fuma"
@@ -256,7 +235,7 @@ function FormAntNoPatl(props) {
                                     </div>
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={validateDatas} 
+                                         
                                         onChange={handleChange1}
                                         value="no"
                                         name="fuma"
@@ -272,7 +251,7 @@ function FormAntNoPatl(props) {
                                 <div className="col-4">
                                     <label htmlFor="radioPrimary1"> Dia {errF.diaF && <label htmlFor="exampleInputBorder"><code>{errF.diaF}</code></label>} </label>
                                     <input  
-                                    onBlur={validateFuma}                             
+                                                             
                                     onChange={changeF}
                                     name="diaF" 
                                     value={f.diaF}
@@ -283,7 +262,7 @@ function FormAntNoPatl(props) {
                                 <div className="col-4">
                                     <label htmlFor="radioPrimary1"> Desde hace {errF.desdeF && <label htmlFor="exampleInputBorder"><code>{errF.desdeF}</code></label>} </label>
                                     <input  
-                                    onBlur={validateFuma}                                    
+                                                                 
                                     onChange={changeF}
                                     name="desdeF" 
                                     value={f.desdeF}                                
@@ -301,7 +280,7 @@ function FormAntNoPatl(props) {
                                                         
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={validateDatas} 
+                                         
                                         onChange={handleChange1}
                                         value="si"
                                         name="bebe"
@@ -312,7 +291,7 @@ function FormAntNoPatl(props) {
                                     </div>
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={validateDatas} 
+                                         
                                         onChange={handleChange1}
                                         value="no"
                                         name="bebe"
@@ -327,7 +306,7 @@ function FormAntNoPatl(props) {
                                 <div className="col-4">
                                     <label htmlFor="radioPrimary1"> Dias {errB.diaB && <label htmlFor="exampleInputBorder"><code>{errB.diaB}</code></label>}  </label>
                                     <input 
-                                    onBlur={validateBebe}     
+                                       
                                     onChange={changeb}
                                     name="diaB" 
                                     value={b.diaB}
@@ -338,7 +317,7 @@ function FormAntNoPatl(props) {
                                 <div className="col-4">
                                     <label htmlFor="radioPrimary1"> Desde hace {errB.desdeB && <label htmlFor="exampleInputBorder"><code>{errB.desdeB}</code></label>} </label>
                                     <input 
-                                    onBlur={validateBebe}     
+                                   
                                     onChange={changeb}
                                     name="desdeB" 
                                     value={b.desdeB}
@@ -351,7 +330,7 @@ function FormAntNoPatl(props) {
                             
                             <div className="form-check d-inline">
                                 <input 
-                                onBlur={validateDatas} 
+                                 
                                 onChange={handleChange1}
                                 value="mala"
                                 name="alimentacion"
@@ -362,7 +341,7 @@ function FormAntNoPatl(props) {
                             </div>
                             <div className="form-check d-inline">
                                 <input 
-                                onBlur={validateDatas} 
+                                 
                                 onChange={handleChange1}
                                 value="regular"
                                 name="alimentacion"
@@ -373,7 +352,7 @@ function FormAntNoPatl(props) {
                             </div>
                             <div className="form-check d-inline">
                                 <input
-                                onBlur={validateDatas} 
+                                 
                                 onChange={handleChange1}
                                 value="buena"
                                 name="alimentacion"
@@ -384,7 +363,7 @@ function FormAntNoPatl(props) {
                             </div>
                             <div className="form-check d-inline">
                                 <input 
-                                onBlur={validateDatas} 
+                                 
                                 onChange={handleChange1}
                                 value="exelente"
                                 name="alimentacion"

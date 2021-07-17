@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+
 class List extends React.Component{
     render(){
         return(
@@ -26,7 +27,7 @@ class List extends React.Component{
                                 </div>
                             </div>
                         </div>
-                        <div className="card-footer" onClick={this.props.onClick}>                                        
+                        <div className="card-footer" >                                        
                             <div className="text-right">                                            
                                 <div className="btn btn-sm btn-primary">
                                     <i className="fas fa-user" /> View Profile
@@ -40,13 +41,13 @@ class List extends React.Component{
     }
 }
 
- function MedicosList (props){
-    const medicos =  props.listMedicos;
-    const {buscar,setBuscar,filter} = Buscar(medicos);
-    function data(id_medico){
+function ListUsers(props) {
+    const users =  props.listUsers;
+    const {buscar,setBuscar,filter} = Buscar(users);
+    /* function data(id_medico){
         props.idMedico(id_medico);
-    }
-    if(!medicos){        
+    } */
+    if(!users){        
         return (
             <div>
                 <h3>no hay nada que mostrar</h3>
@@ -87,19 +88,19 @@ class List extends React.Component{
                 <div className="row">
                     {filter[0].map((datas,key) =>{
                         return (                           
-                            <List onClick={() => data(datas.id)} key={key} list={datas} />                             
+                            <List  key={key} list={datas} />                             
                         );
                     })}              
                 </div>  
             </>                         
         );
     }
-    
 }
-const Buscar = (medicos) =>{
+
+const Buscar = (users) =>{
     const [buscar, setBuscar] = useState('');
     const filter = []
-    var filtrador = medicos.filter((item) => {       
+    var filtrador = users.filter((item) => {       
         return  item.nombres.toLowerCase().includes(buscar.toLowerCase()) ||
                 item.apellidos.toLowerCase().includes(buscar.toLowerCase()) ||
                 item.especialidad.toLowerCase().includes(buscar.toLowerCase()) ||
@@ -111,4 +112,4 @@ const Buscar = (medicos) =>{
     return {buscar,setBuscar,filter};
 }
 
-export default MedicosList;
+export default ListUsers

@@ -4,8 +4,8 @@ function ModalLarge(props) {
     return(
         <React.Fragment>
             <div className="modal fade" id={props.idModal}>
-                <div className="modal-dialog modal-lg">
-                    <div className="modal-content">
+                <div className={props.large ? `modal-dialog modal-${props.large}`: `modal-dialog modal-lg` }>{/* xl modla extra large */}
+                    <div className="modal-content bg-dafault">{/* bg-danger success secondary */}
                         <div className="modal-header">
                             <h4 className="modal-title">{props.title}</h4>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">

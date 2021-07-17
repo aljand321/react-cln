@@ -13,14 +13,14 @@ function Inmunizaciones(props) {
     useEffect(() => {
         const listVacunas = async () =>{
             setLoad(true)
-            const resp = await RoutesInmunizacion.listVacunasPaciente(props.dataPaciente.id);
+            const resp = await RoutesInmunizacion.listVacunasPaciente(props.dataPaciente.id,props.identify);
             if(resp.data.success === false){
                 setLoad(false);
                 setRespErr(true);
                 setTimeout(() => setRespErr(false), 3000)
             }else{
                 setLoad(false);
-                setLis(resp.data.resp.vacunas)
+                setLis(resp.data.resp)
             }
         }
         listVacunas();
@@ -44,9 +44,11 @@ function Inmunizaciones(props) {
                 <div className="card-header">
                     <div className="d-flex">
                         <div className="mr-auto p-2">
-                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#inmu">
-                                Registrar
-                            </button>
+                            {props.identify === 'null' &&    
+                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#inmu">
+                                    Registrar
+                                </button>
+                            }
                         </div>
                         {/* <div className="p-2">
                             

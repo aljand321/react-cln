@@ -1,4 +1,6 @@
 //import { Link } from 'react-router-dom';
+import ListaPacientesDocotor from '../pacientes/Medico/ListaPacientes.js'
+import ConsultaMedico from '../pacientes/Medico/consultaMedico.js';
 function MedicoDatas (props){
     const medico = props.medico
     if (Object.keys(medico).length === 0){    
@@ -55,26 +57,24 @@ function MedicoDatas (props){
                     <div className="card">
                         <div className="card-header p-2">
                             <ul className="nav nav-pills">
-                                <li className="nav-item"><a className="nav-link" href="#activity" data-toggle="tab">Activity</a></li>
-                                <li className="nav-item"><a className="nav-link active" href="#timeline" data-toggle="tab">Timeline</a></li>
-                                <li className="nav-item"><a className="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+                                <li className="nav-item"><a className="nav-link active" href="#activity" data-toggle="tab">Pacientes Registrados</a></li>    
+                                <li className="nav-item"><a className="nav-link " href="#consulta" data-toggle="tab">Pacientes Consultados</a></li>                             
                             </ul>
+                            
                         </div>
                         {/* /.card-header */}
                         <div className="card-body">
                             <div className="tab-content">
-                                <div className="tab-pane" id="activity">
-                                    <h1>pacientes que el doctor registro</h1>                                
-                                </div>
-                                {/* /.tab-pane */}
-                                <div className="active tab-pane" id="timeline">
-                                    <h1>aqui sus consultas que el doctor registro</h1>
-                                </div>
-                                {/* /.tab-pane */}
-                                <div className="tab-pane" id="settings">
-                                    <h1>las demas cosas alergias y esas cosas aqui TODO</h1>
-                                </div>
-                                {/* /.tab-pane */}
+                                <div className="active tab-pane" id="activity">    
+                                    <div className="overlay-wrapper">                                    
+                                        <ListaPacientesDocotor id_medico={medico.id}/> 
+                                    </div>                          
+                                </div> 
+                                <div className=" tab-pane" id="consulta">    
+                                    <div className="overlay-wrapper">                                    
+                                        <ConsultaMedico id_medico={medico.id}/>
+                                    </div>                          
+                                </div>                               
                             </div>
                             {/* /.tab-content */}
                         </div>

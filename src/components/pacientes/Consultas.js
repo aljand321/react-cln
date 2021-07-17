@@ -4,6 +4,7 @@ import FormConsutla from "./Forms/FormConsulta";
 import RoutesConsultas from "../../Routes/Consultas";
 import VerConsulta from "./VerConsulta";
 function DataConsulta(props) {
+    console.log(props.identify)
     const paciente = props.dataPaciente
     const [list, setList] = useState([])
     const [load, setLoad] = useState(false);
@@ -20,7 +21,7 @@ function DataConsulta(props) {
         async function getList() {
             setLoad(true);
           
-            const resp = await RoutesConsultas.ListConsultasPaciente(paciente.id);
+            const resp = await RoutesConsultas.ListConsultasPaciente(paciente.id,props.identify);
           
             if(resp.data.success === false){
                 setLoad(false);
@@ -31,7 +32,7 @@ function DataConsulta(props) {
             }
         }
         getList();
-    }, [paciente,callList])
+    }, [paciente,callList,props.identify])
     
     const OneConsulta = async (id_consulta) =>{
         setLoadConsulta(true);
@@ -53,9 +54,11 @@ function DataConsulta(props) {
                 <div className="col-12">
                     <div className="card">
                         <div className="card-header">
-                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#conaulta">
-                                Registrar Paciente
-                            </button>
+                            {props.identify === 'null' &&
+                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#conaulta">
+                                    Nueva consulta
+                                </button>
+                            }
                             <div className="card-tools">
                                 <div className="input-group input-group-sm" style={{width: 150}}>
                                     {/* <input type="text" name="table_search" className="form-control float-right" placeholder="Search" /> */}

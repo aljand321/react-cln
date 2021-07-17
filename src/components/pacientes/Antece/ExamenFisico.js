@@ -14,8 +14,7 @@ function ExamenFisico(props) {
     useEffect(() => {
         const list = async () =>{
             setLoad(true);
-            const resp = await RoutesExamenFisico.listExmFisPaciente(dataPaciente.id);
-            console.log(resp.data)
+            const resp = await RoutesExamenFisico.listExmFisPaciente(dataPaciente.id,props.identify);
             if(resp.data.success === false){
                 setLoad(false);
                 setRespErr(true);
@@ -26,7 +25,7 @@ function ExamenFisico(props) {
             }
         }
         list();
-    },[dataPaciente,callList])
+    },[dataPaciente,callList,props.identify])
     return (
         <>  
             {load && 
@@ -47,9 +46,11 @@ function ExamenFisico(props) {
                 <div className="card-header">
                     <div className="d-flex">
                         <div className="mr-auto p-2">
-                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#ExaFs">
-                                Registrar
-                            </button>
+                            {props.identify === 'null' &&    
+                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#ExaFs">
+                                    Registrar
+                                </button>
+                            }    
                         </div>
                         {/* <div className="p-2">
                             

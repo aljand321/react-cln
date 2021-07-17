@@ -53,3 +53,9 @@
     -webkit-transition: opacity .6s;
     transition: opacity .6s;
 }
+.imgLogo{
+    position: absolute;
+    height:100%;
+    width:100%;
+    
+}

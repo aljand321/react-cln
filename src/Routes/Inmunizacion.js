@@ -53,11 +53,11 @@ class RoutesInmunizacion{
             return {data:{success:false,msg:"error 500",error:'500'}};
         }
     }
-    static async listVacunasPaciente(id_paciente){
+    static async listVacunasPaciente(id_paciente,id_medico){
         const token = await Token.getToken();
         if(!token) return {data:{success:false,msg:"no hay token"} };
         try {
-            const resp = await axios.get(`${Url.urlBackEnd}/api/vacunaPaciente/${id_paciente}`,{                
+            const resp = await axios.get(`${Url.urlBackEnd}/api/vacunaPaciente/${id_paciente}/${id_medico}`,{                
                 headers: {
                     'c_token': token.t
                 }

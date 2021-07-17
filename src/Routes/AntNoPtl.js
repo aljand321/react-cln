@@ -18,11 +18,11 @@ class RoutesAntNoPtl{
             return {data:{success:false,msg:"error 500",error:'500'}};
         }
     }
-    static async listAntPtl(id_paciente){
+    static async listAntPtl(id_paciente,id_medico){
         const token = await Token.getToken();
         if(!token) return {data:{success:false,msg:"no hay token"} };
         try {
-            const resp = await axios.get(`${Url.urlBackEnd}/api/antNoPtlPaciente/${id_paciente}`,{               
+            const resp = await axios.get(`${Url.urlBackEnd}/api/antNoPtlPaciente/${id_paciente}/${id_medico}`,{               
                 headers: {
                     'c_token': token.t
                 }

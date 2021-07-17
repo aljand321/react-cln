@@ -14,6 +14,7 @@ class Token {
                     'c_token': token.t
                 }
             });
+            console.log(resp);
             return resp.data
         } catch (error) {
             return {success:false,msg:"No hay ceneccion con la BD"}

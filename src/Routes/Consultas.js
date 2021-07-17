@@ -19,12 +19,12 @@ class RoutesConsultas{
             return {data:{success:false,msg:"error 500",error:'500'}};
         }
     }
-    static async ListConsultasPaciente(id_paciente){
+    static async ListConsultasPaciente(id_paciente,id_medico){
         const token = await Token.getToken();
         if(!token) return {data:{success:false,msg:"no hay token"} };
         //console.log(token, ' esto es el error')
         try {
-            const resp = await axios.get(`${Url.urlBackEnd}/api/consutla/${id_paciente}`,{                
+            const resp = await axios.get(`${Url.urlBackEnd}/api/consulta/${id_paciente}/${id_medico}`,{                
                 headers: {
                     'c_token': token.t
                 }

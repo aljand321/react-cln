@@ -17,40 +17,9 @@ const form ={
     estadoSalud:''
 }
 
-const validate = (data) =>{
-    let err = {}
-    if(!data.viveP){
-        err.viveP = 'Selecione'
-    }
-    if(!data.viveM){
-        err.viveM = 'Selecione'
-    }
-    if(!data.hnos){
-        err.hnos = 'Selecione'
-    }
-    if(data.viveP === 'si'){       
-        if(!data.estSaludP){
-            err.estSaludP = 'Selecione'
-        }
-    }else{        
-        if(!data.causaP){
-            err.causaP = 'Obligatorio'
-        }
-    }
-    if(data.viveM === 'si'){       
-        if(!data.estSaludM){
-            err.estSaludM = 'Selecione'
-        }
-    }else{        
-        if(!data.causaM){
-            err.causaM = 'Obligatorio'
-        }
-    }
-    return err
-}
 function FormAntFml(props) {
     const [data, setData] = useState(form);
-    const [err, setErr] = useState({});
+    const [err, setErr] = useState(form);
     const [load, setLoad] = useState(false);    
     const [erroResp, setErroResp] = useState({erro:''})
     const [resp, setResp] = useState(false);
@@ -61,6 +30,10 @@ function FormAntFml(props) {
             ...data,
             [name]:value
         }) 
+        setErr({
+            ...err,
+            [name]:value.length === 0 ? 'Obligatorio' : ''
+        })
         if(name === 'numeros'){
             if(value.length === 0){
                 setErr({numeros:"obligatorio"})
@@ -89,10 +62,6 @@ function FormAntFml(props) {
         }             
           
     }
-    const ondata = (e) =>{
-        handleChange(e);
-        setErr(validate(data))
-    }
     const handleSubmit = async (e) =>{
         e.preventDefault();
         let obj = {}
@@ -107,32 +76,48 @@ function FormAntFml(props) {
             obj['hnos'] ='Selecione'
         }
        setErr(obj)
-
+        console.log(Object.keys(obj).length === 0, 'verifica si esta vacio el error o no')
         if(Object.keys(obj).length === 0){
-            let state = false
+            let p = false, m = false , state = false;
+            
             if(data.viveP === 'si'){     
                 if(data.estSaludP.length === 0) {
-                    setErr({estSaludP:'Selecione'})   
+                    setErr({
+                        ...err,
+                        estSaludP:'Selecione'
+                    })   
                 } 
-                state = data.estSaludP.length === 0 ? true : false          
-                
+                p = data.estSaludP.length === 0 ? true : false          
+                console.log(data.viveP, ' <<< 111   esto es obligatorio',data.estSaludP.length === 0)
             }else{   
                 if(data.causaP.length === 0){
-                    setErr({causaP:'Obligatorio'})
+                    setErr({
+                        ...err,
+                        causaP:'Obligatorio'
+                    })
                 }               
-                state= data.causaP.length === 0 ? true : false
+                p = data.causaP.length === 0 ? true : false
+                console.log(data.viveP, '22222  esto es obligatorio',data.causaP.length === 0)
             }
 
             if(data.viveM === 'si'){ 
                 if(data.estSaludM.length === 0){
-                    setErr({estSaludM:'Selecione'})  
+                    setErr({
+                        ...err,
+                        estSaludM:'Selecione'
+                    })  
                 }                  
-                state = data.estSaludM.length === 0 ? true : false
+                m = data.estSaludM.length === 0 ? true : false
             }else{ 
                 if(data.causaM.length === 0)  {
-                    setErr({causaM:'Obligatorio'})
+                    console.log(data.causaM.length === 0, 'estp es de mmmm')
+                    setErr({
+                        ...err,
+                        causaM:'Obligatorio'
+                    })
                 }            
-                state = data.causaM.length === 0 ? true : false
+                m = data.causaM.length === 0 ? true : false
+                
             }
             if(data.hnos === 'si'){
                 const resp = validateHnos()
@@ -144,8 +129,8 @@ function FormAntFml(props) {
                 }   
                 
             }
-            console.log(err)
-            if(!state){
+            console.log(state === false && p === false && m === false, 'para el login si nexr o no ')
+            if(state === false && p === false && m === false){
                 console.log('se enviaron los datos')
                 const body1 = {
                     padre:{
@@ -191,37 +176,40 @@ function FormAntFml(props) {
     function validateHnos() {
         if(!data.numeros || !data.viven){
             if(!data.numeros){
-                setErr({numeros:'Es obligatorio'})
+                setErr({
+                    ...err,
+                    numeros:'Es obligatorio'
+                })
             }else
             if(!data.viven){
-                setErr({viven:'Es obligatorio'})
+                setErr({...err,viven:'Es obligatorio'})
             }
             return false;
         }else{  
             if (data.numeros > data.viven){
                 if (!data.causa){
-                    setErr({causa:'Es obligatorio'})
+                    setErr({...err, causa:'Es obligatorio'})
                     return false;
                 }
-                setErr({})
+                
                 return true;
             } 
             if(data.numeros === data.viven){
                 if(!data.estadoSalud){
-                    setErr({estadoSalud:'Seleccione'})
+                    setErr({...err,estadoSalud:'Seleccione'})
                     return false;
                 }
-                setErr({})
+               
                 return true;
             }        
             
         }
         if(data.numeros < data.viven){
-            setErr({viven:'Hnos no puede ser menos a los que vien'})
+            setErr({...err,viven:'Hnos no puede ser menos a los que vien'})
             
             return false;
         }        
-        setErr({})
+        
         return true
     }
     return (
@@ -260,7 +248,7 @@ function FormAntFml(props) {
                                 <div className="form-group clearfix">                            
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={ondata}
+                                        
                                         onChange={handleChange} 
                                         checked={data.viveP === 'si'} 
                                         value="si"
@@ -270,7 +258,7 @@ function FormAntFml(props) {
                                     </div>
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={ondata}
+                                        
                                         onChange={handleChange} 
                                         checked={data.viveP === 'no'} 
                                         value="no"
@@ -287,7 +275,7 @@ function FormAntFml(props) {
                                     <div className="form-group clearfix">                            
                                         <div className="form-check d-inline">
                                             <input 
-                                            onBlur={ondata}
+                                            
                                             onChange={handleChange} 
                                             checked={data.estSaludP === 'bueno'} 
                                             value="bueno"
@@ -298,7 +286,7 @@ function FormAntFml(props) {
                                         </div>
                                         <div className="form-check d-inline">
                                             <input 
-                                            onBlur={ondata}
+                                            
                                             onChange={handleChange} 
                                             checked={data.estSaludP === 'regular'} 
                                             value="regular"
@@ -308,7 +296,7 @@ function FormAntFml(props) {
                                         </div>
                                         <div className="form-check d-inline">
                                             <input 
-                                            onBlur={ondata}
+                                            
                                             onChange={handleChange} 
                                             checked={data.estSaludP === 'malo'} 
                                             value="malo"
@@ -325,7 +313,7 @@ function FormAntFml(props) {
                             <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">Fallecio Causa: {err.causaP && <label htmlFor="exampleInputBorder"><code>{err.causaP}</code></label>}</label>
                                 <input 
-                                onBlur={ondata}
+                                
                                 onChange={handleChange}                            
                                 value={data.causaP}
                                 name='causaP' type="text" className="form-control"/>
@@ -338,7 +326,7 @@ function FormAntFml(props) {
                                 <div className="form-group clearfix">                            
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={ondata}
+                                        
                                         onChange={handleChange} 
                                         checked={data.viveM === 'si'} 
                                         value="si"
@@ -348,7 +336,7 @@ function FormAntFml(props) {
                                     </div>
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={ondata}
+                                        
                                         onChange={handleChange} 
                                         checked={data.viveM === 'no'} 
                                         value="no"
@@ -365,7 +353,7 @@ function FormAntFml(props) {
                                     <div className="form-group clearfix">                            
                                         <div className="form-check d-inline">
                                             <input 
-                                            onBlur={ondata}
+                                            
                                             onChange={handleChange} 
                                             checked={data.estSaludM === 'bueno'} 
                                             value="bueno"
@@ -375,7 +363,7 @@ function FormAntFml(props) {
                                         </div>
                                         <div className="form-check d-inline">
                                             <input 
-                                            onBlur={ondata}
+                                            
                                             onChange={handleChange} 
                                             checked={data.estSaludM === 'regular'} 
                                             value="regular"
@@ -385,7 +373,7 @@ function FormAntFml(props) {
                                         </div>
                                         <div className="form-check d-inline">
                                             <input 
-                                            onBlur={ondata}
+                                            
                                             onChange={handleChange} 
                                             checked={data.estSaludM === 'malo'} 
                                             value="malo"className="form-check-input" type="radio"  name="estSaludM" />
@@ -401,7 +389,7 @@ function FormAntFml(props) {
                             <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">Fallecio Causa: {err.causaM && <label htmlFor="exampleInputBorder"><code>{err.causaM}</code></label>}</label>
                                 <input
-                                onBlur={ondata}
+                                
                                 onChange={handleChange}                            
                                 value={data.causaM}
                                 name="causaM"
@@ -415,7 +403,7 @@ function FormAntFml(props) {
                                 <div className="form-group clearfix">                            
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={ondata}
+                                        
                                         onChange={handleChange} 
                                         checked={data.hnos === 'si'} 
                                         value="si"
@@ -425,7 +413,7 @@ function FormAntFml(props) {
                                     </div>
                                     <div className="form-check d-inline">
                                         <input 
-                                        onBlur={ondata}
+                                        
                                         onChange={handleChange} 
                                         checked={data.hnos === 'no'} 
                                         value="no"
@@ -444,7 +432,7 @@ function FormAntFml(props) {
                                         onChange={handleChange}
                                         value={data.numeros}
                                         name="numeros"
-                                        type="text" className="form-control" placeholder=".col-3" />
+                                        type="number" className="form-control" placeholder=".col-3" />
                                     </div>
                                     {data.numeros && 
                                         <div className="col-3">
@@ -453,7 +441,7 @@ function FormAntFml(props) {
                                             onChange={handleChange}
                                             value={data.viven}
                                             name="viven"
-                                            type="text" className="form-control" placeholder=".col-4" />
+                                            type="number" className="form-control" placeholder=".col-4" />
                                         </div>
                                     }
                                     {data.numeros > data.viven &&

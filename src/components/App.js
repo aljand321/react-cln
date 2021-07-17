@@ -7,6 +7,7 @@ import Home from '../pages/Home';
 import About from '../pages/About';
 import Consulta from '../pages/Consulta';
 import Layout from './Layout';
+import UserContac from '../pages/UserContac';
 
 import Token from '../token';
 import Alergias from '../pages/Alergias';
@@ -21,7 +22,8 @@ class App extends React.Component{
     }
     get = async () => {
         console.log('esto es get')
-        const verifyToken = await Token.validateToken();       
+        const verifyToken = await Token.validateToken();  
+        console.log(verifyToken, 'esto es el token')
         if(verifyToken.success === true){
             this.setState({
                 showBrowser: true
@@ -74,6 +76,7 @@ class App extends React.Component{
                                 <Route path='/about' exact={true} component={About}></Route>
                                 <Route path='/consulta' exact={true} component={Consulta}></Route>
                                 <Route path='/alergias' exact={true} component={Alergias}></Route>
+                                <Route path='/contacto' exact={true} component={UserContac}></Route>
                             </Switch>
                         </Layout>               
                     </BrowserRouter> 

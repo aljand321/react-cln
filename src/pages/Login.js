@@ -21,19 +21,25 @@ class Login extends React.Component{
             ci:'',
             password:''
         },
+        erroLogin:{
+            ci:'',
+            password:''
+        },
         formCreate:{
             nombres:'',
             apellidos:'',
             ci:'',
-            email:'',
-            telefono:'',
-            direccion:'',
-            edad:'',
-            especialidad:'',
             password:'',
-            password1:'',
-            role:'admin'
+            password1:''
+        },
+        errorCreate:{
+            nombres:'',
+            apellidos:'',
+            ci:'',
+            password:'',
+            password1:''
         }
+        
     }
     componentDidMount(){
         this._isMounted = true;
@@ -59,23 +65,38 @@ class Login extends React.Component{
                     })
                 }
             }else{
-                this.setState({ loading: false, error: null,bdConet:false });
+                this.setState({ loading: false, error: true,bdConet:false });
             }
         }    
         
     }
     handleChangeCreate = e =>{
+        const {name,value} = e.target;
         this.setState({
             formCreate:{
                 ...this.state.formCreate,
-                [e.target.name]: e.target.value
+                [name]:value
+            },
+            errorCreate:{
+                ...this.state.errorCreate,
+                [name]:value.length === 0 ? 'obligado' : ''
             }
         })
     }
     //esta funcion permitira crear el nuevo usario
     clikcFormCreate = async e =>{        
-        e.preventDefault();        
+        e.preventDefault();   
+        let arr = {};   
+        for(const name in this.state.formCreate) {
+            if(!this.state.formCreate[name]){
+                arr[name] = 'obligado';
+            }
+        }
+        this.setState({
+            errorCreate:arr
+        })
         const verifyDatas = this.validateDatas();
+        console.log(verifyDatas, ' estp essssss')
         if(verifyDatas.success === false){
             this.setState({
                 msg:{
@@ -92,52 +113,75 @@ class Login extends React.Component{
                     msg:'Cargando.......'
                 }
             })
-            const resp = await Routes.createMedico(this.state.formCreate);
-            if(this._isMounted){
-                if(resp.data.success ===false){
-                    this.setState({
-                        msg:{
-                            success:true,
-                            alert:'warning',
-                            msg:resp.data.msg
-                        }
-                    })        
-                }else{
-                    this.setState({
-                        msg:{
-                            success:true,
-                            alert:'success',
-                            msg:resp.data.msg
-                        }
-                    })
-                    this.fetchGetList();
+            try {
+                const resp = await Routes.createMedico(this.state.formCreate);
+                if(this._isMounted){
+                    if(resp.data.success ===false){
+                        this.setState({
+                            msg:{
+                                success:true,
+                                alert:'warning',
+                                msg:resp.data.msg
+                            }
+                        })        
+                    }else{
+                        this.setState({
+                            msg:{
+                                success:true,
+                                alert:'success',
+                                msg:resp.data.msg
+                            }
+                        })
+                        this.fetchGetList();
+                    }
                 }
+                
+            } catch (error) {
+                console.error(error);
+                this.setState({ loading: false, error: null,bdConet:false });
             }
+            
             
         }
         this.timeOut();  
     }
     validateDatas = () =>{        
         let datas = this.state.formCreate;        
-        if(!datas.nombres)return {success:false,msg:"Nombre es obligatorio"};
-        if(!datas.apellidos)return {success:false,msg:"Apellido es obligatorio"};
-        if(!datas.ci)return {success:false,msg:"C.I. es obligatorio"};
-        if(!datas.telefono)return {success:false,msg:"Celular es obligatorio"};
-        if(!datas.direccion)return {success:false,msg:"Direccion es obligatorio"};
-        if(!datas.edad)return {success:false,msg:"Fecha de nacimineto es obligatorio"};
-        if(!datas.especialidad)return {success:false,msg:"Esoecialidad es obligatorio"};
-        if(!datas.password)return {success:false,msg:"Contraceña es obligatorio"};
-        if(!datas.password1)return {success:false,msg:"Contraceña de confirmacion es obligatorio"};
-        if(datas.password !== datas.password1) return{success:false, msg:"Las contraceñas no son iguales"}
+        if(datas.password !== datas.password1) {
+            this.setState({
+                errorCreate:{
+                    nombres:'',
+                    apellidos:'',
+                    ci:'',
+                    password:'',
+                    password1:'obligado'
+                }
+            })
+        }
+        let arr = {};
+        for(const name in datas){
+            if(!datas[name]){
+                arr[name] = 'false'
+            }
+        }
+        console.log(arr);
+        if(Object.keys(arr).length !== 0) return {success:false, msg:'Todos los campos son obligatorios '}
         return {success:true,msg:"puedes continuar"}
 
     }
     handleChange = e =>{  
-        //let d = e.target.name          
+        //let d = e.target.name    
+        const {name,value} = e.target      
         this.setState({
             form:{
                 ...this.state.form,
-                [e.target.name]: e.target.value
+                [name]:value
+            }
+        })
+        this.setState({
+            erroLogin:{
+                ...this.state.erroLogin,
+                [name]:value.length === 0 ? "obligado" : value
             }
         })
     }
@@ -146,11 +190,19 @@ class Login extends React.Component{
         let datas = this.state.form
         if(!datas.ci){
             this.setState({
-                msg:{success:true,alert:'warning', msg:'C.I es obligatorio'}
+                msg:{success:true,alert:'warning', msg:'C.I es obligatorio'},
+                erroLogin:{
+                    ci:'obligado',
+                    password: ''
+                }
             })
         }else if(!datas.password){
             this.setState({
-                msg:{success:true,alert:'warning', msg:'Contraceña es obligatorio'}
+                msg:{success:true,alert:'warning', msg:'Contraceña es obligatorio'},
+                erroLogin:{
+                    ci:'',
+                    password: 'obligado'
+                }
             })
         }else{
             this.setState({
@@ -170,6 +222,10 @@ class Login extends React.Component{
                             success:true,
                             alert:'warning',
                             msg:resp.data.msg
+                        },
+                        erroLogin:{
+                            ci:resp.data.name === 'ci' ? 'obligado' : '',
+                            password: resp.data.name === 'password' ? 'obligado' : '',
                         }
                     });
                 }else{
@@ -203,7 +259,9 @@ class Login extends React.Component{
     render(){
         if(this.state.loading){
             return (
-                <h1>Cargando........</h1>
+                <div className="preloader flex-column justify-content-center align-items-center">
+                    <img className="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height={60} width={60} />
+                </div> 
             );
         }
         if(this.state.error){
@@ -218,42 +276,37 @@ class Login extends React.Component{
         }
         return(
             <React.Fragment>                
-                <div className='container1'>
-                <img src={image} alt="..."/>               
-                <div className={this.state.isDataBaseNull ? 'form-container' : 'form-container active'}>
+                <div class="hold-transition login-page">                        
+                    <img className="imgLogo" src={image} alt="..."/>  
                     <div 
-                    className={!this.state.msg.success ? `msg active alert  alert-${this.state.msg.alert}` : `msg alert alert-${this.state.msg.alert}`} 
-                    role="alert">
-                        {this.state.msg.msg}
+                        className={!this.state.msg.success ? `msg active alert  alert-${this.state.msg.alert}` : `msg alert alert-${this.state.msg.alert}`} 
+                        role="alert">
+                            {this.state.msg.msg}
                     </div>
-                    {/* <div class="alert alert-info" role="alert">
-                        This is a info alert—check it out!
-                    </div> */}
-                    <div className='header d-flex justify-content-center'>
-                        <h3>logo</h3>
-                    </div>
-                    <div className='body '>  
-                        {this.state.isDataBaseNull &&(
+                    
+                    {this.state.isDataBaseNull &&(
+                        <div className="login-box">
                             <FormLogin 
                                 onchanges={this.handleChange}
                                 formValues={this.state.form}
-                                onClick={this.clickForm}
+                                onClick={this.clickForm}    
+                                msg={this.state.erroLogin}                                  
                             />
-                        )}
-                        {!this.state.isDataBaseNull &&(
-                            <MedicoUser
-                                onchanges={this.handleChangeCreate}
-                                formValues={this.state.formCreate}
-                                onClick={this.clikcFormCreate}
-                            />
-                        )}
-                        
-                    </div>
-                    <div className='footer'>
-                        <h4 className='d-flex justify-content-end'>clinica tantos</h4>
-                    </div>
-                </div>                
-            </div>
+                        </div>
+                    )}
+                    {!this.state.isDataBaseNull &&(
+                        <div class="card">
+                            <div class="card-body register-card-body">
+                                <MedicoUser
+                                    onchanges={this.handleChangeCreate}
+                                    formValues={this.state.formCreate}
+                                    onClick={this.clikcFormCreate}
+                                    msg={this.state.errorCreate}    
+                                />
+                            </div>
+                        </div>
+                    )}
+                </div>
             </React.Fragment>
         );
     }

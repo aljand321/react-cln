@@ -5,42 +5,37 @@ import Inmunizaciones from "./Antece/Inmunizaciones";
 import AntecedentesFml from "./Antece/AntecedentesFml";
 import ExamenFisico from "./Antece/ExamenFisico";
 import AntGincoObs from "./Antece/AntGincoObs";
-function  DataPaciente(props){    
-    if(props.dataPaciente !== undefined){
-        const dataPaciente = props.dataPaciente.data;
-        console.log(dataPaciente, 'esto es lo que quiero ver')
-        let hoy = new Date();
-        let fechaNacimiento = new Date(dataPaciente.edad)
-        let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+function  DataPaciente(props){   
+    if(Object.keys(props.dataPaciente).length !== 0){
+        const dataPaciente = props.dataPaciente;
         return(
             <>
                 <section className="content">
                    
                     <div className="row">
-
-                        <div className="col-md-2">
-                        {/* Profile Image */}
-                            <div className="card card-primary card-outline">
-                                <div className="card-body box-profile">                            
-                                    <h3 className="profile-username text-center">{dataPaciente.nombres}</h3>
-                                    <p className="text-muted text-center">{dataPaciente.apellidos}</p>
-                                    <ul className="list-group list-group-unbordered mb-3">
-                                        <li className="list-group-item">
-                                            <b>Direccion</b> <div className="float-right">{dataPaciente.direccion}</div>
-                                        </li>
-                                        <li className="list-group-item">
-                                            <b>Edad</b> <div className="float-right">{edad}</div>
-                                        </li>
-                                        <li className="list-group-item">
-                                            <b>Ocupacion</b> <div className="float-right">{dataPaciente.ocupacion}</div>
-                                        </li>
-                                    </ul>
+                        { props.identify === 'null' &&
+                            <div className="col-md-2" >                       
+                                <div className="card card-primary card-outline">
+                                    <div className="card-body box-profile">                            
+                                        <h3 className="profile-username text-center">{dataPaciente.nombres}</h3>
+                                        <p className="text-muted text-center">{dataPaciente.apellidos}</p>
+                                        <ul className="list-group list-group-unbordered mb-3">
+                                            <li className="list-group-item">
+                                                <b>Direccion</b> <div className="float-right">{dataPaciente.direccion}</div>
+                                            </li>
+                                            <li className="list-group-item">
+                                                <b>Edad</b> <div className="float-right">{dataPaciente.edad}</div>
+                                            </li>
+                                            <li className="list-group-item">
+                                                <b>Ocupacion</b> <div className="float-right">{dataPaciente.ocupacion}</div>
+                                            </li>
+                                        </ul>
+                                    </div>                               
                                 </div>
-                                {/* /.card-body */}
                             </div>
-                        </div>                        
-                        {/* /.col */}
-                        <div className="col-md-10">
+                        }                        
+                       
+                        <div className={props.identify === 'null' ? "col-md-10" : "col-md-12"}>
                             <div className="card">
                                 <div className="card-header p-2">
                                     <ul className="nav nav-pills">
@@ -59,31 +54,31 @@ function  DataPaciente(props){
                                     <div className="tab-content">
                                         <div className="active tab-pane" id="consultas">
                                             <div className="overlay-wrapper">                                               
-                                                <DataConsulta dataPaciente={dataPaciente}/>
+                                                <DataConsulta dataPaciente={dataPaciente} identify={props.identify}/>
                                             </div>
                                         </div>                    
                                         <div className="tab-pane" id="patologicos">                                            
-                                            <Patologicos dataPaciente={dataPaciente}/>                                            
+                                            <Patologicos dataPaciente={dataPaciente} identify={props.identify}/>                                            
                                         </div>                                        
                                         <div className="tab-pane" id="noPatologicos">
-                                            <AntNoPatologicos dataPaciente={dataPaciente}/>
+                                            <AntNoPatologicos dataPaciente={dataPaciente} identify={props.identify}/>
                                         </div>
                                         <div className="tab-pane" id="inmunizaciones">
                                             <div className="overlay-wrapper">
-                                                <Inmunizaciones dataPaciente={dataPaciente}/>
+                                                <Inmunizaciones dataPaciente={dataPaciente} identify={props.identify}/>
                                             </div>
                                         </div>
                                         <div className="tab-pane" id="antFamiliares">
-                                            <AntecedentesFml dataPaciente={dataPaciente}/>
+                                            <AntecedentesFml dataPaciente={dataPaciente} identify={props.identify}/>
                                         </div>
                                         <div className="tab-pane" id="ginecoObstetricos">
                                             <div className="overlay-wrapper">
-                                                <AntGincoObs dataPaciente={dataPaciente}/>
+                                                <AntGincoObs dataPaciente={dataPaciente} identify={props.identify}/>
                                             </div>
                                         </div>
                                         <div className="tab-pane" id="examenFisico">
                                             <div className="overlay-wrapper">
-                                                <ExamenFisico dataPaciente={dataPaciente}/>
+                                                <ExamenFisico dataPaciente={dataPaciente} identify={props.identify}/>
                                             </div>
                                         </div>
                                     </div>

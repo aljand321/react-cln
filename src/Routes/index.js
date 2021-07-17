@@ -13,7 +13,7 @@ class Routes {
     }
     static async createMedico(forms){
         try {
-            const resp = await axios.post(Url.urlBackEnd+'/api/medico',forms);
+            const resp = await axios.post(Url.urlBackEnd+'/api/createfirstUser',forms);
             if(resp.status === 500) return{success:false,msg:"error 500"};
             if(resp.status === 200) return resp
         } catch (error) {

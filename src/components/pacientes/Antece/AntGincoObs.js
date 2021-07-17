@@ -14,7 +14,7 @@ function AntGincoObs(props) {
     useEffect(() => {
         const list = async () =>{
             setLoad(true);
-            const resp = await RoutesAntGncObst.listAntGncObst(dataPaciente.id);
+            const resp = await RoutesAntGncObst.listAntGncObst(dataPaciente.id,props.identify);
             if(resp.data.success === false){
                 setLoad(false);
                 setRespErr(true);
@@ -25,7 +25,7 @@ function AntGincoObs(props) {
             }
         }
         list();
-    },[dataPaciente,callList])
+    },[dataPaciente,callList,props.identify])
     return (
         <div>
             {load && 
@@ -46,9 +46,11 @@ function AntGincoObs(props) {
                 <div className="card-header">
                     <div className="d-flex">
                         <div className="mr-auto p-2">
-                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#antG">
-                                Registrar
-                            </button>
+                            {props.identify === 'null' &&   
+                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#antG">
+                                    Registrar
+                                </button>
+                            }   
                         </div>
                         {/* <div className="p-2">
                             

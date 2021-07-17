@@ -270,14 +270,35 @@ function FormTransfucion(props) {
 
                                             {list.map((data,key) =>{
                                                 return(
-                                                    <div key={key} onClick={()=> selectedTransfucion(data.id, data.nombre,key)} className={data.selected === true ? "card card-success card-outline" : "card card-primary card-outline"}>
-                                                        <a className="d-block w-100" data-toggle="collapse" href={`#collapse${key}`}>
-                                                            <div className="card-header">
-                                                                <h4 className="card-title w-100">
-                                                                    {key+1} {data.nombre}
-                                                                </h4>
+                                                    <div key={key} className={data.selected === true ? "card card-success card-outline" : "card card-primary card-outline"}>
+                                                        
+                                                        <div className="card-header">
+                                                            
+                                                            <div className="d-flex">
+                                                                <div className="mr-auto p-2">
+                                                                    <h4 className="card-title w-100">
+                                                                        {key+1} {data.nombre}
+                                                                    </h4>
+                                                                </div>
+                                                                <div className="p-2">
+                                                                    <div className="row">
+                                                                        <div className="col-6">
+
+                                                                            <div className="btn-group btn-group-sm" role="group" aria-label="Third group">
+                                                                                <button onClick={()=> selectedTransfucion(data.id, data.nombre,key)} type="button" className="btn btn-primary">Ins</button>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div className="col-6">
+                                                                            <div className="btn-group btn-group-sm">
+                                                                                <a href={`#collapse${key}`} data-toggle="collapse" className="btn btn-primary"><i className="fas fa-eye" /></a>
+                                                                            </div> 
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </a>
+                                                        </div>
+                                                        
                                                         <div id={`collapse${key}`} className="collapse"  data-parent="#accordion">
                                                             <div className="card-body">
                                                                 {data.descripcion}

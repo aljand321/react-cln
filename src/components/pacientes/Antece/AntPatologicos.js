@@ -42,8 +42,7 @@ function Patologicos(props) {
     useEffect(() => {
         async function  getList () {
             setLoading(true)
-            const resp = await Alergias.listAlergiasPaciente(dataP.id)
-            
+            const resp = await Alergias.listAlergiasPaciente(dataP.id,props.identify)            
             if(resp.data.success === false){
                 setLoading(false);
                 setErro(true);
@@ -52,17 +51,17 @@ function Patologicos(props) {
                 return;
             }else{
                 setLoading(false);
-                setList(resp.data.resp[0].alergias)
+                setList(resp.data.resp)
                 return;
             } 
         }
         getList();
-    }, [dataP,callGetlist]);
+    }, [dataP,callGetlist,props.identify]);
 
     useEffect(() => {
         async function  getList () {
             setLoading(true)
-            const resp = await Transfuciones.listTransfucionPaciente(dataP.id)
+            const resp = await Transfuciones.listTransfucionPaciente(dataP.id,props.identify)
            
             if(resp.data.success === false){
                 setLoading(false);
@@ -72,16 +71,16 @@ function Patologicos(props) {
                 return;
             }else{
                 setLoading(false);
-                setListT(resp.data.resp[0].transfuciones)
+                setListT(resp.data.resp)
                 return;
             } 
         }
         getList();
-    }, [dataP,callGetListTrans]);
+    }, [dataP,callGetListTrans,props.identify]);
     useEffect(() => {
         async function  getList () {
             setLoading(true)
-            const resp = await Cirugias.listCirugiasPaciente(dataP.id)
+            const resp = await Cirugias.listCirugiasPaciente(dataP.id,props.identify)
             if(resp.data.success === false){
                 setLoading(false);
                 setErro(true);
@@ -90,16 +89,16 @@ function Patologicos(props) {
                 return;
             }else{
                 setLoading(false);
-                setListC(resp.data.resp[0].cirugiasPrevias)
+                setListC(resp.data.resp)
                 return;
             } 
         }
         getList();
-    }, [dataP,callGetListCir]);
+    }, [dataP,callGetListCir,props.identify]);
     useEffect(() => {
         async function  getList () {
             setLoading(true)
-            const resp = await OtrasEnfermedades.listEnfPaciente(dataP.id)
+            const resp = await OtrasEnfermedades.listEnfPaciente(dataP.id,props.identify)
             if(resp.data.success === false){
                 setLoading(false);
                 setErro(true);
@@ -108,12 +107,12 @@ function Patologicos(props) {
                 return;
             }else{
                 setLoading(false);
-                setListE(resp.data.resp[0].OtrasEnfermedades)
+                setListE(resp.data.resp)
                 return;
             } 
         }
         getList();
-    }, [dataP,callGetListEnf]);
+    }, [dataP,callGetListEnf,props.identify]);
 
     if (props.dataPaciente !== undefined){       
         return(
@@ -127,9 +126,11 @@ function Patologicos(props) {
                                         <h3 className="card-title">Alergias</h3>
                                     </div>
                                     <div className="p-2">
-                                        <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#alergias">
-                                            Registrar Alergia
-                                        </button>
+                                        {props.identify === 'null' &&
+                                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#alergias">
+                                                Registrar Alergia
+                                            </button>
+                                        }
                                     </div>
                                 </div>                                                             
                             </div>
@@ -197,9 +198,11 @@ function Patologicos(props) {
                                         <h3 className="card-title">Tranfuciones</h3>
                                     </div>
                                     <div className="p-2">
-                                        <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#transfucion">
-                                            Registrar Transficion
-                                        </button>
+                                        {props.identify === 'null' &&
+                                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#transfucion">
+                                                Registrar Transficion
+                                            </button>
+                                        }
                                     </div>
                                 </div> 
                             </div>
@@ -267,9 +270,11 @@ function Patologicos(props) {
                                         <h3 className="card-title">Cirucias</h3>
                                     </div>
                                     <div className="p-2">
-                                        <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#cirugias">
-                                            Registrar Cirugias
-                                        </button>
+                                        {props.identify === 'null' &&
+                                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#cirugias">
+                                                Registrar Cirugias
+                                            </button>
+                                        }
                                     </div>
                                 </div> 
                             </div>
@@ -333,9 +338,11 @@ function Patologicos(props) {
                                         <h3 className="card-title">Otras Enfermedades</h3>
                                     </div>
                                     <div className="p-2">
-                                        <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#enf">
-                                            Registrar Enfermedad
-                                        </button>
+                                        {props.identify === 'null' &&
+                                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#enf">
+                                                Registrar Enfermedad
+                                            </button>
+                                        }
                                     </div>
                                 </div> 
                             </div>

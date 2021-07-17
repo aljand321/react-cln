@@ -24,7 +24,7 @@ class Consulta extends React.Component{
             list:[]
         },
         list0:{},
-        selected:''
+        selected:{}
     }
     componentDidMount(){
         this.handleChange();
@@ -193,18 +193,7 @@ class Consulta extends React.Component{
             })
         }
     }
-    insert = async (id_paciente, data) => {
-        let paciente = this.state.list0
-        let p = paciente[id_paciente];
-        if(!p){
-            p = paciente[id_paciente] = {
-                data:data,
-                qty:0
-            }
-        }
-        p.qty++;
-        this.array();
-    }
+    
     getPaciente = async (id_paciente) =>{
         this.setState({
             success:{
@@ -228,7 +217,18 @@ class Consulta extends React.Component{
             }), 5000)
             return;  
         }else{
-            this.insert(id_paciente, resp.data.resp);            
+            
+            let arr = this.state.windows.list.filter(function(data){
+                return data.id === id_paciente
+            })
+            
+            if(arr.length === 0){
+                this.setState({
+                    windows:{
+                        list:[].concat(this.state.windows.list, resp.data.resp)
+                    }
+                })
+            }      
             this.setState({
                 success:{
                     loading:false,
@@ -237,21 +237,14 @@ class Consulta extends React.Component{
             }) 
         }
     }
-    array = () => {
-        let arr = [];        
-        for (const id in this.state.list0) {
-            arr.push(this.state.list0[id]);
-        }
-        this.setState({
-            windows:{
-                list:arr
-            }
-        });        
-    }
-    selectedPciente = (position) =>{
-        this.setState({
-            selected:position
+    
+    selectedPciente = (id) =>{
+        let selec = this.state.windows.list.filter(function(data){
+            return data.id ===  id
         })
+        this.setState({
+            selected:selec[0]
+        }) 
     }
     /* remove_user(id) {
         delete data_user[id];
@@ -282,14 +275,14 @@ class Consulta extends React.Component{
                                     {this.state.windows.list.map((data,key) =>{
                                         return(
                                             <li className="nav-item" key={key} >
-                                                <a onClick={() => this.selectedPciente(key)}
+                                                <a onClick={() => this.selectedPciente(data.id)}
                                                 className="nav-link" 
                                                 id="custom-tabs-five-overlay-dark-tab" 
                                                 data-toggle="pill" 
                                                 href="#custom-tabs-five-overlay-dark" 
                                                 role="tab" 
                                                 aria-controls="custom-tabs-five-overlay-dark" 
-                                                aria-selected="false">{data.data.nombres}</a>
+                                                aria-selected="false">{data.nombres}</a>
                                             </li>
                                         );
                                     })}
@@ -318,7 +311,7 @@ class Consulta extends React.Component{
                                     id="custom-tabs-five-overlay-dark" 
                                     role="tabpanel" 
                                     aria-labelledby="custom-tabs-five-overlay-dark-tab">
-                                        <DataPaciente dataPaciente={this.state.windows.list[this.state.selected]}></DataPaciente>
+                                        <DataPaciente dataPaciente={this.state.selected} identify="null"></DataPaciente>
                                     </div>
                                        
                                 </div>

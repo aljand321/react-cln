@@ -12,26 +12,14 @@ const form1 ={
     sao:'',
     temp:'',
     r1:''
-}
-
-const validateData = (data)=>{
-    let err = {}
-    if(!data.motivo.trim()){
-        err.motivo = 'obligatorio'
-    }
-    if(!data.historiaDeLaEnf.trim()){
-        err.historiaDeLaEnf = 'obligatorio'
-    }
-    return err;
-}
- 
+} 
 function FormConsutla(props) {
     /* const { register, handleSubmit, reset, formState: { errors } } = useForm(); */
     const [data, setData] = useState(form);
     const [data1, setData1] = useState(form1);
 
     const [load, setLoad] = useState(false);
-    const [err, setErr] = useState({});
+    const [err, setErr] = useState(form);
     const [erroResp, setErroResp] = useState({erro:''})
     const [resp, setResp] = useState(false);
     
@@ -40,7 +28,11 @@ function FormConsutla(props) {
         setData({
             ...data,
             [name]:value
-        })        
+        })  
+        setErr({
+            ...err,
+            [name]:value.length === 0 ? 'Obligatorio' : ''
+        })      
     }
     const handleChange1 = (e) => {
         const {value, name} = e.target;
@@ -49,10 +41,7 @@ function FormConsutla(props) {
             [name]:value
         })        
     }
-    const validateDatas = (e) =>{        
-        handleChange(e);
-        setErr(validateData(data))
-    } 
+    
     const handleSubmit = async (e) =>{
         e.preventDefault();
         let obj = {}
@@ -121,30 +110,27 @@ function FormConsutla(props) {
             <form onSubmit={handleSubmit}>
                 <div className="card-body">
                     <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">Motivo de Consulta</label>
+                        <label htmlFor="exampleInputEmail1">Motivo de Consulta {err.motivo && <code>{err.motivo}</code>}</label>
                         <textarea 
                         name="motivo" 
-                        onChange={handleChange}
-                        onBlur={validateDatas}
+                        onChange={handleChange}                        
                         className="form-control" 
                         placeholder='Motivo de consulta' 
                         rows="5"
                         value={data.motivo}
                         ></textarea>
-                        {err.motivo && <label htmlFor="exampleInputBorder"><code>{err.motivo}</code></label>}
+                        
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual</label>
+                        <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual {err.historiaDeLaEnf && <code>{err.historiaDeLaEnf}</code>}</label>
                         <textarea 
                         name="historiaDeLaEnf"
-                        onChange={handleChange}
-                        onBlur={validateDatas}
+                        onChange={handleChange}                       
                         className="form-control"  
                         rows="5"
                         placeholder='Motivo de consulta' 
                         value={data.historiaDeLaEnf}
-                        ></textarea>
-                        {err.historiaDeLaEnf && <label htmlFor="exampleInputBorder"><code>{err.historiaDeLaEnf}</code></label>}
+                        ></textarea>        
                     </div>
 
                     <div className="row">

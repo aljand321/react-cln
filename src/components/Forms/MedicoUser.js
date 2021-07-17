@@ -3,107 +3,77 @@ import React from 'react';
 function MedicoUser (props){
     return(
         <React.Fragment>
-            <form>
             
-                <label >Inserte nombres</label>
-                <input
+            <p className="login-box-msg">Registrar </p>
+            <form action="../../index.html" method="post">
+                <div className="input-group mb-3">
+                    <input 
                     onChange={props.onchanges}
-                    className="form-control"
-                    type="text"
+                    value={props.nombres}
                     name="nombres"
-                    placeholder="Nombres"
-                    value={props.ci}
-                />
-           
-                <label >Inserte apellidos</label>
-                <input
+                    type="text" className={props.msg.nombres === 'obligado' ? "form-control is-invalid" : "form-control"} placeholder="Nombres" />
+                    <div className="input-group-append">
+                        <div className="input-group-text">
+                        <span className="fas fa-user" />
+                        </div>
+                    </div>
+                </div>
+                <div className="input-group mb-3">
+                    <input 
                     onChange={props.onchanges}
-                    className="form-control"
-                    type="text"
+                    value={props.apellidos}
                     name="apellidos"
-                    placeholder="Apellidos"
-                    value={props.password}
-                />
-                <label >Inserte ci</label>
-                <input
+                    type="text" className={props.msg.apellidos === 'obligado' ? "form-control is-invalid" : "form-control"} placeholder="Apellidos" />
+                    <div className="input-group-append">
+                        <div className="input-group-text">
+                        <span className="fas fa-user" />
+                        </div>
+                    </div>
+                </div>
+                <div className="input-group mb-3">
+                    <input 
                     onChange={props.onchanges}
-                    className="form-control"
-                    type="text"
+                    value={props.ci}
                     name="ci"
-                    placeholder="C.I."
+                    type="text" className={props.msg.ci === 'obligado' ? "form-control is-invalid" : "form-control"} placeholder="C.I." />
+                    <div className="input-group-append">
+                        <div className="input-group-text">
+                        <span className="fas fa-user" />
+                        </div>
+                    </div>
+                </div>
+                <div className="input-group mb-3">
+                    <input 
+                    onChange={props.onchanges}
                     value={props.password}
-                />
-                <label >Inserte celular</label>
-                <input
-                    onChange={props.onchanges}
-                    className="form-control"
-                    type="text"
-                    name="telefono"
-                    placeholder="Celular"
-                    value={props.password}
-                />
-                <label >Inserte Direccion</label>
-                <input
-                    onChange={props.onchanges}
-                    className="form-control"
-                    type="text"
-                    name="direccion"
-                    placeholder="Direccion"
-                    value={props.password}
-                />
-                <label >Fecha de nacimiento</label>
-                <input
-                    onChange={props.onchanges}
-                    className="form-control"
-                    type="date"
-                    name="edad"
-                    placeholder="Fecha nacimiento"
-                    value={props.edad}
-                />
-                <label >Inserte especilidad del medico</label>
-                <input
-                    onChange={props.onchanges}
-                    className="form-control"
-                    type="text"
-                    name="especialidad"
-                    placeholder="Especilidad"
-                    value={props.especialidad}
-                />
-                <label >inserte su Email</label>
-                <input
-                    onChange={props.onchanges}
-                    className="form-control"
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={props.password}
-                />
-                <label >Inserte una contraceña</label>
-                <input
-                    onChange={props.onchanges}
-                    className="form-control"
-                    type="password"
                     name="password"
-                    placeholder="Contraceña"
-                    value={props.password}
-                />
-                <label >Repita su contraceña</label>
-                <input
+                    type="password" className={props.msg.password === 'obligado' ? "form-control is-invalid" : "form-control"} placeholder="Contraceña" />
+                    <div className="input-group-append">
+                        <div className="input-group-text">
+                        <span className="fas fa-lock" />
+                        </div>
+                    </div>
+                </div>
+                <div className="input-group mb-3">
+                    <input 
                     onChange={props.onchanges}
-                    className="form-control"
-                    type="password"
+                    value={props.password1}
                     name="password1"
-                    placeholder="Confirme su contraceña"
-                    value={props.password}
-                />
-                <button
-                    onClick={props.onClick}
-                    type="input"
-                    className="btn btn-primary"
-                >
-                    Entrar
-                </button>
+                    type="password" className={props.msg.password1 === 'obligado' ? "form-control is-invalid" : "form-control"} placeholder="Repita su contraceña" />
+                    <div className="input-group-append">
+                        <div className="input-group-text">
+                        <span className="fas fa-lock" />
+                        </div>
+                    </div>
+                </div>
+                
             </form>
+            <div className="social-auth-links text-center">
+                <button onClick={props.onClick} type="submit" className="btn btn-primary btn-block"> ------- Registrar primer usuario -------  </button>
+            </div>
+                
+            
+
         </React.Fragment>
     );
 

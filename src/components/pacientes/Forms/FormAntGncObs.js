@@ -17,6 +17,7 @@ const formDatas= {
 function FormAntGncObs(props) {
     const [data, setData] = useState(form);
     const [data1, setdata1] = useState(formDatas);
+    const [err, setErr] = useState(form);
     const [respErr, setRespErr] = useState({erro:''});
     const [load, setLoad] = useState(false);
     const [reps, setReps] = useState(false);
@@ -27,6 +28,10 @@ function FormAntGncObs(props) {
         setData({
             ...data,
             [name]:value
+        })
+        setErr({
+            ...err,
+            [name]:value.length === 0 ? 'Obligatorio' : value < 0 ? 'No puede ser menor a 0' : ''
         })
     }
     const onchange1 = (e) =>{
@@ -39,11 +44,26 @@ function FormAntGncObs(props) {
     const onSubmit = async (e) =>{
         e.preventDefault();
         let erro = false;
+        let arr = {}
         for(const d in data){
             if(!data[d]){
                 erro=true;
+                arr[d] = 'obligatorio'
             }
         }
+        if(err.menarca === 'No puede ser menor a 0'){
+            erro = true
+            return;
+        }
+        if(err.nacidoVivos === 'No puede ser menor a 0'){
+            erro = true
+            return;
+        }
+        if(err.mortinatos === 'No puede ser menor a 0'){
+            erro = true
+            return;
+        }
+        setErr(arr)
         if(erro === false){
             const body = {
                 menarca:data.menarca,
@@ -102,7 +122,7 @@ function FormAntGncObs(props) {
                     <div className="row">
                         <div className="col-sm-6">                               
                             <div className="form-group">
-                                <label>Menarca {!data.menarca &&<code>Obligatorio</code>}</label>
+                                <label>Menarca {err.menarca &&<code>{err.menarca}</code>}</label>
                                 <input
                                 onChange={onChange} 
                                 value={data.menarca}
@@ -112,7 +132,7 @@ function FormAntGncObs(props) {
                         </div>
                         <div className="col-sm-6">
                             <div className="form-group">
-                                <label>Ritmo {!data.ritmo &&<code>Obligatorio</code>}</label>
+                                <label>Ritmo {err.ritmo &&<code>{err.ritmo}</code>}</label>
                                 <input
                                 onChange={onChange} 
                                 value={data.ritmo}
@@ -134,7 +154,7 @@ function FormAntGncObs(props) {
                         </div>
                         <div className="col-sm-6">
                             <div className="form-group">
-                                <label>Gesta para Cesárea {!data.gestaCesaria &&<code>Obligatorio</code>}</label>
+                                <label>Gesta para Cesárea {err.gestaCesaria &&<code>{err.gestaCesaria}</code>}</label>
                                 <input
                                 onChange={onChange} 
                                 value={data.gestaCesaria}
@@ -146,7 +166,7 @@ function FormAntGncObs(props) {
                     <div className="row">
                         <div className="col-sm-6">                               
                             <div className="form-group">
-                                <label>Abortos {!data.abortos &&<code>Obligatorio</code>}</label>
+                                <label>Abortos {err.abortos &&<code>{err.abortos}</code>}</label>
                                 <input
                                 onChange={onChange} 
                                 value={data.abortos}
@@ -156,7 +176,7 @@ function FormAntGncObs(props) {
                         </div>
                         <div className="col-sm-6">
                             <div className="form-group">
-                                <label>Nacidos Vivos {!data.nacidoVivos &&<code>Obligatorio</code>}</label>
+                                <label>Nacidos Vivos {err.nacidoVivos &&<code>{err.nacidoVivos}</code>}</label>
                                 <input
                                 onChange={onChange} 
                                 value={data.nacidoVivos}
@@ -168,7 +188,7 @@ function FormAntGncObs(props) {
                     <div className="row">
                         <div className="col-sm-6">                               
                             <div className="form-group">
-                                <label>Mortinatos {!data.mortinatos &&<code>Obligatorio</code>}</label>
+                                <label>Mortinatos {err.mortinatos &&<code>{err.mortinatos}</code>}</label>
                                 <input
                                 onChange={onChange} 
                                 value={data.mortinatos}
@@ -178,7 +198,7 @@ function FormAntGncObs(props) {
                         </div>
                         <div className="col-sm-6">
                             <div className="form-group">
-                                <label>Metodos de Planificación Familiar {!data.plfcFamiliar &&<code>Obligatorio</code>}</label>
+                                <label>Metodos de Planificación Familiar {err.plfcFamiliar &&<code>{err.plfcFamiliar}</code>}</label>
                                 <input
                                 onChange={onChange} 
                                 value={data.plfcFamiliar}

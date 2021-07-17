@@ -15,7 +15,7 @@ function AntecedentesFml(props) {
     useEffect(() => {
         const list = async () =>{
             setLoad(true);
-            const resp = await RoutesAntFamiliares.listAntfml(dataPaciente.id);
+            const resp = await RoutesAntFamiliares.listAntfml(dataPaciente.id,props.identify);
             if(resp.data.success === false){
                 setLoad(false);
                 setRespErr(true);
@@ -26,7 +26,7 @@ function AntecedentesFml(props) {
             }
         }
         list();
-    },[dataPaciente,callList])
+    },[dataPaciente,callList,props.identify])
     return (
        
         <div className="overlay-wrapper">            
@@ -48,9 +48,12 @@ function AntecedentesFml(props) {
                 <div className="card-header">
                     <div className="d-flex">
                         <div className="mr-auto p-2">
-                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#AntFml">
-                                Registrar
-                            </button>
+                            {props.identify === 'null' &&
+                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#AntFml">
+                                    Registrar
+                                </button>
+                            }
+
                         </div>
                         {/* <div className="p-2">
                             
