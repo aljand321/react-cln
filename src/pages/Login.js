@@ -8,7 +8,7 @@ import Routes from '../Routes/index';
 class Login extends React.Component{
     _isMounted = false;
     state = {
-        isDataBaseNull:false,
+        isDataBaseNull:null,
         msg:{
           success:false,
           alert:'info',
@@ -16,7 +16,6 @@ class Login extends React.Component{
         },
         loading: false,
         error:null,  
-        bdConet:null,      
         form:{
             ci:'',
             password:''
@@ -65,7 +64,7 @@ class Login extends React.Component{
                     })
                 }
             }else{
-                this.setState({ loading: false, error: true,bdConet:false });
+                this.setState({ loading: false, error: true });
             }
         }    
         
@@ -138,7 +137,7 @@ class Login extends React.Component{
                 
             } catch (error) {
                 console.error(error);
-                this.setState({ loading: false, error: null,bdConet:false });
+                this.setState({ loading: false, error: true });
             }
             
             
@@ -250,63 +249,73 @@ class Login extends React.Component{
                     msg:{success:false,msg:''}
                 })
             }, 3000);
+        }else{
+            console.log('desmontado desde el login')
         }
         
     }
     componentWillUnmount() {
         this._isMounted = false;
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
-    render(){
-        if(this.state.loading){
-            return (
-                <div className="preloader flex-column justify-content-center align-items-center">
-                    <img className="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height={60} width={60} />
-                </div> 
-            );
-        }
-        if(this.state.error){
-            return (
-                <h1>error 500</h1>
-            );
-        }
-        if(this.state.bdConet === false){
-            return (
-                <h1>No hay coneccion con la base de datos</h1>
-            );
-        }
+    render(){        
+        
         return(
-            <React.Fragment>                
-                <div class="hold-transition login-page">                        
-                    <img className="imgLogo" src={image} alt="..."/>  
-                    <div 
-                        className={!this.state.msg.success ? `msg active alert  alert-${this.state.msg.alert}` : `msg alert alert-${this.state.msg.alert}`} 
-                        role="alert">
-                            {this.state.msg.msg}
-                    </div>
-                    
-                    {this.state.isDataBaseNull &&(
-                        <div className="login-box">
-                            <FormLogin 
-                                onchanges={this.handleChange}
-                                formValues={this.state.form}
-                                onClick={this.clickForm}    
-                                msg={this.state.erroLogin}                                  
-                            />
+            <React.Fragment>       
+                <div className="overlay-wrapper"> 
+                    {this.state.loading && 
+                        <div className="overlay"><i className="fas fa-3x fa-sync-alt fa-spin" /><div className="text-bold pt-2">Loading...</div></div>
+                    }
+
+                    <div class="hold-transition login-page">   
+
+                        <img className="imgLogo" src={image} alt="..."/>                         
+                        {this.state.error &&
+                            <section id="not-found">
+                                
+                                <div className="circles">
+                                    <p>404<br />
+                                        <small>Pagina no Encontrada</small>
+                                    </p>
+                                    <span className="circle big" />
+                                    <span className="circle med" />
+                                    <span className="circle small" />
+                                </div>
+                            </section>
+                        }
+                     
+                        <div 
+                            className={!this.state.msg.success ? `msg active alert  alert-${this.state.msg.alert}` : `msg alert alert-${this.state.msg.alert}`} 
+                            role="alert">
+                                {this.state.msg.msg}
                         </div>
-                    )}
-                    {!this.state.isDataBaseNull &&(
-                        <div class="card">
-                            <div class="card-body register-card-body">
-                                <MedicoUser
-                                    onchanges={this.handleChangeCreate}
-                                    formValues={this.state.formCreate}
-                                    onClick={this.clikcFormCreate}
-                                    msg={this.state.errorCreate}    
+                        
+                        {this.state.isDataBaseNull === true &&(
+                            <div className="login-box">
+                                <FormLogin 
+                                    onchanges={this.handleChange}
+                                    formValues={this.state.form}
+                                    onClick={this.clickForm}    
+                                    msg={this.state.erroLogin}                                  
                                 />
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+                        {this.state.isDataBaseNull === false &&(
+                            <div class="card">
+                                <div class="card-body register-card-body">
+                                    <MedicoUser
+                                        onchanges={this.handleChangeCreate}
+                                        formValues={this.state.formCreate}
+                                        onClick={this.clikcFormCreate}
+                                        msg={this.state.errorCreate}    
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>      
             </React.Fragment>
         );
     }

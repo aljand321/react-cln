@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import OtrasEnfermedades from '../../../Routes/OtrasEnfermedades';
+import useIsMountedRef from '../../UseIsMountedRef'
 const initForm = {
     nombre:'',
     descripcion:''    
@@ -16,6 +17,7 @@ const serachForm = {
     buscador:''
 }
 function FormOtrasEnfermedades(props) {
+    const isMountedRef = useIsMountedRef();
     const {
         form,
         errors,
@@ -43,10 +45,6 @@ function FormOtrasEnfermedades(props) {
             setLoad(false);
             setErro(true)
             setMsg('No se puede mostrar los datos')
-            setTimeout(() =>{
-                setErro(false)
-                setMsg('')
-            },5000)
             return;
         }else{
             setLoad(false);
@@ -55,7 +53,11 @@ function FormOtrasEnfermedades(props) {
         }        
     },[])
     useEffect(() => {
-        getList();        
+        let mounted = true;
+        if(mounted){
+            getList();        
+        }       
+        return () => mounted = false
     },[getList,response])  
     async function buscar(e){
         let data = ''    
@@ -66,23 +68,32 @@ function FormOtrasEnfermedades(props) {
                 [name]:value
             })
             data= value 
-        }           
-        const resp = await OtrasEnfermedades.buscarEnf(data);
-        if(resp.data.success === false){
-            setLoad(false);
-            setErro(true)
-            setMsg('No se puede mostrar los datos')
-            setTimeout(() =>{
-                setErro(false)
-                setMsg('')
-            },5000)
+        }    
+        try {
+            if(isMountedRef.current){
+                const resp = await OtrasEnfermedades.buscarEnf(data);
+                if(resp.data.success === false){
+                    setLoad(false);
+                    setErro(true)
+                    setMsg('No se puede mostrar los datos')                    
+                }else{
+                    setLoad(false);
+                    setList(resp.data.resp);         
+                }
+            }
             
-        }else{
-            setLoad(false);
-            setList(resp.data.resp);           
-            
-        }  
+        } catch (error) {
+            console.log(error)
+        }       
+          
     }
+    useEffect(() => {
+        const timeout = setTimeout(() =>{
+            setErro(false)
+            setMsg('')
+        },5000);
+        return () => clearTimeout(timeout);
+    },[msg,erro])
 
     function selectedEnf(id_otrasEnf,nombre,p) {      
         let verify = false
@@ -137,33 +148,37 @@ function FormOtrasEnfermedades(props) {
                 id_paciente:props.dataP,
                 id_otrasEnf:select[i].id_otrasEnf
             }
-            const resp = await OtrasEnfermedades.CreatePacienteOtrEnf(data)
-            console.log(resp.data, ' estp es la respuesta')
-            if(resp.data.success === false){
-                console.log(resp.data.msg);
-                err.push({msg:resp.data.msg})
-            }else{
-                success.push({msg:resp.data.msg})
-               
+            if(isMountedRef.current){
+                const resp = await OtrasEnfermedades.CreatePacienteOtrEnf(data)
+                console.log(resp.data, ' estp es la respuesta')
+                if(resp.data.success === false){
+                    console.log(resp.data.msg);
+                    err.push({msg:resp.data.msg})
+                }else{
+                    success.push({msg:resp.data.msg})               
+                }
             }
         }
         console.log(err, ' esto es el error') 
         if(err.length !== 0){
-            setTimeout(()=> setRespErro(err),100)
-            setTimeout(()=>setRespErro([]), 11000);
+            setRespErro(err);            
         }
         if(success.length !== 0){
-            setTimeout(()=> setRespSuccess(success),300)
-            setTimeout(()=>setRespSuccess([]),6000);
-            setTimeout(()=>buscar(),6000);
+            setRespSuccess(success);
+            setSelect([]);
             props.clickGetList(3);
         }      
-        
-        setTimeout(()=>setSelect([]),5000)
-
-
-        
     }
+    useEffect(() => {
+        const timeout = setTimeout(()=>setRespErro([]), 11000);
+        return () => clearTimeout(timeout);
+    },[respErro])
+    useEffect(() =>{
+        const timeout = setTimeout(()=>setRespSuccess([]),6000);
+        return () => {
+            clearTimeout(timeout);
+        };
+    },[respSuccess])
     return (
         <>
             <div className="row">
@@ -400,6 +415,7 @@ function FormOtrasEnfermedades(props) {
     )
 }
 const useForm = (initilForm,validateForm) =>{
+    const isMountedRef = useIsMountedRef();
     const [form, setForm] = useState(initilForm);
     //manejo de errores
     const [errors, setErrors] = useState({});
@@ -425,30 +441,40 @@ const useForm = (initilForm,validateForm) =>{
     const handleSubmit = async (e) =>{
         e.preventDefault();
         setErrors(validateForm(form));
-        if(Object.keys(errors).length === 0){
-        
-            setloading(true);
-            const resp = await OtrasEnfermedades.CreateEnf(form);
-            if(resp.data.success === false){
-                setloading(false);
-                setErrors({
-                    [resp.data.name]:resp.data.msg
-                });
-                setTimeout(() => setErrors({
-                    nombre:''
-                }), 5000);
-            }else{
-                setloading(false);
-                setResponse(true);
-                setForm(initilForm);
-                setTimeout(() => setResponse(false), 5000);
-            }
-
-        }else{
-         
+        if(Object.keys(errors).length === 0){      
+            try {
+                if(isMountedRef.current){
+                    setloading(true);
+                    const resp = await OtrasEnfermedades.CreateEnf(form);
+                    if(resp.data.success === false){
+                        setloading(false);
+                        setErrors({
+                            [resp.data.name]:resp.data.msg
+                        });
+                    }else{
+                        setloading(false);
+                        setResponse(true);
+                        setForm(initilForm);
+                        setTimeout(() => setResponse(false), 5000);
+                    }
+                }
+            } catch (error) {
+                console.log(error)
+            }  
+        }else{         
             return;
         }
     }
+    useEffect(() => {        
+        const timeout = setTimeout(() => setErrors({
+            nombre:''
+        }), 5000);
+        return () => clearTimeout(timeout);
+    },[errors]);
+    useEffect(() => {        
+        const timeout = setTimeout(() => setResponse(false), 5000);
+        return () => clearTimeout(timeout);
+    },[response]);
 
     return {
         form,

@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import './Navbar.css'
 
 class NavBar extends React.Component{   
+    _isMounted = false;
     state = {        
         path:{
-            route:'/',
-            selected:'dash'
+            route:'',
+            selected:''
         },
         user:{
             nombres:'',
@@ -16,37 +17,62 @@ class NavBar extends React.Component{
         isPErmit:false
     } 
     componentDidMount(){
-        console.log(this.state.isPErmit, 'ssss' )
+        this._isMounted = true;
         this.getPath();
         this.roles();
     }
     getPath = async () =>{
-        const path = await JSON.parse(localStorage.getItem("path"));
-        const user = await JSON.parse(localStorage.getItem("tok"));
-        this.setState({
-            path:{
-                route:path.route,
-                selected:path.selected
-            },
-            user:{
-                nombres:user.user.nombres,
-                apellidos:user.user.apellidos                
+        if(this._isMounted){
+            const path = await JSON.parse(localStorage.getItem("path"));
+            const user = await JSON.parse(localStorage.getItem("tok"));
+            if(path !== null){           
+                const parsed = await JSON.stringify({
+                    route:path.route,
+                    selected:path.selected
+                });
+                this.setState({
+                    path:{
+                        route:path.route,
+                        selected:path.selected
+                    }
+                });
+                //this.props.history.push(path.route)           
+                localStorage.setItem('path',parsed);
+            }else{           
+                this.setState({
+                    path:{
+                        route: user.user.role === 'medico' ? '/consulta' : '/',
+                        selected:user.user.role === 'medico' ? 'med' : 'dash'
+                    },
+                })
+                const parsed = await JSON.stringify({
+                    route:user.user.role === 'medico' ? '/consulta' : '/',
+                    selected:user.user.role === 'medico' ? 'med' : 'dash'
+                });
+                localStorage.setItem('path',parsed);
+                
             }
-        })
+            this.setState({            
+                user:{
+                    nombres:user.user.nombres,
+                    apellidos:user.user.apellidos                
+                }
+            })
+        }
     }
     roles = async () =>{
-        const user = await JSON.parse(localStorage.getItem("tok"));
-        console.log(user.user.role)
-        console.log(user.user.role === 'admin' || user.user.role === 'usuario', 'esto es lo as,kjdnaskld')
-        if(user.user.role === 'admin' || user.user.role === 'usuario'){
-            this.setState({
-                isPErmit:true
-            })
-        }else{
-            this.setState({
-                isPErmit:false
-            }) 
-        }        
+        if(this._isMounted){
+            const user = await JSON.parse(localStorage.getItem("tok"));      
+            if(user.user.role === 'admin' || user.user.role === 'usuario'){
+                this.setState({
+                    isPErmit:true
+                })
+            }else{
+                this.setState({
+                    isPErmit:false
+                }) 
+            }
+        }       
     }
     selectRoute = async (ruta, selector) =>{
         const parsed = await JSON.stringify({
@@ -61,13 +87,16 @@ class NavBar extends React.Component{
             }
         });       
     }
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
     
     render(){  
         return (
             <div>
                  
                 <aside className="main-sidebar sidebar-dark-primary elevation-4">
-                 
+                    
                     <Link to='#' className="brand-link">
                         <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" className="brand-image img-circle elevation-3" style={{opacity: '.8'}} />
                         <span className="brand-text font-weight-light">AdminLTE 3</span>

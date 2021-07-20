@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import "./header.css";
 function Header(props) {
   return (
     <React.Fragment>
@@ -21,7 +20,7 @@ function Header(props) {
         {/* <!-- Right navbar links --> */}
         <ul className="navbar-nav ml-auto">
             {/* <!-- Navbar Search --> */}
-            <li className="nav-item">
+            {/* <li className="nav-item">
                 <Link className="nav-link" data-widget="navbar-search" to='#' role="button">
                     <i className="fas fa-search" />
                 </Link>
@@ -41,7 +40,7 @@ function Header(props) {
                     </form>
                 </div>
                 
-            </li>
+            </li> */}
 
            
             <li className="nav-item">
@@ -49,12 +48,31 @@ function Header(props) {
                 <i className="fas fa-expand-arrows-alt" />
                 </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
                 <Link className="nav-link" data-widget="control-sidebar" data-slide="false" to="#" role="button">
                     <i className="fas fa-th-large" />
                 </Link>
+            </li> */}
+
+            <li className="nav-item dropdown">
+                {/* <a className="nav-link" data-toggle="dropdown" href="#">
+                    <i className="far fa-bell" />
+                    <span className="badge badge-warning navbar-badge">15</span>
+                </a> */}
+                <Link className="nav-link" data-toggle="dropdown" to='#' >
+                    <i className="fas fa-user" />
+                </Link>
+                <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">                    
+                   {/*  <div className="dropdown-divider" /> */}
+                    <div  onClick={props.callApp} className="dropdown-item">
+                        <i  className="fas fa-sign-out-alt mr-2" /> Cerrar session   
+                    </div>
+                   {/*  <div className="dropdown-divider" /> */}
+                    
+                </div>
             </li>
 
+          
 
         </ul>
       </nav>

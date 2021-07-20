@@ -19,7 +19,7 @@ function AntecedentesFml(props) {
             if(resp.data.success === false){
                 setLoad(false);
                 setRespErr(true);
-                setTimeout(() =>setRespErr(false), 3000);
+                //setTimeout(() =>setRespErr(false), 3000);
             }else{
                 setLoad(false);
                 setList(resp.data.resp)
@@ -37,7 +37,7 @@ function AntecedentesFml(props) {
             {respErr &&
                 <div className="overlay">
                     <div className="alert alert-danger alert-dismissible">
-                        <button type="button" className="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <button onClick={() => setRespErr(false)} type="button" className="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <h5><i className="icon fas fa-check"></i>Error!</h5>
                         <h3>No se puede mostrar los datos</h3>
                         erro 500

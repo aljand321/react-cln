@@ -2,7 +2,9 @@ import React, {useState,useEffect,useCallback} from 'react'
 import MedicoRoutes from '../../../Routes/Medico';
 import ModalLarge from '../../ModalLarge';
 import DataPaciente from '../DataPaciente';
+import useIsMountedRef from  '../../UseIsMountedRef'
 function ConsultaMedico(props) {
+  const isMountedRef = useIsMountedRef();
     const [list, setList] = useState([]);
     const [load, setLoad] = useState(false);
     const [respErr, setRespErr] = useState(false);
@@ -28,7 +30,11 @@ function ConsultaMedico(props) {
         }
     },[props.id_medico,search.buscador]);
     useEffect(() => {
-    getLisPacientes();
+      let mounted = true;
+      if(mounted){
+        getLisPacientes();
+      }        
+      return () => mounted = false;
     },[getLisPacientes])
 
     const buscar = async (e) => {
@@ -41,29 +47,33 @@ function ConsultaMedico(props) {
         })
         buscador = value;
       }
-      try {
-        setLoad(true);
-        const resp = await MedicoRoutes.pacienteConsultaDoctor(props.id_medico,buscador);
-        if(resp.data.success === false){
-          setLoad(false);
-          setRespErr(true);
-          setTimeout(() => setRespErr(false), 5000);
-        }else{
-          setLoad(false);
-          setList(resp.data.resp)
+      if(isMountedRef.current){// desmontado 
+        try {
+          setLoad(true);
+          const resp = await MedicoRoutes.pacienteConsultaDoctor(props.id_medico,buscador);
+          if(resp.data.success === false){
+            setLoad(false);
+            setRespErr(true);            
+          }else{
+            setLoad(false);
+            setList(resp.data.resp)
+          }
+        } catch (error) {
+          setRespErr(true);          
+          console.error(error)
         }
-      } catch (error) {
-        setRespErr(true);
-        setTimeout(() => setRespErr(false), 5000);
-        console.error(error)
       }
     }
+    useEffect(() => {
+      const timeout = setTimeout(() => setRespErr(false), 5000);
+      return () => clearTimeout(timeout);
+    },[respErr]);
     const selectPaciente = (id) =>{
-        let data = list.filter(function(data){
-          return data.id === id;
-        })
-        setSelected(data[0]);
-      } 
+      let data = list.filter(function(data){
+        return data.id === id;
+      })
+      setSelected(data[0]);
+    } 
     return (
         <>
             {load && 

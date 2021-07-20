@@ -4,7 +4,6 @@ import FormConsutla from "./Forms/FormConsulta";
 import RoutesConsultas from "../../Routes/Consultas";
 import VerConsulta from "./VerConsulta";
 function DataConsulta(props) {
-    console.log(props.identify)
     const paciente = props.dataPaciente
     const [list, setList] = useState([])
     const [load, setLoad] = useState(false);
@@ -18,11 +17,10 @@ function DataConsulta(props) {
         setCallList(!callList)
     }
     useEffect(() => {
+        let mounted = true;
         async function getList() {
-            setLoad(true);
-          
-            const resp = await RoutesConsultas.ListConsultasPaciente(paciente.id,props.identify);
-          
+            setLoad(true);          
+            const resp = await RoutesConsultas.ListConsultasPaciente(paciente.id,props.identify);          
             if(resp.data.success === false){
                 setLoad(false);
                 setErro(true)
@@ -31,22 +29,27 @@ function DataConsulta(props) {
                 setList(resp.data.resp);
             }
         }
-        getList();
+        if(mounted){
+            getList();
+        }
+        return () => mounted = false;
     }, [paciente,callList,props.identify])
     
     const OneConsulta = async (id_consulta) =>{
         setLoadConsulta(true);
-        const resp = await RoutesConsultas.oneConsulta(id_consulta);
-       
+        const resp = await RoutesConsultas.oneConsulta(id_consulta);       
         if(resp.data.success === false){
             setLoadConsulta(false);
-            setErrConsulta(true);
-            setTimeout(()=>setErrConsulta(false), 5000);
+            setErrConsulta(true);            
         }else{
             setLoadConsulta(false);
             setConsulta(resp.data.resp);
         }
     }
+    useEffect(() => {
+        const timeout = setTimeout(()=>setErrConsulta(false), 5000);
+        return () => clearTimeout(timeout);
+    },[errConsulta])
     return(
         <>
             {/* /.row */}

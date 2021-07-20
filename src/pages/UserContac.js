@@ -1,7 +1,9 @@
 import React, { useState,useEffect } from 'react'
+//import { useHistory } from "react-router-dom";
 import ContHeader from '../components/ContHeader'
 import img from '../images/user_icon.png'
 import MedicoRoutes from '../Routes/Medico'
+import useIsMountedRef from '../components/UseIsMountedRef';
 const cnt = {
     nombres:'',
     apellidos:'',    
@@ -11,6 +13,7 @@ const cnt = {
 }
 
 function UserContac() {
+    const isMountedRef = useIsMountedRef();
     const [contact, setContact] = useState(cnt);
     const [load, setLoad] = useState(false);
     const [err, setErr] = useState(cnt);
@@ -24,11 +27,9 @@ function UserContac() {
     const [role, setRole] = useState({role:''});
     const getData = async () => {
         const user = await JSON.parse(localStorage.getItem("tok"));
-        
         try {
             setLoad(true);
-            const resp = await MedicoRoutes.medico(user.user.id)
-            console.log(resp.data);
+            const resp = await MedicoRoutes.medico(user.user.id)           
             if(resp.data.success === false) {
                 setLoad(false);
                 setRespErro(true);
@@ -50,12 +51,12 @@ function UserContac() {
         } catch (error) {
             setRespErro(true);
             setTimeout(() =>setRespErro(false),6000);
-          
+        
         }
-
-    }
-    useEffect(() => {
-        getData();
+    }   
+    
+    useEffect(() => {            
+        getData();        
     },[])
     const onChange = (e) => {
         const {name,value}=e.target;
@@ -71,61 +72,64 @@ function UserContac() {
     const onSubmit = async (e) => {
         e.preventDefault();
         const user = await JSON.parse(localStorage.getItem("tok"));
-        try {
-            let obj = {}
-            for(const key in contact) {
-                if(!contact[key]){
-                    obj[key] = `Obligatorio`
+        if(isMountedRef.current){
+            try {
+                let obj = {}
+                for(const key in contact) {
+                    if(!contact[key]){
+                        obj[key] = `Obligatorio`
+                    }
                 }
+                setErr(obj)
+                if(Object.keys(obj).length !== 0) {
+                    return;
+                }
+                setLoad(true);
+                const resp = await MedicoRoutes.updateContact(contact,user.user.id);
+                if(resp.data.success === false){
+                    setLoad(false);
+                    setErr({
+                        ...resp,
+                        [resp.data.name]:resp.data.msg
+                    })
+                    timeMsg(resp.data.msg);
+                }else{
+                    setLoad(false);
+                    setResp(true);
+                    getData();
+                    setDisable(true);
+                    setTimeout(() => setResp(false),3000);
+                }
+            } catch (error) {
+                setRespErro(true);
+                setTimeout(() =>setRespErro(false),6000);
+                console.log(error)
             }
-            setErr(obj)
-            if(Object.keys(obj).length !== 0) {
-                return;
-            }
-            setLoad(true);
-            const resp = await MedicoRoutes.updateContact(contact,user.user.id);
-            console.log(resp.data);
-            if(resp.data.success === false){
-                setLoad(false);
-                setErr({
-                    ...resp,
-                    [resp.data.name]:resp.data.msg
-                })
-                timeMsg(resp.data.msg);
-            }else{
-                setLoad(false);
-                setResp(true);
-                getData();
-                setDisable(true);
-                setTimeout(() => setResp(false),3000);
-            }
-        } catch (error) {
-            setRespErro(true);
-            setTimeout(() =>setRespErro(false),6000);
-            console.log(error)
         }
     }
 
     const updateCi = async () =>{
         const user = await JSON.parse(localStorage.getItem("tok"));
-        try {
-            const data = {
-                ci:ci.ci,
-                email:'',
-                telefono:0
+        if(isMountedRef.current){
+            try {
+                const data = {
+                    ci:ci.ci,
+                    email:'',
+                    telefono:0
+                }
+                const resp = await MedicoRoutes.updateContact(data,user.user.id)
+                if(resp.data.success === false){
+                    setCi({ci:ci.ci,select:true,msg:resp.data.msg})
+                    timeMsg(resp.data.msg);
+                }else{
+                    setCi({ci:ci.ci,select:false,msg:'Se actualizo C.I'});
+                    setTimeout(() =>setCi({ci:ci.ci,select:false,msg:''}), 3000);              
+                }
+            } catch (error) {
+                setRespErro(true);
+                setTimeout(() =>setRespErro(false),6000);
+                console.log(error)
             }
-            const resp = await MedicoRoutes.updateContact(data,user.user.id)
-            if(resp.data.success === false){
-                setCi({ci:ci.ci,select:true,msg:resp.data.msg})
-                timeMsg(resp.data.msg);
-            }else{
-                setCi({ci:ci.ci,select:false,msg:'Se actualizo C.I'});
-                setTimeout(() =>setCi({ci:ci.ci,select:false,msg:''}), 3000);              
-            }
-        } catch (error) {
-            setRespErro(true);
-            setTimeout(() =>setRespErro(false),6000);
-            console.log(error)
         }
     }
     const changeCI = (e) =>{
@@ -138,25 +142,27 @@ function UserContac() {
     }
     const updateTelefono = async () =>{
         const user = await JSON.parse(localStorage.getItem("tok"));
-        try {
-            const data = {
-                ci:'',
-                email:'',
-                telefono:telefono.telefono
+        if(isMountedRef.current){
+            try {
+                const data = {
+                    ci:'',
+                    email:'',
+                    telefono:telefono.telefono
+                }
+                const resp = await MedicoRoutes.updateContact(data,user.user.id)
+                if(resp.data.success === false){
+                    setTelefono({telefono:telefono.telefono,select:true,msg:resp.data.msg})
+                    timeMsg(resp.data.msg);
+                }else{
+                    setTelefono({telefono:telefono.telefono,select:false,msg:'Se actualizo Telefono'});
+                    setTimeout(() =>setTelefono({telefono:telefono.telefono,select:false,msg:''}), 3000);
+                
+                }
+            } catch (error) {
+                setRespErro(true);
+                setTimeout(() =>setRespErro(false),6000);
+                console.log(error)
             }
-            const resp = await MedicoRoutes.updateContact(data,user.user.id)
-            if(resp.data.success === false){
-                setTelefono({telefono:telefono.telefono,select:true,msg:resp.data.msg})
-                timeMsg(resp.data.msg);
-            }else{
-                setTelefono({telefono:telefono.telefono,select:false,msg:'Se actualizo Telefono'});
-                setTimeout(() =>setTelefono({telefono:telefono.telefono,select:false,msg:''}), 3000);
-              
-            }
-        } catch (error) {
-            setRespErro(true);
-            setTimeout(() =>setRespErro(false),6000);
-            console.log(error)
         }
     }
     const changeTelefono = (e) =>{
@@ -169,25 +175,27 @@ function UserContac() {
     }
     const updateEmail = async () =>{
         const user = await JSON.parse(localStorage.getItem("tok"));
-        try {
-            const data = {
-                ci:'',
-                email:email.email,
-                telefono:0
+        if(isMountedRef.current){
+            try {
+                const data = {
+                    ci:'',
+                    email:email.email,
+                    telefono:0
+                }
+                const resp = await MedicoRoutes.updateContact(data,user.user.id)
+                if(resp.data.success === false){
+                    setEmail({email:email.email,select:true,msg:resp.data.msg})
+                    timeMsg(resp.data.msg);
+                }else{
+                    setEmail({email:email.email,select:false,msg:'Se actualizo Email'});
+                    setTimeout(() =>setEmail({email:email.email,select:false,msg:''}), 3000);
+                
+                }
+            } catch (error) {
+                setRespErro(true);
+                setTimeout(() =>setRespErro(false),6000);
+                console.log(error)
             }
-            const resp = await MedicoRoutes.updateContact(data,user.user.id)
-            if(resp.data.success === false){
-                setEmail({email:email.email,select:true,msg:resp.data.msg})
-                timeMsg(resp.data.msg);
-            }else{
-                setEmail({email:email.email,select:false,msg:'Se actualizo Email'});
-                setTimeout(() =>setEmail({email:email.email,select:false,msg:''}), 3000);
-            
-            }
-        } catch (error) {
-            setRespErro(true);
-            setTimeout(() =>setRespErro(false),6000);
-            console.log(error)
         }
     }
     const changeEmail = (e) =>{
@@ -198,12 +206,15 @@ function UserContac() {
             msg:''
         })
     }
-    const timeMsg = (msg) => {
+    const timeMsg = (msg) => {        
         setPermisos({
             msg:msg
-        })
-        setTimeout(()=>setPermisos({msg:''}),3000);
+        })         
     }
+    useEffect(() => {
+        const timeout = setTimeout(()=>setPermisos({msg:''}),3000);
+        return () => clearTimeout(timeout);
+    },[permisos.msg])
     return (
         <>           
             <ContHeader name='Datos del usario'>

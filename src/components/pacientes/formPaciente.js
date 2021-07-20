@@ -1,5 +1,7 @@
-import {useForm} from 'react-hook-form';
+import React, {useEffect} from 'react';
+import  {useForm} from 'react-hook-form';
 import Pacientes from '../../Routes/Paciente';
+import useIsMountedRef from '../../components/UseIsMountedRef'
 const  { useState } = require("react");
 const contendForm = {    
     ci:'',
@@ -52,96 +54,88 @@ const contErros = {
 }
 
 function FormPaciente(props){
+    const isMountedRef = useIsMountedRef();
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [form, setForm] = useState(contendForm);
     const [formErr, setFormErr] = useState(contErros);
     const onSubmit = async (data) => {
-        const body = {
-            apellidos: data.apellidos,
-            direccion: data.direccion,
-            edad: data.edad,
-            nombres: data.nombres,
-            ocupacion: data.ocupacion,
-            sexo: data.sexo,
-            ci: form.ci,
-            telefono: form.telefono
-        }
-      
-        setFormErr({           
-            errCI:'',
-            errTel:'',
-            loading:true,
-            response:false, 
-            error:null            
-        })
-        try {
-            const resp = await Pacientes.create(body);
-            if(resp.data.success === false){
-                if(resp.data.error === '500'){
+        if(isMountedRef.current){
+            const body = {
+                apellidos: data.apellidos,
+                direccion: data.direccion,
+                edad: data.edad,
+                nombres: data.nombres,
+                ocupacion: data.ocupacion,
+                sexo: data.sexo,
+                ci: form.ci,
+                telefono: form.telefono
+            }
+        
+            setFormErr({           
+                errCI:'',
+                errTel:'',
+                loading:true,
+                response:false, 
+                error:null            
+            })
+            try {
+                const resp = await Pacientes.create(body);
+                
+                if(resp.data.success === false){
+                    if(resp.data.error === '500'){
+                        setFormErr({                    
+                            errCI:'',
+                            errTel:'',
+                            loading:false,
+                            response:false, 
+                            error:true                        
+                        })
+                        
+                        return;
+                    }
                     setFormErr({                    
-                        errCI:'',
-                        errTel:'',
+                        errCI: resp.data.name === 'ci' ? resp.data.msg : '',
+                        errTel: resp.data.name === 'telefono' ? resp.data.msg : '',
                         loading:false,
                         response:false, 
-                        error:true                        
+                        error:null                    
                     })
-                    setTimeout(() => setFormErr({
+                }else{
+                    reset();
+                    setForm(contendForm);
+                    setFormErr({                    
                         errCI: '',
                         errTel: '',
                         loading:false,
-                        response:false, 
-                        error:null
-                    }), 5000);
-                    return;
+                        response:true, 
+                        error:null                    
+                    })                
+                    props.handleChange();
                 }
-                setFormErr({                    
-                    errCI: resp.data.name === 'ci' ? resp.data.msg : '',
-                    errTel: resp.data.name === 'telefono' ? resp.data.msg : '',
-                    loading:false,
-                    response:false, 
-                    error:null                    
-                })
-            }else{
-                reset();
-                setForm(contendForm);
-                setFormErr({                    
-                    errCI: '',
-                    errTel: '',
-                    loading:false,
-                    response:true, 
-                    error:null                    
-                })
-                setTimeout(() => setFormErr({
+            } catch (error) {
+                setFormErr({
+                    
                     errCI: '',
                     errTel: '',
                     loading:false,
                     response:false, 
-                    error:null
-                }), 5000);
-                props.handleChange();
+                    error:true
+                    
+                })            
+                console.log(error);
             }
-        } catch (error) {
-            setFormErr({
-                
-                errCI: '',
-                errTel: '',
-                loading:false,
-                response:false, 
-                error:true
-                
-            })
-            setTimeout(() => setFormErr({
-                errCI: '',
-                errTel: '',
-                loading:false,
-                response:false, 
-                error:null
-            }), 5000);
-            console.log(error);
         }
-        
     };
-
+    useEffect(() => {
+        const timeout = setTimeout(() => setFormErr({
+            errCI: '',
+            errTel: '',
+            loading:false,
+            response:false, 
+            error:null
+        }), 5000);
+        return () => clearTimeout(timeout);
+    },[formErr]);
     const handleChange = (e) => {
         const { name,value } = e.target;
         setForm({

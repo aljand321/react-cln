@@ -7,6 +7,7 @@ import ListPacientes from '../components/pacientes/ListPacientes';
 import Pacientes from '../Routes/Paciente';
 import DataPaciente from '../components/pacientes/DataPaciente';
 class Consulta extends React.Component{
+    _isMounted = false;
     state={
         success:{
             loading:false,
@@ -27,7 +28,19 @@ class Consulta extends React.Component{
         selected:{}
     }
     componentDidMount(){
+        console.log('consulta <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+        this._isMounted = true;
         this.handleChange();
+        this.location();
+    }
+    location = async () => {
+        if(this._isMounted){
+            const path = await JSON.parse(localStorage.getItem("path"));
+            const user = await JSON.parse(localStorage.getItem("tok"));
+            if(path === null){
+                this.props.history.push(user.user.role === 'medico' ? '/consulta' : '/') 
+            }
+        }
     }
     listPacientes = async () =>{
         this.setState({
@@ -72,49 +85,50 @@ class Consulta extends React.Component{
             })
         }
     }
-    handleChange = async (e) =>{       
-        let data = ''
-        if (e){
-            const { value } = e.target  
-            data = value
-        }  
-        this.setState({
-            success:{
-                loading:true,
-                error:null
+    handleChange = async (e) =>{   
+        if(this._isMounted){    
+            let data = ''
+            if (e){
+                const { value } = e.target  
+                data = value
+            }  
+            this.setState({
+                success:{
+                    loading:true,
+                    error:null
+                }
+            })
+            const resp = await Pacientes.buscarPaciente(data,0,this.state.limite);
+            if(resp.data.success === false){
+                this.setState({
+                    success:{
+                        loading:false,
+                        error:true
+                    }
+                })
+                setTimeout(() => this.setState({
+                    success:{
+                        loading:false,
+                        error:null
+                    }
+                }), 5000)
+                return;  
+            }else{
+                this.setState({
+                    success:{
+                        loading:false,
+                        error:null
+                    },
+                    listP:resp.data.reps,
+                    page:{
+                        totalItems:resp.data.totalItems,
+                        totalPages:resp.data.totalPages,
+                        currentPage:resp.data.currentPage,
+                    },
+                    buscador: data
+                })
             }
-        })
-        const resp = await Pacientes.buscarPaciente(data,0,this.state.limite);
-        if(resp.data.success === false){
-            this.setState({
-                success:{
-                    loading:false,
-                    error:true
-                }
-            })
-            setTimeout(() => this.setState({
-                success:{
-                    loading:false,
-                    error:null
-                }
-            }), 5000)
-            return;  
-        }else{
-            this.setState({
-                success:{
-                    loading:false,
-                    error:null
-                },
-                listP:resp.data.reps,
-                page:{
-                    totalItems:resp.data.totalItems,
-                    totalPages:resp.data.totalPages,
-                    currentPage:resp.data.currentPage,
-                },
-                buscador: data
-            })
         }
-        
     }
     changeLimit = async (e) => {
         const { value } = e.target;
@@ -249,6 +263,12 @@ class Consulta extends React.Component{
     /* remove_user(id) {
         delete data_user[id];
     } */
+    componentWillUnmount() {
+        this._isMounted = false;
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
     render(){
         return(
             <React.Fragment>

@@ -20,10 +20,17 @@ class App extends React.Component{
     componentDidMount(){
         this.get();
     }
+    //esta funcion de llamara desde el componente header
+    callApp = () =>{
+        localStorage.clear();
+        this.setState({
+            showBrowser: false
+        })
+    }    
     get = async () => {
-        console.log('esto es get')
+       
         const verifyToken = await Token.validateToken();  
-        console.log(verifyToken, 'esto es el token')
+    
         if(verifyToken.success === true){
             this.setState({
                 showBrowser: true
@@ -32,29 +39,13 @@ class App extends React.Component{
             this.setState({
                 showBrowser: false
             })
-        }
-        const path = await JSON.parse(localStorage.getItem("path"))
-        if(path){
-            const parsed = await JSON.stringify({
-                route:path.route,
-                selected:path.selected
-            });
-            localStorage.setItem('path',parsed);
-        }else{
-            const parsed = await JSON.stringify({
-                route:'/',
-                selected:'dash'
-            });
-            localStorage.setItem('path',parsed);
-        }
-        
+        }        
     };  
     callbackFunction = () =>{
         this.setState({
             showBrowser: true
         })
     };
-    
     render(){
         if(this.state.showBrowser === false){
             return(           
@@ -68,15 +59,15 @@ class App extends React.Component{
                         <img className="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height={60} width={60} />
                     </div> */}
                     <BrowserRouter>                
-                        <Header/>
+                        <Header callApp={this.callApp}/>
                         <NavBar/>
                         <Layout>
                             <Switch>
-                                <Route path='/' exact={true} component={Home}></Route>
-                                <Route path='/about' exact={true} component={About}></Route>
-                                <Route path='/consulta' exact={true} component={Consulta}></Route>
-                                <Route path='/alergias' exact={true} component={Alergias}></Route>
-                                <Route path='/contacto' exact={true} component={UserContac}></Route>
+                                <Route exact path='/' component={Home}></Route>
+                                <Route exact path='/about' component={About}></Route>
+                                <Route exact path='/consulta' component={Consulta}></Route>
+                                <Route exact path='/alergias' component={Alergias}></Route>
+                                <Route exact path='/contacto' component={UserContac}></Route>
                             </Switch>
                         </Layout>               
                     </BrowserRouter> 

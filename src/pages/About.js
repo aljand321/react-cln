@@ -9,7 +9,7 @@ import MedicoDatas from '../components/Medico/PerfilMedico';
 import ListUsers from '../components/Medico/ListUsers';
 
 class About extends React.Component{
-    
+    _isMounted = false;
     state = {
         success:{
             loading:false,
@@ -22,65 +22,80 @@ class About extends React.Component{
         dataMedico:{}
     }
     componentDidMount(){
+        console.log('about <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+        this._isMounted = true;
         this.getListMedicos();
         this.getListUsers();
+        this.location();
+    }
+    location = async () => {
+        if(this._isMounted){
+            const path = await JSON.parse(localStorage.getItem("path"));
+            const user = await JSON.parse(localStorage.getItem("tok"));
+            if(path === null){
+                this.props.history.push(user.user.role === 'medico' ? '/consulta' : '/') 
+            }
+        }
     }
 
     getListMedicos = async () =>{
-        try {
-            this.setState({
-                success:{
-                    loading:true,
-                    error:null,
+        if(this._isMounted){
+            try {
+                this.setState({
+                    success:{
+                        loading:true,
+                        error:null,
+                    }
+                });
+                const resp = await MedicoRoutes.listMedicos();
+                if(resp.data.success === false){                
+                    this.setState({
+                        success:{
+                            loading:false,
+                            error:true,
+                        }
+                    });
+                }else{
+                    this.setState({
+                        success:{
+                            loading:false,
+                            error:null,
+                        }
+                    });
+                    this.setState({
+                        data:resp.data.resp
+                    })
                 }
-            });
-            const resp = await MedicoRoutes.listMedicos();
-            if(resp.data.success === false){
-                console.log('no se puede mostrar los datos')
+            } catch (error) {
+                console.log(error)
                 this.setState({
                     success:{
                         loading:false,
                         error:true,
                     }
                 });
-            }else{
-                this.setState({
-                    success:{
-                        loading:false,
-                        error:null,
-                    }
-                });
-                this.setState({
-                    data:resp.data.resp
-                })
+                return error
             }
-        } catch (error) {
-            console.log(error)
-            this.setState({
-                success:{
-                    loading:false,
-                    error:true,
-                }
-            });
-            return error
         }
     }
     getListUsers = async () =>{
-        try {
-            this.setState({
-                
-            })
-            const resp = await MedicoRoutes.listUsers();            
-            if(resp.data.success === false){
-                console.log('no se puede mostrar los datos')
-            }else{
+        if(this._isMounted){
+            try {
                 this.setState({
-                    dataUsers:resp.data.resp
+                    
                 })
+                const resp = await MedicoRoutes.listUsers();            
+                if(resp.data.success === false){
+                
+                }else{
+                    this.setState({
+                        dataUsers:resp.data.resp
+                    })
+                }
+            } catch (error) {
+                console.log(error)
+                return error
             }
-        } catch (error) {
-            console.log(error)
-            return error
         }
     }
     medicoId = async (id) =>{
@@ -112,6 +127,12 @@ class About extends React.Component{
     callBack =() =>{
         this.getListUsers();
         this.getListMedicos();
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
     render() {
         return(
