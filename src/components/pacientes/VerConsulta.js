@@ -65,8 +65,11 @@ function VerConsulta(props) {
                                         <div className="icheck-primary d-inline">
                                             <input
                                             type="radio" 
-                                            id="radioPrimary2"                                           
-                                            defaultChecked={dataConsulta.signosVitales.temp.r1 ===  'aux'}
+                                            id="radioPrimary2" 
+                                            readOnly
+                                            value=''
+                                            name='check'                                           
+                                            checked={dataConsulta.signosVitales.temp.r1 ===  'aux'}
                                              />
                                             <label htmlFor="radioPrimary2">
                                                 Aux.
@@ -75,15 +78,18 @@ function VerConsulta(props) {
                                         <div className="icheck-primary d-inline">
                                             <input                                         
                                             type="radio" 
-                                            id="radioPrimary21"                                            
-                                            defaultChecked={dataConsulta.signosVitales.temp.r1 ===  'rec'}
+                                            id="radioPrimary21"   
+                                            readOnly
+                                            value=''
+                                            name='check'                                         
+                                            checked={dataConsulta.signosVitales.temp.r1 ===  'rec'}
                                              />
-                                            <label htmlFor="radioPrimary2">
+                                            <label htmlFor="radioPrimary21">
                                                 Rec.
                                             </label>
                                         </div>                                    
                                     </div>
-                                                        
+                                      <label>IMC</label>                  
                                     <p>{dataConsulta.signosVitales.temp.temp}</p>
                                     
                                 </div>

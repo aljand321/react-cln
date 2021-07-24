@@ -8,8 +8,8 @@ const form = {
 const form1 ={
     ta:'',
     fc:'',
-    fr:'',
-    sao:'',
+    fr:0,
+    sao:0,
     temp:'',
     r1:''
 } 
@@ -22,6 +22,11 @@ function FormConsutla(props) {
     const [err, setErr] = useState(form);
     const [erroResp, setErroResp] = useState({erro:''})
     const [resp, setResp] = useState(false);
+
+    const [err2, setErro2] = useState({
+        fr:'',
+        sao:'',
+    })
     
     const handleChange = (e) => {
         const {value, name} = e.target;
@@ -35,11 +40,46 @@ function FormConsutla(props) {
         })      
     }
     const handleChange1 = (e) => {
-        const {value, name} = e.target;
+        const {value, name} = e.target;      
         setData1({
             ...data1,
-            [name]:value
-        })        
+            [name]: value
+        })  
+        
+        if(name === 'fr'){ //sao
+            setErro2({
+                ...err2,
+                [name]:''
+            })
+            if(isNaN(value)){
+                setErro2({
+                    ...err2,
+                    [name]: "Peso solo puede contener numeros"
+                })
+            }else if(value <= 0){
+                setErro2({
+                    ...err2,
+                    [name]: "Peso tiene que ser mayor a 0"
+                })
+            }
+        }
+        if(name === 'sao'){
+            setErro2({
+                ...err2,
+                [name]:''
+            })
+            if(isNaN(value)){
+                setErro2({
+                    ...err2,
+                    [name]: "Talla solo puede contener numeros"
+                })
+            }else if(value <= 0){
+                setErro2({
+                    ...err2,
+                    [name]: "Talla tiene que ser mayor a 0"
+                })
+            }
+        } 
     }
     
     const handleSubmit = async (e) =>{
@@ -50,23 +90,45 @@ function FormConsutla(props) {
                 obj[p] = `obligatorio`
             }
         }
-        setTimeout(() => setErr(obj),100); 
+        setErr(obj) 
+        
         if(Object.keys(obj).length === 0){
-            setLoad(true);
+
+            let n = data1.fr / data1.sao
+           
+            if(data1.fr > 0 || data1.fr < 0){
+               
+                if(data1.sao <= 0){
+                    setErro2({
+                        ...err2,
+                        sao : data1.sao <= 0 ? 'Solo se acepta mayor a 0' : ''
+                    })
+                    return;
+                }
+            }
+            if (data1.fr <= 0){
+                setData1({
+                    ...data1,
+                    sao : 0
+                })
+            }
+          
+            //setLoad(true);
             const datas = {
                 motivo:data.motivo,
                 enfermedadActual:data.historiaDeLaEnf,
                 signosVitales:{
                     ta:data1.ta,
                     fc:data1.fc,
-                    fr:data1.fr,
-                    sao:data1.sao,
+                    fr:isNaN(data1.fr) || !data1.fr || data1.fr <= 0 ? '' : data1.fr,
+                    sao:!data1.fr || isNaN(data1.fr) || data1.fr <= 0 ? '' : data1.sao,
                     temp:{
-                        temp:data1.temp,
+                        temp:isNaN(n) || n === Infinity || n === 0 ? '' : data1.fr / data1.sao,
                         r1:data1.r1
                     }                    
                 }
             }
+           
             const resp = await RoutesConsultas.CreateConsulta(datas, props.dataPaciente);            
             if(resp.data.success === false){
                 setLoad(false);
@@ -136,7 +198,7 @@ function FormConsutla(props) {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="exampleInputEmail2">T.A. mmHg / Glasgow</label>                                
+                                <label htmlFor="exampleInputEmail2">mmHg / Glasgow</label>                                
                                 <textarea 
                                 name="ta" 
                                 onChange={handleChange1}
@@ -146,14 +208,19 @@ function FormConsutla(props) {
                                 placeholder=" mmHg / Glasgow"></textarea>
                             </div>                            
                             <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">F.R. C/min mg% Peso</label>
-                                <textarea 
+                                <label htmlFor="exampleInputEmail1">Peso Kg {err2.fr && <code>{err2.fr}</code>}</label>
+                                <input  
+                                name="fr"
+                                onChange={handleChange1}
+                                value={data1.fr}
+                                className="form-control" type="number" placeholder="Peso Kg"></input>
+                                {/* <textarea 
                                 name="fr"
                                 onChange={handleChange1}
                                 className="form-control"  
                                 rows="2" 
                                 value={data1.fr}
-                                placeholder="F.R. C/min mg% Peso"></textarea>
+                                placeholder="Peso Kg"></textarea> */}
                             </div>
 
                             <div className="form-group">
@@ -184,37 +251,41 @@ function FormConsutla(props) {
                                     </div>                                    
                                 </div>
                                                      
-                                <textarea 
-                                className="form-control" 
-                                rows="2" 
-                                onChange={handleChange1}
-                                name='temp'
-                                vale={data1.temp}
-                                placeholder="Temp. °C Aux. Rec. cm  IMC"></textarea>
+                                <input 
+                                    className="form-control"
+                                    type="text"                     
+                                    value={data1.fr <= 0 || data1.sao <= 0  ? 0 : data1.fr / data1.sao}
+                                    disabled
+                                ></input>
                             </div>
 
                         </div>
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">F.C. lat/min / 15 Glicemia</label>
+                                <label htmlFor="exampleInputEmail1">F.C. lat/min</label>
                                 <textarea
                                 className="form-control"  
                                 rows="2" 
                                 name="fc"
                                 onChange={handleChange1}
                                 value={data1.fc}
-                                placeholder="F.C. lat/min / 15 Glicemia"></textarea>
+                                placeholder="F.C. lat/min"></textarea>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">SaO2 % Kg Talla</label>
-                                <textarea 
+                            {data1.fr > 0 && <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Talla cm {err2.sao && <code>{err2.sao}</code>}</label>
+                                <input  
+                                name="sao"
+                                onChange={handleChange1}
+                                value={data1.sao}
+                                className="form-control" type="number" placeholder="Talla cm"></input>
+                               {/*  <textarea 
                                 className="form-control"  
                                 rows="2"
                                 name="sao"
                                 onChange={handleChange1}
                                 value={data1.sao} 
-                                placeholder="SaO2 % Kg Talla"></textarea>
-                            </div>
+                                placeholder="Talla cm"></textarea> */}
+                            </div>}
                             
                         </div>
                     </div>                    
