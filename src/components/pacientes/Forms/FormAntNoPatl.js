@@ -188,7 +188,7 @@ function FormAntNoPatl(props) {
                                     
                                     />
                             
-                                    <label htmlFor="radioPrimary1">Prymaria
+                                    <label htmlFor="radioPrimary1">Primaria
                                     </label>
                                 </div>
                                 <div className="form-check d-inline">
