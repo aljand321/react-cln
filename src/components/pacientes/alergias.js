@@ -1,4 +1,6 @@
+
 function Datas (props){
+    
     return(
        <div>
            <h1>esto es el componente {props.datas.msg}</h1>

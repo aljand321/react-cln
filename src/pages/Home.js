@@ -8,27 +8,10 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 
-const usesStyle = makeStyles(()=>({
-  root:{
-      flexGrow: 1
-  },
-  iconos:{
-      color: 'white'
-  },
-  container:{
-      paddingTop:'40px',
-      alignItems: 'center'
-  },
-  containerGrafica:{
-      marginTop: '40px'
-  },
-  containerTabla:{
-      marginTop: '40px'
-  }
-}));
 
-const classes= usesStyle();
+
 class Home extends React.Component {
+  
   _isMounted = false;
   componentDidMount(){
     console.log('home  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
@@ -53,27 +36,11 @@ class Home extends React.Component {
 
   render() {
     return (
-       <div className={classes.root}>
-          <Grid container spacing={3}>
-
-{/* <Grid item xs={12}>
-              <Navbar/>
-          </Grid> */}
-
-            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-
-            </Grid>
-            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-              
-            </Grid>
-            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-              
-            </Grid>
-
-          </Grid>
-
-      </div>
+       <div>
+         
+       </div>
     );
+  }
   
 }
 export default Home;
