@@ -27,28 +27,53 @@ const usesStyle = makeStyles(()=>({
   }
 }));
 
-function Home(props){
-  const classes= usesStyle();
-  return(
-    <div className={classes.root}>
-      <Grid container spacing={3}>
+const classes= usesStyle();
+class Home extends React.Component {
+  _isMounted = false;
+  componentDidMount(){
+    console.log('home  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+    this._isMounted = true;
+    this.location();
+  }
+  location = async () => {
+    if(this._isMounted){
+      const path = await JSON.parse(localStorage.getItem("path"));
+      const user = await JSON.parse(localStorage.getItem("tok"));
+      if(path === null){
+          this.props.history.push(user.user.role === 'medico' ? '/consulta' : '/') 
+      }
+    }
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+    this.setState = (state,callback)=>{
+      return;
+  };
+}
 
-          {/* <Grid item xs={12}>
+  render() {
+    return (
+       <div className={classes.root}>
+          <Grid container spacing={3}>
+
+{/* <Grid item xs={12}>
               <Navbar/>
           </Grid> */}
 
-          <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+              
+            </Grid>
 
           </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
 
-          </Grid>
-          <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-
-          </Grid>
-      </Grid>
-
-    </div>
-  );
+      </div>
+    );
+  
 }
 export default Home;
