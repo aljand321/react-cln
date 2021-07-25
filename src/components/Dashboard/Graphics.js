@@ -1,7 +1,7 @@
 import React from 'react'
 import { BorderColor } from '@material-ui/icons';
 import {Line} from 'react-chartjs-2';
-import 'Graphics.css'
+import './css/Graphics.css';
 
  function Graphics(props) {
     const data={
