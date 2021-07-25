@@ -43,6 +43,25 @@ function Alergias(props){
                 <CardsHeader icono={<AssignmentIndIcon className={classes.iconos}/>} titulo="LISTA" texto="mm" color="rgba(248,80,50,1)" font="white"/>
                 </Grid>
 
+                <Grid container spacing={1} className={classes.container} xs={12} sm={12} md={6} lg={6} xl={6}>
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+                        <Cards titulo="REPOSITORIOS" texto="692"/>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+                        <Cards titulo="REPOSITORIOS" texto="692"/>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+                        <Cards titulo="REPOSITORIOS" texto="692"/>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+                        <Cards titulo="REPOSITORIOS" texto="692"/>
+                    </Grid>
+
+                </Grid>
+
                 
             </Grid>
         </div>
