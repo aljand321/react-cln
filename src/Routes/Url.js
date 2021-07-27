@@ -1,4 +1,4 @@
 const Url = {
-    urlBackEnd:'http://192.168.1.79:3001'
+    urlBackEnd:'http://192.168.1.9:3001'
 }
 export default Url;
