@@ -41,7 +41,7 @@ class Pacientes {
         let buscar = {
             buscar:data,
             pagina: p || 0,
-            limite: l || 5
+            limite: l || 8
         }
         try {
             const resp = await axios.post(`${Url.urlBackEnd}/api/buscarPaciente`,buscar,{

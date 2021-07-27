@@ -267,7 +267,7 @@ function Patologicos(props) {
                             <div className="card-header">
                                 <div className="d-flex">
                                     <div className="mr-auto p-2">
-                                        <h3 className="card-title">Cirucias</h3>
+                                        <h3 className="card-title">Cirugias</h3>
                                     </div>
                                     <div className="p-2">
                                         {props.identify === 'null' &&

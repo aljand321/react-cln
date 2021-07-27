@@ -17,7 +17,7 @@ class Consulta extends React.Component{
         page:{
             totalItems:'',
             totalPages:'',
-            currentPage:'',
+            currentPage:''            
         },
         buscador:'',
         limite:'',
@@ -25,7 +25,10 @@ class Consulta extends React.Component{
             list:[]
         },
         list0:{},
-        selected:{}
+        selected:{},
+        number:0,
+        c:0
+
     }
     componentDidMount(){
         console.log('consulta <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
@@ -169,7 +172,41 @@ class Consulta extends React.Component{
             })
         }
     }
-    changePage = async (page) => {
+    changePage = async (page) => {      
+        if (page === 0){ // para paginar la paginas
+            this.setState({
+                number: 0,
+                c : 0
+            })
+        }else{
+            if(page === this.state.page.totalPages - 1){
+                this.setState({
+                    number: this.state.page.totalPages - 4,
+                    c : this.state.page.totalPages - 1
+                })
+            }else{
+                if (page > this.state.c){
+                    if(page > 2){
+                        this.setState({
+                            number: page - 2
+                        })
+                    }
+                    this.setState({
+                        c: page
+                    })            
+                }else {
+                    if (page < this.state.page.totalPages - 1){
+                        if(this.state.number !== 0){
+                            this.setState({
+                                number: page - 2 < 0 ? 0 : page - 2,
+                                c : page 
+                            });
+                        }
+                    }
+                    
+                }
+            }
+        }//paginacion de paginas
         this.setState({
             success:{
                 loading:true,
@@ -323,6 +360,8 @@ class Consulta extends React.Component{
                                             listP={this.state.listP} 
                                             success={this.state.success} 
                                             getPaciente={this.getPaciente}
+                                            num={this.state.number}
+                                            pageCount={this.state.c}
                                         />
                                     </div>
                                     

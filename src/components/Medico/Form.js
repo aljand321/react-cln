@@ -218,7 +218,7 @@ function FormMed (props){
         
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputBorder">Contraceña {errors.password && <code>Obligatorio</code>} </label>
+                        <label htmlFor="exampleInputBorder">Contraseña {errors.password && <code>Obligatorio</code>} </label>
                         <input                                                          
                             type='password'  
                             {...register('password',{ required: true })}  
@@ -227,7 +227,7 @@ function FormMed (props){
                         
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputBorder">Repita su contraceña {errors.password1 && <code>Obligatorio</code>} </label>
+                        <label htmlFor="exampleInputBorder">Repita su contraseña {errors.password1 && <code>Obligatorio</code>} </label>
                         <input                                                          
                             type='password'  
                             {...register('password1',{ required: true })}  

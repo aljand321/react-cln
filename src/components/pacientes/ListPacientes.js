@@ -18,16 +18,20 @@ function Paciente(props){
                             <p className="text-muted text-sm"><b>Ocupación: </b> {paciente.ocupacion} </p>
                             <p className="text-muted text-sm"><b>Edad: </b> {paciente.edad} </p>
                             <p className="text-muted text-sm"><b>Sexo: </b> {paciente.sexo} </p>
-                            <ul className="ml-4 mb-0 fa-ul text-muted">
-                                <li className="small"><span className="fa-li"><i className="fas fa-lg fa-building" /></span> Direccion: {paciente.direccion}</li>
-                                <br></br>
+                            <ul className="ml-4 mb-0 fa-ul text-muted">                                                                
+                                { paciente.ci && 
+                                    <li className="small"><span className="fa-li"><i className="fas fa-lg fa-user" /></span> C.I.: {paciente.ci}</li>
+                                }
                                 { paciente.telefono &&                                
                                     <li className="small"><span className="fa-li"><i className="fas fa-lg fa-phone" /></span> Telefono: {paciente.telefono}</li>
                                 }
+                                <li className="small"><span className="fa-li"><i className="fas fa-lg fa-building" /></span> Direccion: {paciente.direccion}</li>
+
+
                             </ul>
                             </div>
                             <div className="col-5 text-center">
-                            <img src={paciente.sexo === 'hombre' ? avatarH : avatarM} alt="user-avatar" className="img-circle img-fluid" />
+                            <img src={paciente.sexo === 'M' ? avatarH : avatarM} alt="user-avatar" className="img-circle img-fluid" />
                             </div>
                         </div>
                     </div>
@@ -43,20 +47,25 @@ function Paciente(props){
         </>
     );
 }
-function List(props) {
+function List(props) {    
     let item = [];
     for(let i = 0; i < props.number; i++){
         item.push(props.children(i));
-    }
-    return item
+    }    
+    const data = item.slice(0 + props.num ,5 + props.num );    
+    return data
 }
 
 function ListPacientes(props) {    
     const success = props.success
     const pacienes = props.listP
-    //const [buscar, setBuscar] = useState('');
+    //const [pagNum, setPagNum] = useState(1);
     function clickP(id_paciente) {        
         props.getPaciente(id_paciente);
+    }
+
+    function datas () {
+        return props.page.totalPages
     }
 
     return (      
@@ -109,17 +118,32 @@ function ListPacientes(props) {
             </div>
             <nav aria-label="Page navigation example">
                 <ul className="pagination">
-                    {/* <li className="page-item">
+                    {/* {props.pageCount > 0 && <li className="page-item">
                         <div className="page-link" aria-label="Previous">
                             <span aria-hidden="true">«</span>
                         </div>
-                    </li> */}
-                   
-                    <List number={props.page.totalPages}>
-                        {(index) =>  <li key={index} onClick={() =>props.changePage(index)} className={props.page.currentPage === index ? "page-item active" : "page-item" }><div className="page-link">{index +1 }</div></li>}
-                    </List>
+                    </li>}   */}    
+                    {props.pageCount > 2 && <li  className="page-item" onClick={() =>props.changePage(0)}><div className="page-link">1</div></li>}
+                    {props.pageCount > 2 && <li  className="page-item active"><div className="page-link">....</div></li>}
+          
+                    <List number={datas()} num={props.num}>
+                        {(index) => {                                
+                                return (
+                                    <li 
+                                        key={index} 
+                                        onClick={() =>props.changePage(index)} 
+                                        className={props.page.currentPage === index ? "page-item active" : "page-item" }
+                                    >
+                                        <div className="page-link">{index +1 }</div>
+                                    </li>
+                                );
+                            }
+                        
+                        }
+                    </List> 
+                    {props.pageCount < props.page.totalPages-3 && <li  className= "page-item active"><div className="page-link">....</div></li>}
+                    {props.pageCount < props.page.totalPages-3 && <li  className= "page-item" onClick={() =>props.changePage(props.page.totalPages-1)}><div className="page-link">{datas()}</div></li>}
                     
-
                     {/* <li className="page-item">
                         <div className="page-link"  aria-label="Next">
                             <span aria-hidden="true">»</span>
@@ -127,10 +151,11 @@ function ListPacientes(props) {
                     </li> */}
                     <li className="page-item">                       
                         <select name='limite' onChange={props.changeLimit} value={props.limite} className="form-control">
-                            <option value='5'>5</option>
-                            <option value='10'>10</option>
-                            <option value='20'>20</option>
-                            <option value='30'>30</option>
+                            <option value='8'>8</option>
+                            <option value='15'>15</option>
+                            <option value='25'>25</option>
+                            <option value='50'>50</option>
+                            <option value='100'>100</option>
                         </select>                       
                     </li>                  
 

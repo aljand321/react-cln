@@ -49,7 +49,7 @@ function  DataPaciente(props){
                                         <li className="nav-item"><a onClick={()=> selected(2)} className={select === 2 ? "nav-link active": "nav-link"} href="#noPatologicos" data-toggle="tab">No patologicos</a></li>
                                         <li className="nav-item"><a onClick={()=> selected(3)} className={select === 3 ? "nav-link active": "nav-link"} href="#inmunizaciones" data-toggle="tab">Inmunizaciones</a></li>
                                         <li className="nav-item"><a onClick={()=> selected(4)} className={select === 4 ? "nav-link active": "nav-link"} href="#antFamiliares" data-toggle="tab">Ant. Familiares</a></li>
-                                        {dataPaciente.sexo === 'mujer' && 
+                                        {dataPaciente.sexo === 'F' && 
                                             <li className="nav-item"><a onClick={()=> selected(5)} className={select === 5 ? "nav-link active": "nav-link"} href="#ginecoObstetricos" data-toggle="tab">Gineco Obstetricos</a></li>
                                         }                                        
                                         <li className="nav-item"><a onClick={()=> selected(6)} className={select === 6 ? "nav-link active": "nav-link"} href="#examenFisico" data-toggle="tab">Examen Fisico</a></li>
@@ -76,11 +76,13 @@ function  DataPaciente(props){
                                         <div className={select === 4 ? "active tab-pane" : "tab-pane"} id="antFamiliares">
                                             <AntecedentesFml dataPaciente={dataPaciente} identify={props.identify}/>
                                         </div>
+                                        {dataPaciente.sexo === 'F' && 
                                         <div className={select === 5 ? "active tab-pane" : "tab-pane"} id="ginecoObstetricos">
                                             <div className="overlay-wrapper">
                                                 <AntGincoObs dataPaciente={dataPaciente} identify={props.identify}/>
                                             </div>
                                         </div>
+                                        }
                                         <div className={select === 6 ? "active tab-pane" : "tab-pane"} id="examenFisico">
                                             <div className="overlay-wrapper">
                                                 <ExamenFisico dataPaciente={dataPaciente} identify={props.identify}/>

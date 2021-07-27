@@ -30,17 +30,17 @@ const contendForm = {
             msg:"Direccion es necesario"
         },
         {
-            label:'Edad',
+            label:'Fecha de nacimiento',
             name:'edad',
             type:'date',
             placeholder:'Edad del paciente',
             msg:"Edad es necesario"
         },
         {
-            label:'Ocupacion',
+            label:'Ocupación',
             name:'ocupacion',
             type:'text',
-            placeholder:'Ocupacion del paciente',
+            placeholder:'Ocupación del paciente',
             msg:"Ocupacion es necesario"
         },
     ]
@@ -182,8 +182,8 @@ function FormPaciente(props){
                         <label htmlFor="exampleInputBorderWidth2">Sexo<code></code></label>
                         <select {...register("sexo", {required:'Selecione sexo del paciente'})} className="custom-select form-control-border">
                             <option value="">Selecione</option>
-                            <option value="hombre">Hombre</option>
-                            <option value="mujer">Mujer</option>
+                            <option value="M">Hombre</option>
+                            <option value="F">Mujer</option>
                         </select>
                         {errors.sexo && <label htmlFor="exampleInputBorder"><code>Selecione sexo del paciente</code></label>}
                     </div>
