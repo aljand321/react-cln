@@ -110,12 +110,16 @@ function DataConsulta(props) {
                                                         <div className="d-flex">
                                                             <div className="mr-auto p-2">
                                                                 <h4 className="card-title w-100">
-                                                                    {key+1} Consulta en: {data.createdAt.split('T')[0]}
+                                                                    {key+1} Consulta en: {data.createdAt.split('T')[0]} Por: {data.medicoUser.nombres} {data.medicoUser.apellidos}
                                                                 </h4>
                                                             
                                                             </div>
                                                             <div className="p-2">
                                                                 <div className="row">
+                                                                    {/* <div className="col-6">
+                                                                        <p>{data.medicoUser.nombres}</p> 
+
+                                                                    </div> */}
                                                                     <div className="col-6">
                                                                         <div className="btn-group btn-group-sm">
                                                                             <a href={`#collapseD${key}`} data-toggle="collapse" className="btn btn-primary"><i className="fas fa-eye" /></a>
@@ -124,7 +128,6 @@ function DataConsulta(props) {
                                                                     </div>
                                                                     <div className="col-3">
                                                                         <button type="button" onClick={()=> OneConsulta(data.id)} className="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#verConsulta">Ver</button>
-
                                                                     </div>
                                                                 </div>
 
@@ -141,6 +144,14 @@ function DataConsulta(props) {
                                                     <div className="card-body">
                                                         <strong>Historia de la Enfermedad:</strong>
                                                         <p>{data.enfermedadActual}</p>
+                                                    </div>
+                                                    <div className="card-body">
+                                                        <strong>Diagnosticos Presuntivos:</strong>
+                                                        <p>{data.diagPresuntivo}</p>
+                                                    </div>
+                                                    <div className="card-body">
+                                                        <strong>Conducta:</strong>
+                                                        <p>{data.conducta}</p>
                                                     </div>
                                                 </div>
                                             </div>

@@ -24,7 +24,6 @@ function FormOtrasEnfermedades(props) {
         loading,
         response,
         handleChange,
-        handleBlur,
         handleSubmit,
         
     } = useForm(initForm,validationsForm);
@@ -40,7 +39,7 @@ function FormOtrasEnfermedades(props) {
     const[respSuccess, setRespSuccess] = useState([]);
     const getList = useCallback( async() =>{         
         setLoad(true);        
-        const resp = await OtrasEnfermedades.buscarEnf('');
+        const resp = await OtrasEnfermedades.buscarEnf('',8);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -71,7 +70,7 @@ function FormOtrasEnfermedades(props) {
         }    
         try {
             if(isMountedRef.current){
-                const resp = await OtrasEnfermedades.buscarEnf(data);
+                const resp = await OtrasEnfermedades.buscarEnf(data,10);
                 if(resp.data.success === false){
                     setLoad(false);
                     setErro(true)
@@ -94,6 +93,24 @@ function FormOtrasEnfermedades(props) {
         },5000);
         return () => clearTimeout(timeout);
     },[msg,erro])
+    async function changeLimit (e){
+        const {value} = e.target                 
+        const resp = await OtrasEnfermedades.buscarEnf('',value);
+        if(resp.data.success === false){
+            setLoad(false);
+            setErro(true)
+            setMsg('No se puede mostrar los datos')
+            setTimeout(() =>{
+                setErro(false)
+                setMsg('')
+            },5000)
+            
+        }else{
+            setLoad(false);
+            setList(resp.data.resp);           
+            
+        }
+    }
 
     function selectedEnf(id_otrasEnf,nombre,p) {      
         let verify = false
@@ -225,7 +242,25 @@ function FormOtrasEnfermedades(props) {
                                                             onChange={buscar}
                                                             value={search.buscador}
                                                              />
-                                                            
+                                                            <div className="input-group-append">
+                                                                {/* <button type="submit" className="btn btn-lg btn-default">
+                                                                    <i className="fa fa-search" />
+                                                                </button> */}
+                                                                <nav aria-label="Page navigation example">
+                                                                    <ul className="pagination">
+                                                                        <li className="page-item">                       
+                                                                            <select name='limite' onChange={changeLimit}  className="form-control">   
+                                                                                                                                                            
+                                                                                <option value='8'>8</option>
+                                                                                <option value='15'>15</option>
+                                                                                <option value='25'>25</option>
+                                                                                <option value='50'>50</option>
+                                                                                <option value='100'>100</option>
+                                                                            </select>                       
+                                                                        </li>
+                                                                    </ul>
+                                                                </nav>
+                                                            </div>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -302,11 +337,11 @@ function FormOtrasEnfermedades(props) {
                                                                                 </div>
 
                                                                             </div>
-                                                                            <div className="col-6">
+                                                                            {data.descripcion && <div className="col-6">
                                                                                 <div className="btn-group btn-group-sm">
                                                                                     <a href={`#collapse${key}`} data-toggle="collapse" className="btn btn-primary"><i className="fas fa-eye" /></a>
                                                                                 </div> 
-                                                                            </div>
+                                                                            </div>}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -366,20 +401,18 @@ function FormOtrasEnfermedades(props) {
                                             <form onSubmit={handleSubmit}>
                                                 <div className="card-body">
                                                     <div className="form-group">
-                                                        <label htmlFor="exampleInputEmail1">Nombre</label>
+                                                        <label htmlFor="exampleInputEmail1">Nombre {errors.nombre && <code>{errors.nombre}</code>}</label>
                                                         <input 
-                                                        type="text" 
-                                                        onBlur={handleBlur}                          
+                                                        type="text"                                                                           
                                                         onChange={handleChange}
-                                                        className="form-control" 
-                                                        
+                                                        className={errors.nombre ? "form-control is-invalid" : "form-control"}                                                         
                                                         placeholder="Inserte Enfermedad" 
                                                         name="nombre" 
                                                         value={form.nombre} 
                                                         />
-                                                        {errors.nombre && <label htmlFor="exampleInputBorder"><code>{errors.nombre}</code></label>}
+                                                        
                                                     </div>
-                                                    <div className="form-group">
+                                                    {/* <div className="form-group">
                                                         <label htmlFor="exampleInputPassword1">Descripcion</label>
                                                         <textarea 
                                                         className="form-control" 
@@ -390,7 +423,7 @@ function FormOtrasEnfermedades(props) {
                                                         name="descripcion" 
                                                         value={form.descripcion} 
                                                         ></textarea>
-                                                    </div>                                               
+                                                    </div>  */}                                              
                                                     
                                                 </div>
                                             
@@ -418,7 +451,7 @@ const useForm = (initilForm,validateForm) =>{
     const isMountedRef = useIsMountedRef();
     const [form, setForm] = useState(initilForm);
     //manejo de errores
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({nombre:''});
     //loaders
     const [loading, setloading] = useState(false);
     //respuesta
@@ -431,17 +464,16 @@ const useForm = (initilForm,validateForm) =>{
             ...form,
             [name]:value
         })
+        setErrors({
+            ...errors,
+            [name]:value.length === 0 ? 'Obligatorio' : ''
+        })
     }
-    //para las validaciones
-    const handleBlur = (e) =>{
-        handleChange(e);
-        setErrors(validateForm(form))
-    }
+    
     //
     const handleSubmit = async (e) =>{
-        e.preventDefault();
-        setErrors(validateForm(form));
-        if(Object.keys(errors).length === 0){      
+        e.preventDefault();        
+        if(errors.nombre.length === 0){      
             try {
                 if(isMountedRef.current){
                     setloading(true);
@@ -466,13 +498,7 @@ const useForm = (initilForm,validateForm) =>{
         }
     }
     useEffect(() => {        
-        const timeout = setTimeout(() => setErrors({
-            nombre:''
-        }), 5000);
-        return () => clearTimeout(timeout);
-    },[errors]);
-    useEffect(() => {        
-        const timeout = setTimeout(() => setResponse(false), 5000);
+        const timeout = setTimeout(() => setResponse(false), 1000);
         return () => clearTimeout(timeout);
     },[response]);
 
@@ -481,8 +507,7 @@ const useForm = (initilForm,validateForm) =>{
         errors,
         loading,
         response,
-        handleChange,
-        handleBlur,
+        handleChange,       
         handleSubmit
     }
 }

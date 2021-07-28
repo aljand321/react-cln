@@ -75,12 +75,12 @@ function Inmunizaciones(props) {
                                             <div className="d-flex">
                                                 <div className="mr-auto p-2">
                                                     <h4 className="card-title w-100">
-                                                        {key+1} {data.nombre}  {data.vacunasPaciente.description}
+                                                        {key+1} {data.vacuna}  {data.description}
                                                     </h4>
                                                 
                                                 </div>
                                                 <div className="p-2">
-                                                    <h5 className="card-title "> {data.vacunasPaciente.fecha.split('T')[0]}</h5>
+                                                    <h5 className="card-title "> {data.fechaVacuanPaciente}</h5>
                                                 </div>
                                             </div>                                                
                                         </div>
@@ -88,7 +88,7 @@ function Inmunizaciones(props) {
                                     </a>
                                     <div id={`collap${key}`} className="collapse" data-parent="#accordion">
                                         <div className="card-body">
-                                            {data.descripcion}
+                                            {data.VacunaDescripcion}
                                         </div>
                                     </div>
                                 </div>

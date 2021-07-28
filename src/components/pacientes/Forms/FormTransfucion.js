@@ -22,9 +22,8 @@ function FormTransfucion(props) {
         errors,
         loading,
         response,
-        handleChange,
-        handleBlur,
-        handleSubmit,
+        handleChange,      
+        handleSubmit
         
     } = useForm(initForm,validationsForm);
     const [search,setsearch] = useState(serachForm);
@@ -39,7 +38,7 @@ function FormTransfucion(props) {
     const[respSuccess, setRespSuccess] = useState([]);
     const getList = useCallback( async() =>{         
         setLoad(true);        
-        const resp = await Transfuciones.buscarTransfucion('');
+        const resp = await Transfuciones.buscarTransfucion('',8);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -68,7 +67,7 @@ function FormTransfucion(props) {
             })
             data= value 
         }           
-        const resp = await Transfuciones.buscarTransfucion(data);
+        const resp = await Transfuciones.buscarTransfucion(data,10);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -83,6 +82,24 @@ function FormTransfucion(props) {
             setList(resp.data.resp);           
             
         }  
+    }
+    async function changeLimit (e){
+        const {value} = e.target                 
+        const resp = await Transfuciones.buscarTransfucion('',value);
+        if(resp.data.success === false){
+            setLoad(false);
+            setErro(true)
+            setMsg('No se puede mostrar los datos')
+            setTimeout(() =>{
+                setErro(false)
+                setMsg('')
+            },5000)
+            
+        }else{
+            setLoad(false);
+            setList(resp.data.resp);           
+            
+        } 
     }
 
     function selectedTransfucion(id_transfucion,nombre,p) {      
@@ -211,6 +228,24 @@ function FormTransfucion(props) {
                                                             onChange={buscar}
                                                             value={search.buscador}
                                                              />
+                                                            <div className="input-group-append">
+                                                                {/* <button type="submit" className="btn btn-lg btn-default">
+                                                                    <i className="fa fa-search" />
+                                                                </button> */}
+                                                                <nav aria-label="Page navigation example">
+                                                                    <ul className="pagination">
+                                                                        <li className="page-item">                       
+                                                                            <select name='limite' onChange={changeLimit}  className="form-control">                                                                                                                                                            
+                                                                                <option value='8'>8</option>
+                                                                                <option value='15'>15</option>
+                                                                                <option value='25'>25</option>
+                                                                                <option value='50'>50</option>
+                                                                                <option value='100'>100</option>
+                                                                            </select>                       
+                                                                        </li>
+                                                                    </ul>
+                                                                </nav>
+                                                            </div>
                                                             
                                                         </div>
                                                     </form>
@@ -289,11 +324,13 @@ function FormTransfucion(props) {
                                                                             </div>
 
                                                                         </div>
-                                                                        <div className="col-6">
-                                                                            <div className="btn-group btn-group-sm">
-                                                                                <a href={`#collapse${key}`} data-toggle="collapse" className="btn btn-primary"><i className="fas fa-eye" /></a>
-                                                                            </div> 
-                                                                        </div>
+                                                                        {data.descripcion &&
+                                                                            <div className="col-6">
+                                                                                <div className="btn-group btn-group-sm">
+                                                                                    <a href={`#collapse${key}`} data-toggle="collapse" className="btn btn-primary"><i className="fas fa-eye" /></a>
+                                                                                </div> 
+                                                                            </div>
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -353,31 +390,16 @@ function FormTransfucion(props) {
                                             <form onSubmit={handleSubmit}>
                                                 <div className="card-body">
                                                     <div className="form-group">
-                                                        <label htmlFor="exampleInputEmail1">Nombre</label>
+                                                        <label htmlFor="exampleInputEmail1">Nombre {errors.nombre && <code>{errors.nombre}</code>}</label>
                                                         <input 
-                                                        type="text" 
-                                                        onBlur={handleBlur}                          
+                                                        type="text"                                                                         
                                                         onChange={handleChange}
-                                                        className="form-control" 
-                                                        
+                                                        className={errors.nombre ? "form-control is-invalid" : "form-control"}                                                     
                                                         placeholder="Inserte Transfucion" 
                                                         name="nombre" 
                                                         value={form.nombre} 
-                                                        />
-                                                        {errors.nombre && <label htmlFor="exampleInputBorder"><code>{errors.nombre}</code></label>}
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label htmlFor="exampleInputPassword1">Descripcion</label>
-                                                        <textarea 
-                                                        className="form-control" 
-                                                        onBlur={handleBlur}                          
-                                                        onChange={handleChange}
-                                                        placeholder='Inserte una descripcion' 
-                                                        rows="5"
-                                                        name="descripcion" 
-                                                        value={form.descripcion} 
-                                                        ></textarea>
-                                                    </div>                                               
+                                                        />                                                       
+                                                    </div>                                                                                                  
                                                     
                                                 </div>
                                             
@@ -404,7 +426,7 @@ function FormTransfucion(props) {
 const useForm = (initilForm,validateForm) =>{
     const [form, setForm] = useState(initilForm);
     //manejo de errores
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({nombre:''});
     //loaders
     const [loading, setloading] = useState(false);
     //respuesta
@@ -417,33 +439,27 @@ const useForm = (initilForm,validateForm) =>{
             ...form,
             [name]:value
         })
+        setErrors({
+            ...errors,
+            [name]:value.length === 0 ? 'Obligatorio' : ''
+        })
     }
-    //para las validaciones
-    const handleBlur = (e) =>{
-        handleChange(e);
-        setErrors(validateForm(form))
-    }
-    //
+    
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        setErrors(validateForm(form));
-        if(Object.keys(errors).length === 0){
-        
+        if(errors.nombre.length === 0){        
             setloading(true);
             const resp = await Transfuciones.CreateTransfucion(form);
             if(resp.data.success === false){
                 setloading(false);
                 setErrors({
                     [resp.data.name]:resp.data.msg
-                });
-                setTimeout(() => setErrors({
-                    nombre:''
-                }), 5000);
+                });                
             }else{
                 setloading(false);
                 setResponse(true);
                 setForm(initilForm);
-                setTimeout(() => setResponse(false), 5000);
+                setTimeout(() => setResponse(false), 1000);
             }
 
         }else{
@@ -457,8 +473,7 @@ const useForm = (initilForm,validateForm) =>{
         errors,
         loading,
         response,
-        handleChange,
-        handleBlur,
+        handleChange,      
         handleSubmit
     }
 }

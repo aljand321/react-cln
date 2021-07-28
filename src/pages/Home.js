@@ -1,32 +1,5 @@
 import React from "react";
-import {Grid} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
-//import ContHeader from "../components/ContHeader";
-//import ListasMedicos from "../components/Home/listasMedicos";
-//import { Link } from 'react-router-dom';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-
-const usesStyle = makeStyles(()=>({
-  root:{
-      flexGrow: 1
-  },
-  iconos:{
-      color: 'white'
-  },
-  container:{
-      paddingTop:'40px',
-      alignItems: 'center'
-  },
-  containerGrafica:{
-      marginTop: '40px'
-  },
-  containerTabla:{
-      marginTop: '40px'
-  }
-}));
-
+import ContHeader from '../components/ContHeader';
 class Home extends React.Component {
   _isMounted = false;
   componentDidMount(){
@@ -52,26 +25,175 @@ class Home extends React.Component {
 
   render() {
     return (
-       <div className={classes.root}>
-          <Grid container spacing={3}>
-
-{/* <Grid item xs={12}>
-              <Navbar/>
-          </Grid> */}
-
-            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-
-            </Grid>
-            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+       <>
+        <ContHeader name='Panel'>
+          
+        </ContHeader>
+         <section class="content">
+          <div class="container-fluid">
+            <div className="row">
+              <div className="col-lg-3 col-6">
+                {/* small box */}
+                <div className="small-box bg-info">
+                  <div className="inner">
+                    <h3>2</h3>
+                    <p>Medicos</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-person-add" />
+                  </div>
+                  
+                </div>
+              </div>
+              <div className="col-lg-3 col-6">
+                {/* small box */}
+                <div className="small-box bg-warning">
+                  <div className="inner">
+                    <h3>1000</h3>
+                    <p>Pacientes registrados</p>
+                  </div>
+                  <div className="icon">
+                    {/* <i className="ion ion-person-add" /> */}
+                    <i className="ion ion-person" />
+                  </div>
+                 
+                </div>
+              </div>
+              {/* ./col */}
+              <div className="col-lg-3 col-6">
+                {/* small box */}
+                <div className="small-box bg-success">
+                  <div className="inner">
+                    <h3>53<sup style={{fontSize: 20}}>%</sup></h3>
+                    <p>Pacientes vacunados contra el covid</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-stats-bars" />
+                  </div>
+                 
+                </div>
+              </div>
+              {/* ./col */}
               
-            </Grid>
-            <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-              
-            </Grid>
+              {/* ./col */}
+              <div className="col-lg-3 col-6">
+                {/* small box */}
+                <div className="small-box bg-danger">
+                  <div className="inner">
+                    <h3>65</h3>
+                    <p>Unique Visitors</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-pie-graph" />
+                  </div>
+                 
+                </div>
+              </div>
+              {/* ./col */}
+            </div>
 
-          </Grid>
+          </div>
+        </section>
 
-      </div>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="card">
+              <div className="card-header border-transparent">
+                <h3 className="card-title">Pacientes inmunizados contra el convid</h3>
+                <div className="card-tools">
+                  <button type="button" className="btn btn-tool" data-card-widget="collapse">
+                    <i className="fas fa-minus" />
+                  </button>
+                  <button type="button" className="btn btn-tool" data-card-widget="remove">
+                    <i className="fas fa-times" />
+                  </button>
+                </div>
+              </div>
+            
+              <div className="card-body p-0">
+                <div className="table-responsive">
+                  <table className="table m-0">
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>Popularity</th>
+                      </tr>
+                    </thead>
+                    <tbody>                
+                      <tr>
+                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                        <td>iPhone 6 Plus</td>
+                        <td><span className="badge badge-danger">Delivered</span></td>
+                        <td>
+                          <div className="sparkbar" data-color="#f56954" data-height={20}>90,-80,90,70,-61,83,63</div>
+                        </td>
+                      </tr>                  
+                    </tbody>
+                  </table>
+                </div>
+                {/* /.table-responsive */}
+              </div>
+              {/* /.card-body */}
+              <div className="card-footer clearfix">
+                <div className="btn btn-sm btn-info float-left">Place New Order</div>
+                <div className="btn btn-sm btn-secondary float-right">View All Orders</div>
+              </div>
+              {/* /.card-footer */}
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="card">
+              <div className="card-header border-transparent">
+                <h3 className="card-title">Pacientes</h3>
+                <div className="card-tools">
+                  <button type="button" className="btn btn-tool" data-card-widget="collapse">
+                    <i className="fas fa-minus" />
+                  </button>
+                  <button type="button" className="btn btn-tool" data-card-widget="remove">
+                    <i className="fas fa-times" />
+                  </button>
+                </div>
+              </div>
+            
+              <div className="card-body p-0">
+                <div className="table-responsive">
+                  <table className="table m-0">
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>Popularity</th>
+                      </tr>
+                    </thead>
+                    <tbody>                
+                      <tr>
+                        <td><a href="pages/examples/invoice.html">OR7429</a></td>
+                        <td>iPhone 6 Plus</td>
+                        <td><span className="badge badge-danger">Delivered</span></td>
+                        <td>
+                          <div className="sparkbar" data-color="#f56954" data-height={20}>90,-80,90,70,-61,83,63</div>
+                        </td>
+                      </tr>                  
+                    </tbody>
+                  </table>
+                </div>
+                {/* /.table-responsive */}
+              </div>
+              {/* /.card-body */}
+              <div className="card-footer clearfix">
+                <div className="btn btn-sm btn-info float-left">Place New Order</div>
+                <div className="btn btn-sm btn-secondary float-right">View All Orders</div>
+              </div>
+              {/* /.card-footer */}
+            </div>
+          </div>
+        </div>
+
+
+      </>
     );
   
  }

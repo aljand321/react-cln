@@ -47,6 +47,14 @@ function VerConsulta(props) {
                             <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual</label>
                             <p> {dataConsulta.enfermedadActual} </p>
                         </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Diagnosticos Presuntivos</label>
+                            <p> {dataConsulta.diagPresuntivo} </p>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual</label>
+                            <p> {dataConsulta.conducta} </p>
+                        </div>
 
                         <div className="row">
                             <div className="col-md-6">

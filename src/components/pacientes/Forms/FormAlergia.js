@@ -23,7 +23,6 @@ function FormAlergias(props) {
         loading,
         response,
         handleChange,
-        handleBlur,
         handleSubmit,
         
     } = useForm(initForm,validationsForm);
@@ -40,7 +39,7 @@ function FormAlergias(props) {
       
     const getList = useCallback( async() =>{         
         setLoad(true);        
-        const resp = await Alergias.buscarAlergia('');
+        const resp = await Alergias.buscarAlergia('',8);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -58,7 +57,7 @@ function FormAlergias(props) {
     },[])
     useEffect(() => {
         getList();        
-    },[getList])  
+    },[getList,response])  
     async function buscarAlergia(e){
         let data = ''    
         if(e){
@@ -69,7 +68,7 @@ function FormAlergias(props) {
             })
             data= value 
         }           
-        const resp = await Alergias.buscarAlergia(data);
+        const resp = await Alergias.buscarAlergia(data,10);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -84,6 +83,24 @@ function FormAlergias(props) {
             setList(resp.data.resp);           
             
         }  
+    }
+    async function changeLimit (e){
+        const {value} = e.target                 
+        const resp = await Alergias.buscarAlergia('',value);
+        if(resp.data.success === false){
+            setLoad(false);
+            setErro(true)
+            setMsg('No se puede mostrar los datos')
+            setTimeout(() =>{
+                setErro(false)
+                setMsg('')
+            },5000)
+            
+        }else{
+            setLoad(false);
+            setList(resp.data.resp);           
+            
+        }
     }
 
     function selectedAlergia(id_alergia,nombre,p) {      
@@ -208,28 +225,43 @@ function FormAlergias(props) {
                         <div className="card-body">
                             <div className="tab-content" id="custom-tabs-four-tabContent">
                                 <div className="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-                                    {/* /.card-header */}
+                                    {/* /.card-header */}                                    
                                     <section className="content">
-                                        <div className="container-fluid">                                           
+                                        <div className="container-fluid">                                            
                                             <div className="row">
                                                 <div className="col-md-8 offset-md-2">
                                                     <form action="simple-results.html">
                                                         <div className="input-group">
                                                             <input 
-                                                            type="search" 
-                                                            name='buscador'
-                                                            className="form-control form-control-lg" 
-                                                            placeholder="Buscar Alergia"
                                                             onChange={buscarAlergia}
                                                             value={search.buscador}
-                                                             />
-                                                            
+                                                            name='buscador'
+                                                            type="search" className="form-control form-control-lg" placeholder="Buscar alergia" />
+                                                            <div className="input-group-append">
+                                                                {/* <button type="submit" className="btn btn-lg btn-default">
+                                                                    <i className="fa fa-search" />
+                                                                </button> */}
+                                                                <nav aria-label="Page navigation example">
+                                                                    <ul className="pagination">
+                                                                        <li className="page-item">                       
+                                                                            <select name='limite' onChange={changeLimit}  className="form-control">                                                                                
+                                                                                <option value='8'>8</option>
+                                                                                <option value='15'>15</option>
+                                                                                <option value='25'>25</option>
+                                                                                <option value='50'>50</option>
+                                                                                <option value='100'>100</option>
+                                                                            </select>                       
+                                                                        </li>
+                                                                    </ul>
+                                                                </nav>
+                                                            </div>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </section>
+
                                     <br/>
                                     <div className="tab-pane fade show active" id="custom-tabs-five-overlay" role="tabpanel" aria-labelledby="custom-tabs-five-overlay-tab">
                                        
@@ -301,11 +333,11 @@ function FormAlergias(props) {
                                                                                 </div>
 
                                                                             </div>
-                                                                            <div className="col-6">
+                                                                            {data.descripcion && <div className="col-6">
                                                                                 <div className="btn-group btn-group-sm">
                                                                                     <a href={`#collapse${key}`} data-toggle="collapse" className="btn btn-primary"><i className="fas fa-eye" /></a>
                                                                                 </div> 
-                                                                            </div>
+                                                                            </div>}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -357,7 +389,6 @@ function FormAlergias(props) {
                                                 </div>
                                             </div>
                                         }
-
                                         <div className="card card-primary">
                                             <div className="card-header">
                                                 <h3 className="card-title">Registrar Alergia</h3>
@@ -365,34 +396,19 @@ function FormAlergias(props) {
                                             <form onSubmit={handleSubmit}>
                                                 <div className="card-body">
                                                     <div className="form-group">
-                                                        <label htmlFor="exampleInputEmail1">Nombre</label>
+                                                        <label htmlFor="exampleInputEmail1">Nombre {errors.nombre && <code>{errors.nombre}</code>}</label>
                                                         <input 
-                                                        type="text" 
-                                                        onBlur={handleBlur}                          
+                                                        type="text"                                                                          
                                                         onChange={handleChange}
-                                                        className="form-control" 
+                                                        className={errors.nombre ? "form-control is-invalid" : "form-control"} 
                                                         id="exampleInputEmail1" 
-                                                        placeholder="Inserte alergai" 
+                                                        placeholder="Inserte alergia" 
                                                         name="nombre" 
                                                         value={form.nombre} 
                                                         />
-                                                        {errors.nombre && <label htmlFor="exampleInputBorder"><code>{errors.nombre}</code></label>}
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label htmlFor="exampleInputPassword1">Descripcion</label>
-                                                        <textarea 
-                                                        className="form-control" 
-                                                        onBlur={handleBlur}                          
-                                                        onChange={handleChange}
-                                                        placeholder='Motivo de consulta' 
-                                                        rows="5"
-                                                        name="descripcion" 
-                                                        value={form.descripcion} 
-                                                        ></textarea>
-                                                    </div>                                               
-                                                    
-                                                </div>
-                                            
+                                                        
+                                                    </div>                                                                                              
+                                                </div>                                            
                                                 <div className="d-flex">
                                                     <div className="mr-auto p-2">
                                                         <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
@@ -417,7 +433,7 @@ function FormAlergias(props) {
 const useForm = (initilForm,validateForm) =>{
     const [form, setForm] = useState(initilForm);
     //manejo de errores
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({nombre:''});
     //loaders
     const [loading, setloading] = useState(false);
     //respuesta
@@ -430,17 +446,17 @@ const useForm = (initilForm,validateForm) =>{
             ...form,
             [name]:value
         })
+        setErrors({
+            ...errors,
+            [name]:value.length === 0 ? 'Obligatorio' : ''
+        })
     }
     //para las validaciones
-    const handleBlur = (e) =>{
-        handleChange(e);
-        setErrors(validateForm(form))
-    }
+    
     //
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        setErrors(validateForm(form));
-        if(Object.keys(errors).length === 0){
+        if(errors.nombre.length === 0){
         
             setloading(true);
             const resp = await Alergias.CreateAlergias(form);
@@ -449,14 +465,12 @@ const useForm = (initilForm,validateForm) =>{
                 setErrors({
                     [resp.data.name]:resp.data.msg
                 });
-                setTimeout(() => setErrors({
-                    nombre:''
-                }), 5000);
+                
             }else{
                 setloading(false);
                 setResponse(true);
                 setForm(initilForm);
-                setTimeout(() => setResponse(false), 5000);
+                setTimeout(() => setResponse(false), 1000);
             }
 
         }else{
@@ -471,7 +485,6 @@ const useForm = (initilForm,validateForm) =>{
         loading,
         response,
         handleChange,
-        handleBlur,
         handleSubmit
     }
 }

@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import RoutesConsultas from '../../../Routes/Consultas';
 const form = {
     motivo:'',
-    historiaDeLaEnf:''        
+    historiaDeLaEnf:'',
+    diagPresuntivo:'',
+    conducta:''        
 }
 const form1 ={
     ta:'',
@@ -117,6 +119,8 @@ function FormConsutla(props) {
             const datas = {
                 motivo:data.motivo,
                 enfermedadActual:data.historiaDeLaEnf,
+                diagPresuntivo:data.diagPresuntivo,
+                conducta:data.conducta,
                 signosVitales:{
                     ta:data1.ta,
                     fc:data1.fc,
@@ -172,26 +176,48 @@ function FormConsutla(props) {
             <form onSubmit={handleSubmit}>
                 <div className="card-body">
                     <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">Motivo de Consulta {err.motivo && <code>{err.motivo}</code>}</label>
+                        <label htmlFor="exampleInputEmail1">Motivo de Consulta: {err.motivo && <code>{err.motivo}</code>}</label>
                         <textarea 
                         name="motivo" 
                         onChange={handleChange}                        
                         className="form-control" 
                         placeholder='Motivo de consulta' 
-                        rows="5"
+                        rows="3"
                         value={data.motivo}
                         ></textarea>
                         
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual {err.historiaDeLaEnf && <code>{err.historiaDeLaEnf}</code>}</label>
+                        <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual: {err.historiaDeLaEnf && <code>{err.historiaDeLaEnf}</code>}</label>
                         <textarea 
                         name="historiaDeLaEnf"
                         onChange={handleChange}                       
                         className="form-control"  
-                        rows="5"
+                        rows="3"
                         placeholder='Motivo de consulta' 
                         value={data.historiaDeLaEnf}
+                        ></textarea>        
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="exampleInputPassword1">Diagnosticos Presuntivos: {err.diagPresuntivo && <code>{err.diagPresuntivo}</code>}</label>
+                        <textarea 
+                        name="diagPresuntivo"
+                        onChange={handleChange}                       
+                        className="form-control"  
+                        rows="3"
+                        placeholder='Motivo de consulta' 
+                        value={data.diagPresuntivo}
+                        ></textarea>        
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="exampleInputPassword1">Conducta: {err.conducta && <code>{err.conducta}</code>}</label>
+                        <textarea 
+                        name="conducta"
+                        onChange={handleChange}                       
+                        className="form-control"  
+                        rows="3"
+                        placeholder='Motivo de consulta' 
+                        value={data.conducta}
                         ></textarea>        
                     </div>
 

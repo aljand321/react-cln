@@ -92,8 +92,7 @@ function  DataPaciente(props){
                                 </div>
                             </div>
                         </div>
-                    </div>
-                   
+                    </div>                   
                 </section>
 
 

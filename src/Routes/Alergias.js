@@ -37,11 +37,13 @@ class Alergias{
         }
     }
 
-    static async buscarAlergia(data){        
+    static async buscarAlergia(data,pagesize){   
         const token = await Token.getToken();
         if(!token) return {data:{success:false,msg:"no hay token"} };
         let buscar = {
             buscador:data,
+            pagenumber:1,
+            pagesize
         }
         try {
             const resp = await axios.post(`${Url.urlBackEnd}/api/buscarAlergia`,buscar,{                
