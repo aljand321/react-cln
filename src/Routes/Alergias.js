@@ -37,12 +37,12 @@ class Alergias{
         }
     }
 
-    static async buscarAlergia(data,pagesize){   
+    static async buscarAlergia(data,page,pagesize){   
         const token = await Token.getToken();
         if(!token) return {data:{success:false,msg:"no hay token"} };
         let buscar = {
             buscador:data,
-            pagenumber:1,
+            pagenumber: page ? page : 0,
             pagesize
         }
         try {
@@ -69,6 +69,38 @@ class Alergias{
             });
             if(resp.status === 200) return resp;
             if(resp.status === 500) return {data:{success:false,msg:'error 500', error:'500'}};
+        } catch (error) {
+            return {data:{success:false,msg:"error 500",error:'500'}};
+        }
+    }
+    static async OneAlergia(id_alergia){    
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };
+        try {
+            const resp = await axios.get(`${Url.urlBackEnd}/api/OneAlergia/${id_alergia}`,{                
+                headers: {
+                    'c_token': token.t
+                }
+            });       
+           
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false, error:'500'}};
+        } catch (error) {
+            return {data:{success:false,msg:"error 500",error:'500'}};
+        }
+    }
+    static async actualizarAlergia(id_alergia,datas){    
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };
+        try {
+            const resp = await axios.put(`${Url.urlBackEnd}/api/updateAlergia/${id_alergia}`,datas,{                
+                headers: {
+                    'c_token': token.t
+                }
+            });       
+           
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false, error:'500'}};
         } catch (error) {
             return {data:{success:false,msg:"error 500",error:'500'}};
         }

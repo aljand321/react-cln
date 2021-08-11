@@ -1,13 +1,13 @@
-/* import {useForm} from 'react-hook-form'; */
 import React, { useState } from 'react';
 import RoutesConsultas from '../../../Routes/Consultas';
 const form = {
-    motivo:'',
-    historiaDeLaEnf:'',
-    diagPresuntivo:'',
-    conducta:''        
+    subjetivo: '',
+    objetivo: '',
+    diagnostico: '',
+    tratamiento:'',    
 }
 const form1 ={
+    tmp:'',
     ta:'',
     fc:'',
     fr:0,
@@ -15,8 +15,7 @@ const form1 ={
     temp:'',
     r1:''
 } 
-function FormConsutla(props) {
-    /* const { register, handleSubmit, reset, formState: { errors } } = useForm(); */
+function FormRetornoConsulta (props){
     const [data, setData] = useState(form);
     const [data1, setData1] = useState(form1);
 
@@ -117,23 +116,24 @@ function FormConsutla(props) {
           
             //setLoad(true);
             const datas = {
-                motivo:data.motivo,
-                enfermedadActual:data.historiaDeLaEnf,
-                diagPresuntivo:data.diagPresuntivo,
-                conducta:data.conducta,
+                subjetivo:data.subjetivo,
+                objetivo:data.objetivo,
+                diagnostico:data.diagnostico,
+                tratamiento:data.tratamiento,
                 signosVitales:{
+                    tmp:data1.tmp,
                     ta:data1.ta,
                     fc:data1.fc,
                     fr:isNaN(data1.fr) || !data1.fr || data1.fr <= 0 ? '' : data1.fr,
                     sao:!data1.fr || isNaN(data1.fr) || data1.fr <= 0 ? '' : data1.sao,
                     temp:{
-                        temp:isNaN(n) || n === Infinity || n === 0 ? '' : data1.fr / data1.sao,
+                        imc:isNaN(n) || n === Infinity || n === 0 ? '' : data1.fr / data1.sao,
                         r1:data1.r1
                     }                    
                 }
             }
-           
-            const resp = await RoutesConsultas.CreateConsulta(datas, props.dataPaciente);            
+            console.log(datas)
+            const resp = await RoutesConsultas.createRetorno(props.consulta.id, datas);            
             if(resp.data.success === false){
                 setLoad(false);
                 setErroResp({erro:resp.data.msg})
@@ -143,14 +143,13 @@ function FormConsutla(props) {
                 setResp(true);
                 setData(form);
                 setData1(form1);
-                props.callList();
+                props.callList(props.consulta.id);
                 setTimeout(()=>setResp(false), 5000)
             }
         }
     }
-
     return (
-        <>  
+        <>
             {load && 
                 <div className="overlay"><i className="fas fa-3x fa-sync-alt fa-spin" /><div className="text-bold pt-2">Loading...</div></div>
             }
@@ -176,48 +175,48 @@ function FormConsutla(props) {
             <form onSubmit={handleSubmit}>
                 <div className="card-body">
                     <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">Motivo de Consulta: {err.motivo && <code>{err.motivo}</code>}</label>
+                        <label htmlFor="exampleInputEmail1">Subjetivo: {err.subjetivo && <code>{err.subjetivo}</code>}</label>
                         <textarea 
-                        name="motivo" 
+                        name="subjetivo" 
                         onChange={handleChange}                        
                         className="form-control" 
-                        placeholder='Motivo de consulta' 
+                        placeholder='Subjetivo' 
                         rows="3"
-                        value={data.motivo}
+                        value={data.subjetivo}
                         ></textarea>
                         
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual: {err.historiaDeLaEnf && <code>{err.historiaDeLaEnf}</code>}</label>
+                        <label htmlFor="exampleInputPassword1">Objetivo: {err.objetivo && <code>{err.objetivo}</code>}</label>
                         <textarea 
-                        name="historiaDeLaEnf"
+                        name="objetivo"
                         onChange={handleChange}                       
                         className="form-control"  
                         rows="3"
-                        placeholder='Historia de la enfermedad actual' 
-                        value={data.historiaDeLaEnf}
+                        placeholder='Objetivo' 
+                        value={data.objetivo}
                         ></textarea>        
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Diagnosticos Presuntivos: {err.diagPresuntivo && <code>{err.diagPresuntivo}</code>}</label>
+                        <label htmlFor="exampleInputPassword1">Diagnostico: {err.diagnostico && <code>{err.diagnostico}</code>}</label>
                         <textarea 
-                        name="diagPresuntivo"
+                        name="diagnostico"
                         onChange={handleChange}                       
                         className="form-control"  
                         rows="3"
-                        placeholder='Diagnosticos Presuntivos' 
-                        value={data.diagPresuntivo}
+                        placeholder='Diagnostico' 
+                        value={data.diagnostico}
                         ></textarea>        
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Conducta: {err.conducta && <code>{err.conducta}</code>}</label>
+                        <label htmlFor="exampleInputPassword1">Tratamiento: {err.tratamiento && <code>{err.tratamiento}</code>}</label>
                         <textarea 
-                        name="conducta"
+                        name="tratamiento"
                         onChange={handleChange}                       
                         className="form-control"  
                         rows="3"
-                        placeholder='Conducta' 
-                        value={data.conducta}
+                        placeholder='Tratamiento' 
+                        value={data.tratamiento}
                         ></textarea>        
                     </div>
 
@@ -240,14 +239,9 @@ function FormConsutla(props) {
                                 onChange={handleChange1}
                                 value={data1.fr}
                                 className="form-control" type="number" placeholder="Peso Kg"></input>
-                                {/* <textarea 
-                                name="fr"
-                                onChange={handleChange1}
-                                className="form-control"  
-                                rows="2" 
-                                value={data1.fr}
-                                placeholder="Peso Kg"></textarea> */}
+                                
                             </div>
+                            
 
                             <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">Aux. Rec.</label>          
@@ -255,11 +249,11 @@ function FormConsutla(props) {
                                     <div className="icheck-primary d-inline">
                                         <input onChange={handleChange1} 
                                         type="radio" 
-                                        id="radioPrimary1" 
+                                        id="radioPrimary100" 
                                         name="r1" 
                                         checked={data1.r1 ===  'aux'}
                                         value="aux" />
-                                        <label htmlFor="radioPrimary1">
+                                        <label htmlFor="radioPrimary100">
                                             Aux.
                                         </label>
                                     </div>
@@ -267,26 +261,30 @@ function FormConsutla(props) {
                                         <input 
                                         onChange={handleChange1}
                                         type="radio" 
-                                        id="radioPrimary2" 
+                                        id="radioPrimary200" 
                                         name="r1" 
                                         checked={data1.r1 ===  'rec'}
                                         value="rec" />
-                                        <label htmlFor="radioPrimary2">
+                                        <label htmlFor="radioPrimary200">
                                             Rec.
                                         </label>
                                     </div>                                    
                                 </div>
-                                <label htmlFor="exampleInputEmail1">IMC.</label>                   
+                                <label htmlFor="exampleInputEmail1">IMC. cm</label>                      
                                 <input 
                                     className="form-control"
                                     type="text"                     
                                     value={data1.fr <= 0 || data1.sao <= 0  ? 0 : data1.fr / data1.sao}
                                     disabled
                                 ></input>
+                                
                             </div>
+                            
 
                         </div>
                         <div className="col-md-6">
+                            
+                            
                             <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">F.C. lat/min</label>
                                 <textarea
@@ -297,6 +295,7 @@ function FormConsutla(props) {
                                 value={data1.fc}
                                 placeholder="F.C. lat/min"></textarea>
                             </div>
+                            
                             {data1.fr > 0 && <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">Talla cm {err2.sao && <code>{err2.sao}</code>}</label>
                                 <input  
@@ -312,6 +311,15 @@ function FormConsutla(props) {
                                 value={data1.sao} 
                                 placeholder="Talla cm"></textarea> */}
                             </div>}
+                            <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Temp.</label>
+                                <input  
+                                name="tmp"
+                                onChange={handleChange1}
+                                value={data1.tmp}
+                                className="form-control" type="text" placeholder="Temperatura °C"></input>
+                                
+                            </div>
                             
                         </div>
                     </div>                    
@@ -326,8 +334,8 @@ function FormConsutla(props) {
                     </div>
                 </div> 
             </form>
-
         </>
     );
 }
-export default FormConsutla;
+
+export default FormRetornoConsulta;

@@ -18,22 +18,7 @@ class Pacientes {
         } catch (error) {
             return {data:{success:false,msg:"error 500",error:'500'}};
         }
-    }
-    static async pacientes (){
-        const token = await Token.getToken();
-        if(!token) return {data:{success:false,msg:"no hay token"} };
-        try {
-            const resp = await axios.get(`${Url.urlBackEnd}/api/pacientes`,{
-                headers: {
-                    'c_token': token.t
-                }
-            });
-            if(resp.status === 200) return resp;
-            if(resp.status === 500) return {data:{success:false,error:'500'}};
-        } catch (error) {
-            return {data:{success:false,error:'500'}};
-        }
-    }
+    }    
     static async buscarPaciente (data,p,l){
         //console.log(data, 'esto lo que quiero ver');
         const token = await Token.getToken();
@@ -71,5 +56,38 @@ class Pacientes {
             return {data:{success:false,error:'500'}};
         }
     }
+    static async responsable (data){
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };        
+        try {
+            const resp = await axios.post(`${Url.urlBackEnd}/api/responsable/${token.user.id}`,data ,{
+                headers: {
+                    'c_token': token.t
+                }
+            });
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false,error:'500'}};
+        } catch (error) {
+            return {data:{success:false,error:'500'}};
+        }
+    }
+
+    static async listResponsablesPaciente (id_paciente){
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };        
+        try {
+            const resp = await axios.get(`${Url.urlBackEnd}/api/responsable/${id_paciente}`,{
+                headers: {
+                    'c_token': token.t
+                }
+            });
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false,error:'500'}};
+        } catch (error) {
+            return {data:{success:false,error:'500'}};
+        }
+    }
+
+    
 }
 export default Pacientes;

@@ -80,7 +80,6 @@ function FormPaciente(props){
             })
             try {
                 const resp = await Pacientes.create(body);
-                
                 if(resp.data.success === false){
                     if(resp.data.error === '500'){
                         setFormErr({                    
@@ -109,8 +108,11 @@ function FormPaciente(props){
                         loading:false,
                         response:true, 
                         error:null                    
-                    })                
+                    }) 
                     props.handleChange();
+                    if(props.desde === "paciente"){                        
+                        props.selectedPciente(resp.data.resp.id);
+                    }               
                 }
             } catch (error) {
                 setFormErr({

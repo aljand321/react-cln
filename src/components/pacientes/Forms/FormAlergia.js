@@ -39,7 +39,7 @@ function FormAlergias(props) {
       
     const getList = useCallback( async() =>{         
         setLoad(true);        
-        const resp = await Alergias.buscarAlergia('',8);
+        const resp = await Alergias.buscarAlergia('',0,8);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -68,7 +68,7 @@ function FormAlergias(props) {
             })
             data= value 
         }           
-        const resp = await Alergias.buscarAlergia(data,10);
+        const resp = await Alergias.buscarAlergia(data,0,10);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -86,7 +86,7 @@ function FormAlergias(props) {
     }
     async function changeLimit (e){
         const {value} = e.target                 
-        const resp = await Alergias.buscarAlergia('',value);
+        const resp = await Alergias.buscarAlergia('',0,value);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -277,17 +277,7 @@ function FormAlergias(props) {
                                                         {msg}
                                                     </div>
                                                 </div>
-                                            }
-                                            {erro && 
-                                                <div className="overlay">
-                                                    <div className="alert alert-danger alert-dismissible">
-                                                        <button type="button" className="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                        <h5><i className="icon fas fa-ban" />Error 500!</h5>
-                                                        {msg}
-                                                    </div>
-                                                </div>
-                                            }  
-
+                                            }                                            
                                             <div>
                                                 {select.map((data,key) =>{
                                                     return (

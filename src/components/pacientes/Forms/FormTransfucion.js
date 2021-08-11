@@ -38,7 +38,7 @@ function FormTransfucion(props) {
     const[respSuccess, setRespSuccess] = useState([]);
     const getList = useCallback( async() =>{         
         setLoad(true);        
-        const resp = await Transfuciones.buscarTransfucion('',8);
+        const resp = await Transfuciones.buscarTransfucion('',0,8);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -67,7 +67,7 @@ function FormTransfucion(props) {
             })
             data= value 
         }           
-        const resp = await Transfuciones.buscarTransfucion(data,10);
+        const resp = await Transfuciones.buscarTransfucion(data,0,10);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -85,7 +85,7 @@ function FormTransfucion(props) {
     }
     async function changeLimit (e){
         const {value} = e.target                 
-        const resp = await Transfuciones.buscarTransfucion('',value);
+        const resp = await Transfuciones.buscarTransfucion('',0,value);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)

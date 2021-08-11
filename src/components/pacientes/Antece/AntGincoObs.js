@@ -72,13 +72,13 @@ function AntGincoObs(props) {
                             <thead>
                                 <tr>
                                     <th style={{width: 10}}>#</th>
-                                    <th>Menarca</th>
+                                   
                                     <th>Rtimo</th>
-                                    <th>FMU</th>
-                                    <th>Gesta para Cesaria</th>
+                                    <th>FUM.</th>
+                                    <th>Gesta</th>
+                                    <th>Partos</th>
+                                    <th>Cesárea</th>
                                     <th>Abortos</th>
-                                    <th>Nacidos vivos</th>
-                                    <th>Mortinatos</th>
                                     <th>Metodos de Planificacion Familiar</th>
                                     <th>Fecha</th>
                                 </tr>
@@ -87,16 +87,15 @@ function AntGincoObs(props) {
                                 {list.map((data,key) => {
                                     return(
                                         <tr key={key}>
-                                            <td>{key+1}</td>
-                                            <td>{data.menarca}</td>
+                                            <td>{key+1}</td>                                           
                                             <td>{data.ritmo}</td>
-                                            <td>{data.fmu}</td>
-                                            <td>{data.gestaCesaria}</td>
+                                            <td>{data.fum}</td>
+                                            <td>{data.gesta}</td>
+                                            <td>{data.partos}</td>
+                                            <td>{data.cesarea}</td>
                                             <td>{data.abortos}</td>
-                                            <td>{data.nacidoVivos}</td>
-                                            <td>{data.mortinatos}</td>
                                             <td>{data.plfcFamiliar}</td>
-                                            <td>{data.fecha}</td>
+                                            <td>{data.createdAt.split('T')[0]}</td>
                                         </tr>
                                     );
                                 })}

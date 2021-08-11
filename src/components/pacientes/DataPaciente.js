@@ -6,6 +6,8 @@ import Inmunizaciones from "./Antece/Inmunizaciones";
 import AntecedentesFml from "./Antece/AntecedentesFml";
 import ExamenFisico from "./Antece/ExamenFisico";
 import AntGincoObs from "./Antece/AntGincoObs";
+import Responsable from './Responsable';
+import AntPediatricos from './Antece/AntPediatricos';
 function  DataPaciente(props){   
     const [select, setSelect] = useState(0)
     const selected = (p) =>{
@@ -13,10 +15,10 @@ function  DataPaciente(props){
     }
     if(Object.keys(props.dataPaciente).length !== 0){
         const dataPaciente = props.dataPaciente;
+       
         return(
             <>
                 <section className="content">
-                   
                     <div className="row">
                         { props.identify === 'null' &&
                             <div className="col-md-2" >                       
@@ -26,24 +28,33 @@ function  DataPaciente(props){
                                         <p className="text-muted text-center">{dataPaciente.apellidos}</p>
                                         <ul className="list-group list-group-unbordered mb-3">
                                             <li className="list-group-item">
+                                                <b>Ocupacion</b> <div className="float-right">{dataPaciente.ocupacion}</div>
+                                            </li>
+                                            <li className="list-group-item">
                                                 <b>Direccion</b> <div className="float-right">{dataPaciente.direccion}</div>
                                             </li>
                                             <li className="list-group-item">
                                                 <b>Edad</b> <div className="float-right">{dataPaciente.edad}</div>
                                             </li>
                                             <li className="list-group-item">
-                                                <b>Ocupacion</b> <div className="float-right">{dataPaciente.ocupacion}</div>
+                                                <b>C.I.</b> <div className="float-right">{dataPaciente.ci}</div>
                                             </li>
+                                            <li className="list-group-item">
+                                                <b>Telefono</b> <div className="float-right">{dataPaciente.telefono}</div>
+                                            </li>
+                                            <li className="list-group-item">
+                                                <b>Registrado en:</b> <div className="float-right">{dataPaciente.createdAt.split('T')[0]}</div>
+                                            </li>                                            
                                         </ul>
                                     </div>                               
                                 </div>
                             </div>
                         }                        
-                       
                         <div className={props.identify === 'null' ? "col-md-10" : "col-md-12"}>
                             <div className="card">
                                 <div className="card-header p-2">
                                     <ul className="nav nav-pills">
+                                        <li className="nav-item"><a onClick={()=> selected(7)} className={select === 7 ? "nav-link active": "nav-link"} href="#responsable" data-toggle="tab">Responsable</a></li>
                                         <li className="nav-item"><a onClick={()=> selected(0)} className={select === 0 ? "nav-link active": "nav-link"} href="#consultas" data-toggle="tab">Consultas</a></li>
                                         <li className="nav-item"><a onClick={()=> selected(1)} className={select === 1 ? "nav-link active": "nav-link"} href="#patologicos" data-toggle="tab">Antecedentes Patologicos</a></li>
                                         <li className="nav-item"><a onClick={()=> selected(2)} className={select === 2 ? "nav-link active": "nav-link"} href="#noPatologicos" data-toggle="tab">No patologicos</a></li>
@@ -53,10 +64,14 @@ function  DataPaciente(props){
                                             <li className="nav-item"><a onClick={()=> selected(5)} className={select === 5 ? "nav-link active": "nav-link"} href="#ginecoObstetricos" data-toggle="tab">Gineco Obstetricos</a></li>
                                         }                                        
                                         <li className="nav-item"><a onClick={()=> selected(6)} className={select === 6 ? "nav-link active": "nav-link"} href="#examenFisico" data-toggle="tab">Examen Fisico</a></li>
+                                        <li className="nav-item"><a onClick={()=> selected(8)} className={select === 8 ? "nav-link active": "nav-link"} href="#AntPediatricos" data-toggle="tab">Antecedentes Pediatricos</a></li>
                                     </ul>
                                 </div>
                                 <div className="card-body">
                                     <div className="tab-content">
+                                        <div className={select === 7 ? "active tab-pane" : "tab-pane"} id="responsable">                                                                                       
+                                            <Responsable dataPaciente={dataPaciente} identify={props.identify}/>                                           
+                                        </div> 
                                         <div className={select === 0 ? "active tab-pane" : "tab-pane"} id="consultas">
                                             <div className="overlay-wrapper">                                               
                                                 <DataConsulta dataPaciente={dataPaciente} identify={props.identify}/>
@@ -77,15 +92,20 @@ function  DataPaciente(props){
                                             <AntecedentesFml dataPaciente={dataPaciente} identify={props.identify}/>
                                         </div>
                                         {dataPaciente.sexo === 'F' && 
-                                        <div className={select === 5 ? "active tab-pane" : "tab-pane"} id="ginecoObstetricos">
-                                            <div className="overlay-wrapper">
-                                                <AntGincoObs dataPaciente={dataPaciente} identify={props.identify}/>
+                                            <div className={select === 5 ? "active tab-pane" : "tab-pane"} id="ginecoObstetricos">
+                                                <div className="overlay-wrapper">
+                                                    <AntGincoObs dataPaciente={dataPaciente} identify={props.identify}/>
+                                                </div>
                                             </div>
-                                        </div>
                                         }
                                         <div className={select === 6 ? "active tab-pane" : "tab-pane"} id="examenFisico">
                                             <div className="overlay-wrapper">
                                                 <ExamenFisico dataPaciente={dataPaciente} identify={props.identify}/>
+                                            </div>
+                                        </div>
+                                        <div className={select === 8 ? "active tab-pane" : "tab-pane"} id="AntPediatricos">
+                                            <div className="overlay-wrapper">
+                                                <AntPediatricos dataPaciente={dataPaciente} identify={props.identify}/>
                                             </div>
                                         </div>
                                     </div>
@@ -94,8 +114,6 @@ function  DataPaciente(props){
                         </div>
                     </div>                   
                 </section>
-
-
             </>
         );
     }else{

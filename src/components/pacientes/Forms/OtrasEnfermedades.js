@@ -39,7 +39,7 @@ function FormOtrasEnfermedades(props) {
     const[respSuccess, setRespSuccess] = useState([]);
     const getList = useCallback( async() =>{         
         setLoad(true);        
-        const resp = await OtrasEnfermedades.buscarEnf('',8);
+        const resp = await OtrasEnfermedades.buscarEnf('',0,8);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -70,7 +70,7 @@ function FormOtrasEnfermedades(props) {
         }    
         try {
             if(isMountedRef.current){
-                const resp = await OtrasEnfermedades.buscarEnf(data,10);
+                const resp = await OtrasEnfermedades.buscarEnf(data,0,10);
                 if(resp.data.success === false){
                     setLoad(false);
                     setErro(true)
@@ -95,7 +95,7 @@ function FormOtrasEnfermedades(props) {
     },[msg,erro])
     async function changeLimit (e){
         const {value} = e.target                 
-        const resp = await OtrasEnfermedades.buscarEnf('',value);
+        const resp = await OtrasEnfermedades.buscarEnf('',0,value);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)

@@ -10,7 +10,7 @@ import Layout from './Layout';
 import UserContac from '../pages/UserContac';
 
 import Token from '../token';
-import Alergias from '../pages/Alergias';
+import ANTPatologicos from '../pages/Alergias';
 //login form
 import Login from '../pages/Login';   
 class App extends React.Component{  
@@ -66,7 +66,7 @@ class App extends React.Component{
                                 <Route exact path='/' component={Home}></Route>
                                 <Route exact path='/about' component={About}></Route>
                                 <Route exact path='/consulta' component={Consulta}></Route>
-                                <Route exact path='/alergias' component={Alergias}></Route>
+                                <Route exact path='/alergias' component={ANTPatologicos}></Route>
                                 <Route exact path='/contacto' component={UserContac}></Route>
                             </Switch>
                         </Layout>               

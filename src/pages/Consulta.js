@@ -27,7 +27,8 @@ class Consulta extends React.Component{
         list0:{},
         selected:{},
         number:0,
-        c:0
+        c:0,
+        activeWindows:0
 
     }
     componentDidMount(){
@@ -44,51 +45,12 @@ class Consulta extends React.Component{
                 this.props.history.push(user.user.role === 'medico' ? '/consulta' : '/') 
             }
         }
-    }
-    listPacientes = async () =>{
-        this.setState({
-            success:{
-                loading:true,
-                error:null
-            }
-        })
-        try {
-            const resp = await Pacientes.pacientes();
-            if (resp.data.success ===false){
-              
-                this.setState({
-                    success:{
-                        loading:false,
-                        error:true
-                    }
-                })
-                setTimeout(() => this.setState({
-                    success:{
-                        loading:false,
-                        error:null
-                    }
-                }), 5000)
-                return;               
-            }
-
-            this.setState({
-                success:{
-                    loading:false,
-                    error:null
-                },
-                listP:resp.data.resp
-                
-            })
-        } catch (error) {
-            this.setState({
-                success:{
-                    loading:false,
-                    error:true
-                }
-            })
-        }
-    }
+    }    
     handleChange = async (e) =>{   
+        this.setState({
+            number: 0,
+            c : 0
+        })
         if(this._isMounted){    
             let data = ''
             if (e){
@@ -286,20 +248,41 @@ class Consulta extends React.Component{
                     error:null
                 },                          
             }) 
+            this.selectedPciente(resp.data.resp.id)
         }
     }
     
     selectedPciente = (id) =>{
-        let selec = this.state.windows.list.filter(function(data){
-            return data.id ===  id
-        })
-        this.setState({
-            selected:selec[0]
-        }) 
+        if(id === 0){
+            this.setState({
+                activeWindows : 0
+            })
+        }else{
+            let selec = this.state.windows.list.filter(function(data){
+                return data.id ===  id
+            })
+            this.setState({
+                selected:selec[0],
+                activeWindows : id
+            }) 
+        }
+        
     }
-    /* remove_user(id) {
-        delete data_user[id];
-    } */
+    removeSelect(id) {        
+        let p = 0, arr = this.state.windows.list
+        for (let i = 0; i < this.state.windows.list.length; i++) {
+            if(this.state.windows.list[i].id === id){
+                p = i
+            }        
+        };
+        arr.splice(p,1);
+        this.setState({
+            window:{
+                list : arr
+            },
+            activeWindows : 0
+        });
+    }
     componentWillUnmount() {
         this._isMounted = false;
         this.setState = (state,callback)=>{
@@ -321,7 +304,8 @@ class Consulta extends React.Component{
                             <div className="card-header p-0 pt-1">
                                 <ul className="nav nav-tabs" id="custom-tabs-five-tab" role="tablist">
                                     <li className="nav-item">
-                                        <a className="nav-link active" 
+                                        <a onClick={() => this.selectedPciente(0)}
+                                        className={this.state.activeWindows === 0 ? "nav-link active" : "nav-link"} 
                                         id="custom-tabs-five-overlay-tab" 
                                         data-toggle="pill" 
                                         href="#custom-tabs-five-overlay" 
@@ -333,7 +317,8 @@ class Consulta extends React.Component{
                                         return(
                                             <li className="nav-item" key={key} >
                                                 <a onClick={() => this.selectedPciente(data.id)}
-                                                className="nav-link" 
+                                                onDoubleClick={() => this.removeSelect(data.id)}
+                                                className={this.state.activeWindows === data.id ? "nav-link active" : "nav-link"} 
                                                 id="custom-tabs-five-overlay-dark-tab" 
                                                 data-toggle="pill" 
                                                 href="#custom-tabs-five-overlay-dark" 
@@ -349,7 +334,9 @@ class Consulta extends React.Component{
                             </div>
                             <div className="card-body">
                                 <div className="tab-content" id="custom-tabs-five-tabContent">
-                                    <div className="tab-pane fade show active" id="custom-tabs-five-overlay" role="tabpanel" aria-labelledby="custom-tabs-five-overlay-tab">
+                                    <div 
+                                     className={this.state.activeWindows === 0 ? "tab-pane fade show active" : "tab-pane fade show"}                                     
+                                     id="custom-tabs-five-overlay" role="tabpanel" aria-labelledby="custom-tabs-five-overlay-tab">
                                         <ListPacientes 
                                             changePage={this.changePage} 
                                             changeLimit={this.changeLimit} 
@@ -366,7 +353,8 @@ class Consulta extends React.Component{
                                     </div>
                                     
                                     <div
-                                    className="tab-pane fade" 
+                                    className={this.state.activeWindows === this.state.selected.id ? "tab-pane fade show active" : "tab-pane fade show"}   
+                                    
                                     id="custom-tabs-five-overlay-dark" 
                                     role="tabpanel" 
                                     aria-labelledby="custom-tabs-five-overlay-dark-tab">
@@ -381,7 +369,7 @@ class Consulta extends React.Component{
                 </div>
 
                 <ModalLarge title='Registrar Paciente' idModal='paciente'>
-                    <FormPaciente handleChange={this.handleChange}/>
+                    <FormPaciente handleChange={this.handleChange} selectedPciente={this.getPaciente} desde="paciente"/>
                 </ModalLarge>      
             </React.Fragment>
         );

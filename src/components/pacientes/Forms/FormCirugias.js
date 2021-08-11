@@ -39,7 +39,7 @@ function FormCirugias(props) {
 
     const getList = useCallback( async() =>{         
         setLoad(true);        
-        const resp = await Cirugias.buscarCirugia('',8);
+        const resp = await Cirugias.buscarCirugia('',0,8);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -69,7 +69,7 @@ function FormCirugias(props) {
             })
             data= value 
         }           
-        const resp = await Cirugias.buscarCirugia(data,10);
+        const resp = await Cirugias.buscarCirugia(data,0,10);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)
@@ -87,7 +87,7 @@ function FormCirugias(props) {
     }
     async function changeLimit (e){
         const {value} = e.target                 
-        const resp = await Cirugias.buscarCirugia('',value);
+        const resp = await Cirugias.buscarCirugia('',0,value);
         if(resp.data.success === false){
             setLoad(false);
             setErro(true)

@@ -34,12 +34,12 @@ class Transfuciones{
             return {data:{success:false,msg:"error 500",error:'500'}};
         }
     }
-    static async buscarTransfucion(data,pagesize){        
+    static async buscarTransfucion(data,page,pagesize){        
         const token = await Token.getToken();
         if(!token) return {data:{success:false,msg:"no hay token"} };
         let buscar = {
             buscador:data,
-            pagenumber:1,
+            pagenumber:page ? page : 0,
             pagesize
         }
         try {
@@ -66,6 +66,38 @@ class Transfuciones{
             });
             if(resp.status === 200) return resp;
             if(resp.status === 500) return {data:{success:false,msg:'error 500', error:'500'}};
+        } catch (error) {
+            return {data:{success:false,msg:"error 500",error:'500'}};
+        }
+    }
+    static async OneTransfucion(id_transfucion){    
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };
+        try {
+            const resp = await axios.get(`${Url.urlBackEnd}/api/oneTransfucion/${id_transfucion}`,{                
+                headers: {
+                    'c_token': token.t
+                }
+            });       
+           
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false, error:'500'}};
+        } catch (error) {
+            return {data:{success:false,msg:"error 500",error:'500'}};
+        }
+    }
+    static async updateTransfucion(id_transfucion,datas){    
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };
+        try {
+            const resp = await axios.put(`${Url.urlBackEnd}/api/updateTransfucion/${id_transfucion}`,datas,{                
+                headers: {
+                    'c_token': token.t
+                }
+            });       
+           
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false, error:'500'}};
         } catch (error) {
             return {data:{success:false,msg:"error 500",error:'500'}};
         }

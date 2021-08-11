@@ -1,22 +1,16 @@
 import React, { useState } from 'react'
 import RoutesAntGncObst from '../../../Routes/AntGncObst';
 const form ={
-    menarca:'',
     ritmo:'',
-    gestaCesaria:'',
+    fum:'',
+    gesta:'',
+    partos:'',
+    cesarea:'',
     abortos:'',
-    nacidoVivos:'',
-    mortinatos:'',
     plfcFamiliar:''
 }
-const formDatas= {
-    fmu:'',
-    fecha:''
-    
-}
 function FormAntGncObs(props) {
-    const [data, setData] = useState(form);
-    const [data1, setdata1] = useState(formDatas);
+    const [data, setData] = useState(form);   
     const [err, setErr] = useState(form);
     const [respErr, setRespErr] = useState({erro:''});
     const [load, setLoad] = useState(false);
@@ -28,57 +22,27 @@ function FormAntGncObs(props) {
         setData({
             ...data,
             [name]:value
-        })
+        });
         setErr({
             ...err,
-            [name]:value.length === 0 ? 'Obligatorio' : value < 0 ? 'No puede ser menor a 0' : ''
+            [name]:value.length === 0 ? 'Obligatorio' : ''
         })
+        
     }
-    const onchange1 = (e) =>{
-        const {name,value}= e.target;
-        setdata1({
-            ...data1,
-            [name]:value
-        })
-    }
+    
     const onSubmit = async (e) =>{
         e.preventDefault();
-        let erro = false;
         let arr = {}
         for(const d in data){
             if(!data[d]){
-                erro=true;
-                arr[d] = 'obligatorio'
+                arr[d] = 'Obligatorio'
             }
         }
-        if(err.menarca === 'No puede ser menor a 0'){
-            erro = true
-            return;
-        }
-        if(err.nacidoVivos === 'No puede ser menor a 0'){
-            erro = true
-            return;
-        }
-        if(err.mortinatos === 'No puede ser menor a 0'){
-            erro = true
-            return;
-        }
+        
         setErr(arr)
-        if(erro === false){
-            const body = {
-                menarca:data.menarca,
-                ritmo:data.ritmo,
-                gestaCesaria:data.gestaCesaria,
-                abortos:data.abortos,
-                nacidoVivos:data.nacidoVivos,
-                mortinatos:data.mortinatos,
-                plfcFamiliar:data.plfcFamiliar,
-                fmu:data1.fmu ? data1.fmu : '----',
-                fecha:data1.fecha ? data1.fecha : '----'
-            }
+        if(Object.keys(arr).length === 0){           
             setLoad(true);
-            const resp = await RoutesAntGncObst.createAntGncObst(body, props.dataPaciente);
-            console.log(resp.data, ' estp es lo que quiero ver')
+            const resp = await RoutesAntGncObst.createAntGncObst(data, props.dataPaciente);
             if(resp.data.success === false){
                 setLoad(false);
                 setRespErr({erro:resp.data.msg})
@@ -122,104 +86,79 @@ function FormAntGncObs(props) {
                     <div className="row">
                         <div className="col-sm-6">                               
                             <div className="form-group">
-                                <label>Menarca {err.menarca &&<code>{err.menarca}</code>}</label>
-                                <input
-                                onChange={onChange} 
-                                value={data.menarca}
-                                name="menarca" 
-                                type="number" className="form-control" placeholder="......Años" />
-                            </div>
-                        </div>
-                        <div className="col-sm-6">
-                            <div className="form-group">
                                 <label>Ritmo {err.ritmo &&<code>{err.ritmo}</code>}</label>
                                 <input
-                                onChange={onChange} 
+                                onChange={onChange}
                                 value={data.ritmo}
-                                name="ritmo"  
-                                type="text" className="form-control" placeholder="....../......." />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-6">                               
-                            <div className="form-group">
-                                <label>FMU</label>
-                                <input
-                                onChange={onchange1} 
-                                value={data1.fmu}
-                                name="fmu"  
-                                type="date" className="form-control" placeholder="" />
+                                name="ritmo"
+                                type="text" className="form-control" placeholder="Ritmo" />
                             </div>
                         </div>
                         <div className="col-sm-6">
                             <div className="form-group">
-                                <label>Gesta para Cesárea {err.gestaCesaria &&<code>{err.gestaCesaria}</code>}</label>
+                                <label>FUM. {err.fum &&<code>{err.fum}</code>}</label>
                                 <input
-                                onChange={onChange} 
-                                value={data.gestaCesaria}
-                                name="gestaCesaria"  
-                                type="text" className="form-control" placeholder="" />
+                                onChange={onChange}
+                                value={data.fum}
+                                name="fum"
+                                type="date" className="form-control" />
+                            </div>
+                        </div>
+                        <div className="col-sm-6">
+                            <div className="form-group">
+                                <label>Gesta {err.gesta &&<code>{err.gesta}</code>}</label>
+                                <input
+                                onChange={onChange}
+                                value={data.gesta}
+                                name="gesta"
+                                type="text" className="form-control" placeholder="Gesta" />
+                            </div>
+                        </div>
+                        <div className="col-sm-6">                               
+                            <div className="form-group">
+                                <label>Partos</label>
+                                <input
+                                onChange={onChange}
+                                value={data.partos}
+                                name="partos"
+                                type="text" className="form-control" placeholder="Partos" />
                             </div>
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-sm-6">                               
+                        
+                        <div className="col-sm-6">
+                            <div className="form-group">
+                                <label>Cesárea {err.cesarea &&<code>{err.cesarea}</code>}</label>
+                                <input
+                                onChange={onChange}
+                                value={data.cesarea}
+                                name="cesarea"
+                                type="text" className="form-control" placeholder="Cesárea" />
+                            </div>
+                        </div>
+                        <div className="col-sm-6">
                             <div className="form-group">
                                 <label>Abortos {err.abortos &&<code>{err.abortos}</code>}</label>
                                 <input
-                                onChange={onChange} 
+                                onChange={onChange}
                                 value={data.abortos}
-                                name="abortos"  
-                                type="text" className="form-control" placeholder="" />
+                                name="abortos"
+                                type="text" className="form-control" placeholder="Abortos" />
                             </div>
                         </div>
                         <div className="col-sm-6">
                             <div className="form-group">
-                                <label>Nacidos Vivos {err.nacidoVivos &&<code>{err.nacidoVivos}</code>}</label>
+                                <label>Metodos de planificacion familiar {err.plfcFamiliar &&<code>{err.plfcFamiliar}</code>}</label>
                                 <input
-                                onChange={onChange} 
-                                value={data.nacidoVivos}
-                                name="nacidoVivos"  
-                                type="number" className="form-control" placeholder="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-6">                               
-                            <div className="form-group">
-                                <label>Mortinatos {err.mortinatos &&<code>{err.mortinatos}</code>}</label>
-                                <input
-                                onChange={onChange} 
-                                value={data.mortinatos}
-                                name="mortinatos"  
-                                type="number" className="form-control" placeholder="" />
-                            </div>
-                        </div>
-                        <div className="col-sm-6">
-                            <div className="form-group">
-                                <label>Metodos de Planificación Familiar {err.plfcFamiliar &&<code>{err.plfcFamiliar}</code>}</label>
-                                <input
-                                onChange={onChange} 
+                                onChange={onChange}
                                 value={data.plfcFamiliar}
-                                name="plfcFamiliar"  
-                                type="text" className="form-control" placeholder="" />
+                                name="plfcFamiliar"
+                                type="text" className="form-control" placeholder="Metodos de planificacion familiar" />
                             </div>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-sm-6">                               
-                            <div className="form-group">
-                                <label>Fecha</label>
-                                <input
-                                onChange={onchange1} 
-                                value={data1.fecha}
-                                name="fecha"  
-                                type="date" className="form-control" placeholder="" />
-                            </div>
-                        </div>
-                        
-                    </div>
+                   
                     <div className="d-flex">
                         <div className="mr-auto p-2">
                             <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
