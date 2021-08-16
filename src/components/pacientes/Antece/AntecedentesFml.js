@@ -85,8 +85,7 @@ function AntecedentesFml(props) {
                                     <th>Fallecidos</th>
                                     <th>Causa</th>
                                     <th>Estado de salud</th>
-                                    <th>Fecha de registro</th>
-                                    
+                                    <th>Fecha de registro</th>                                    
                                 </tr>
                             </thead>
                             <tbody>

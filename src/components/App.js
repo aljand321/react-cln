@@ -8,6 +8,7 @@ import About from '../pages/About';
 import Consulta from '../pages/Consulta';
 import Layout from './Layout';
 import UserContac from '../pages/UserContac';
+import HistorialPaciente from '../pages/Historial';
 
 import Token from '../token';
 import ANTPatologicos from '../pages/Alergias';
@@ -68,6 +69,7 @@ class App extends React.Component{
                                 <Route exact path='/consulta' component={Consulta}></Route>
                                 <Route exact path='/alergias' component={ANTPatologicos}></Route>
                                 <Route exact path='/contacto' component={UserContac}></Route>
+                                <Route exact path='/historial' component={HistorialPaciente}></Route>
                             </Switch>
                         </Layout>               
                     </BrowserRouter> 

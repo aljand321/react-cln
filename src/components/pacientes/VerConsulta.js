@@ -23,7 +23,7 @@ function VerConsulta(props) {
                 <form>
                     <div className="card-body">
                         
-                        <div className="d-flex">
+                        {props.dataPaciente !== 'null' && <div className="d-flex">
                             <div className="mr-auto p-2">
                                 <div className="form-group">
                                     <label htmlFor="exampleInputEmail1">Paciente</label>
@@ -38,7 +38,7 @@ function VerConsulta(props) {
                                     <p>Hora:{hora}</p>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         <div className="form-group">
                             <label htmlFor="exampleInputEmail1">Motivo de Consulta</label>
                             <p>{dataConsulta.motivo}</p>
@@ -63,42 +63,42 @@ function VerConsulta(props) {
                                     <p>{dataConsulta.signosVitales.ta}</p>
                                 </div>                            
                                 <div className="form-group">
-                                    <label htmlFor="exampleInputEmail1">F.R. C/min mg% Peso</label>
+                                    <label htmlFor="exampleInputEmail1">Peso Kg</label>
                                     <p>{dataConsulta.signosVitales.fr}</p>
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="exampleInputEmail1">Temp. °C Aux. Rec. cm  IMC</label>          
+                                    <label htmlFor="exampleInputEmail1">Aux. Rec.</label>          
                                     <div className="form-group clearfix">
                                         <div className="icheck-primary d-inline">
                                             <input
                                             type="radio" 
-                                            id="radioPrimary2" 
+                                            id={`radioPrimary2${dataConsulta.id}`} 
                                             readOnly
                                             value=''
                                             name='check'                                           
                                             checked={dataConsulta.signosVitales.temp.r1 ===  'aux'}
                                              />
-                                            <label htmlFor="radioPrimary2">
+                                            <label >
                                                 Aux.
                                             </label>
                                         </div>
                                         <div className="icheck-primary d-inline">
                                             <input                                         
                                             type="radio" 
-                                            id="radioPrimary21"   
+                                            id={`radioPrimary3${dataConsulta.id}`}  
                                             readOnly
                                             value=''
                                             name='check'                                         
                                             checked={dataConsulta.signosVitales.temp.r1 ===  'rec'}
                                              />
-                                            <label htmlFor="radioPrimary21">
+                                            <label >
                                                 Rec.
                                             </label>
                                         </div>                                    
                                     </div>
-                                      <label>IMC</label>                  
-                                    <p>{dataConsulta.signosVitales.temp.temp}</p>
+                                    <label>IMC</label>                  
+                                    <p>{dataConsulta.signosVitales.temp.imc}</p>
                                     
                                 </div>
 
@@ -109,8 +109,12 @@ function VerConsulta(props) {
                                     <p>{dataConsulta.signosVitales.fc}</p>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="exampleInputEmail1">SaO2 % Kg Talla</label>
-                                <p>{dataConsulta.signosVitales.sao}</p>
+                                    <label htmlFor="exampleInputEmail1">Talla cm</label>
+                                    <p>{dataConsulta.signosVitales.sao}</p>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="exampleInputEmail1">Temperatura °C</label>
+                                    <p>{dataConsulta.signosVitales.tmp}</p>
                                 </div>
                                 
                             </div>

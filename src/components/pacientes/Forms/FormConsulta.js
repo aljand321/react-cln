@@ -8,6 +8,7 @@ const form = {
     conducta:''        
 }
 const form1 ={
+    tmp:'',
     ta:'',
     fc:'',
     fr:0,
@@ -122,12 +123,13 @@ function FormConsutla(props) {
                 diagPresuntivo:data.diagPresuntivo,
                 conducta:data.conducta,
                 signosVitales:{
+                    tmp:data1.tmp,
                     ta:data1.ta,
                     fc:data1.fc,
                     fr:isNaN(data1.fr) || !data1.fr || data1.fr <= 0 ? '' : data1.fr,
                     sao:!data1.fr || isNaN(data1.fr) || data1.fr <= 0 ? '' : data1.sao,
                     temp:{
-                        temp:isNaN(n) || n === Infinity || n === 0 ? '' : data1.fr / data1.sao,
+                        imc:isNaN(n) || n === Infinity || n === 0 ? '' : data1.fr / data1.sao,
                         r1:data1.r1
                     }                    
                 }
@@ -312,6 +314,15 @@ function FormConsutla(props) {
                                 value={data1.sao} 
                                 placeholder="Talla cm"></textarea> */}
                             </div>}
+                            <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Temp.</label>
+                                <input  
+                                name="tmp"
+                                onChange={handleChange1}
+                                value={data1.tmp}
+                                className="form-control" type="text" placeholder="Temperatura °C"></input>
+                                
+                            </div>
                             
                         </div>
                     </div>                    

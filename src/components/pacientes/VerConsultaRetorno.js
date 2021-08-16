@@ -24,7 +24,7 @@ function VerConsultaRetorno(props) {
                 <form>
                     <div className="card-body">
                         
-                        <div className="d-flex">
+                        {props.dataPaciente !== 'null' && <div className="d-flex">
                             <div className="mr-auto p-2">
                                 <div className="form-group">
                                     <label htmlFor="exampleInputEmail1">Paciente</label>
@@ -39,7 +39,7 @@ function VerConsultaRetorno(props) {
                                     <p>Hora:{hora}</p>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         <div className="form-group">
                             <label htmlFor="exampleInputEmail1">Subjetivo:</label>
                             <p>{dataConsulta.subjetivo}</p>

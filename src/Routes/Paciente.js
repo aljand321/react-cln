@@ -18,6 +18,22 @@ class Pacientes {
         } catch (error) {
             return {data:{success:false,msg:"error 500",error:'500'}};
         }
+    }  
+    static async updatePaciente (form,id_paciente){
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };
+        //console.log(token, ' esto es el error')
+        try {
+            const resp = await axios.put(`${Url.urlBackEnd}/api/updatePaciente/${id_paciente}`, form,{
+                headers: {
+                    'c_token': token.t
+                }
+            });
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false,msg:"error 500", error:'500'}};
+        } catch (error) {
+            return {data:{success:false,msg:"error 500",error:'500'}};
+        }
     }    
     static async buscarPaciente (data,p,l){
         //console.log(data, 'esto lo que quiero ver');
@@ -77,6 +93,21 @@ class Pacientes {
         if(!token) return {data:{success:false,msg:"no hay token"} };        
         try {
             const resp = await axios.get(`${Url.urlBackEnd}/api/responsable/${id_paciente}`,{
+                headers: {
+                    'c_token': token.t
+                }
+            });
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false,error:'500'}};
+        } catch (error) {
+            return {data:{success:false,error:'500'}};
+        }
+    }
+    static async antPaciente (id_paciente){
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };        
+        try {
+            const resp = await axios.get(`${Url.urlBackEnd}/api/AntPaciente/${id_paciente}`,{
                 headers: {
                     'c_token': token.t
                 }

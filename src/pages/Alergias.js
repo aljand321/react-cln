@@ -4,7 +4,8 @@ import ANTptl from '../components/AntecedentesPTL/AntPatologicos';
 import Alergias from '../Routes/Alergias';
 import Cirugias from '../Routes/Cirugias';
 import OtrasEnfermedades from '../Routes/OtrasEnfermedades';
-import Transfuciones from '../Routes/Transfuciones'
+import Transfuciones from '../Routes/Transfuciones';
+import RoutesInmunizacion from '../Routes/Inmunizacion';
 class ANTPatologicos extends React.Component{    
     _isMounted = false;
     state={
@@ -13,6 +14,7 @@ class ANTPatologicos extends React.Component{
             //Cirugias
             //Tranfuciones
             //Otras Enfermedades
+            //Inmunizaciones
         },
         successList:{
             load:false,
@@ -71,16 +73,20 @@ class ANTPatologicos extends React.Component{
         }
         if(this.state.selectAnt.route === 'Cirugias'){            
             const cirugias = await Cirugias.buscarCirugia(data,0,this.state.limit);
-            resp = cirugias
+            resp = cirugias;
         }
         if(this.state.selectAnt.route === 'Tranfuciones'){            
             const transfuciones = await Transfuciones.buscarTransfucion(data,0,this.state.limit);
-            resp = transfuciones
+            resp = transfuciones;
         }
         if(this.state.selectAnt.route === 'Otras Enfermedades'){            
             const otrEnf = await OtrasEnfermedades.buscarEnf(data,0,this.state.limit);
-            resp = otrEnf
-        }     
+            resp = otrEnf;
+        } 
+        if(this.state.selectAnt.route === 'Inmunizaciones'){            
+            const vacuna = await RoutesInmunizacion.listVacunaFilter(data,0,this.state.limit);
+            resp = vacuna;
+        }    
         if(resp.data.success === false){
             this.setState({
                 successList:{
@@ -143,7 +149,11 @@ class ANTPatologicos extends React.Component{
         if(this.state.selectAnt.route === 'Otras Enfermedades'){            
             const otrEnf = await OtrasEnfermedades.buscarEnf(this.state.buscarAlergia,0,data);
             resp = otrEnf
-        }      
+        } 
+        if(this.state.selectAnt.route === 'Inmunizaciones'){            
+            const vacunas = await RoutesInmunizacion.listVacunaFilter(this.state.buscarAlergia,0,data);
+            resp = vacunas
+        }     
         if(resp.data.success === false){
             this.setState({
                 successList:{
@@ -229,7 +239,10 @@ class ANTPatologicos extends React.Component{
             const otrEnf = await OtrasEnfermedades.buscarEnf(this.state.buscarAlergia,page,this.state.limit);
             resp = otrEnf
         }
-       
+        if(this.state.selectAnt.route === 'Inmunizaciones'){            
+            const vacuna = await RoutesInmunizacion.listVacunaFilter(this.state.buscarAlergia,page,this.state.limit);
+            resp = vacuna
+        }
         if(resp.data.success === false){
             this.setState({
                 successList:{
@@ -302,6 +315,11 @@ class ANTPatologicos extends React.Component{
                                     <a 
                                      onClick={()=>this.changelistdatas('Otras Enfermedades')}
                                     className="nav-link" id="custom-tabs-five-normal-tab" data-toggle="pill" href="#AntPtl" role="tab" aria-controls="custom-tabs-five-normal" aria-selected="false">Otras enfermedades</a>
+                                </li>
+                                <li className="nav-item">
+                                    <a 
+                                     onClick={()=>this.changelistdatas('Inmunizaciones')}
+                                    className="nav-link" id="custom-tabs-five-normal-tab" data-toggle="pill" href="#AntPtl" role="tab" aria-controls="custom-tabs-five-normal" aria-selected="false">Inmunizaciones</a>
                                 </li>
                             </ul>
                         </div>

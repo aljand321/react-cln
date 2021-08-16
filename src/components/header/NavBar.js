@@ -148,7 +148,7 @@ class NavBar extends React.Component{
                                                 >
                                                     <i className="far fa-circle nav-icon" />
                                                     <p>Medico</p>
-                                                </Link>
+                                                </Link>                                                
                                             </li>
                                         </ul>
                                     </li>
@@ -185,7 +185,17 @@ class NavBar extends React.Component{
                                                 <i className="far fa-circle nav-icon" />
                                                 <p>Ant. Patologicos</p>
                                             </Link>
-                                        </li>                                                        
+                                        </li>  
+                                        <li className="nav-item">
+                                            <Link 
+                                                to="/historial" 
+                                                onClick={() => this.selectRoute('/historial','med')} 
+                                                className={this.state.path.route === '/historial' ? "nav-link active":"nav-link"}
+                                            >
+                                                <i className="far fa-circle nav-icon" />
+                                                <p>Historial del Paciente</p>
+                                            </Link>
+                                        </li>                                                      
                                     </ul>
                                 </li>
                             </ul>

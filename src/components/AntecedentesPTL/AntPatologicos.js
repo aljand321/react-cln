@@ -4,7 +4,8 @@ import FormANTPTL from './form';
 import Alergias from '../../Routes/Alergias';
 import Cirugias from '../../Routes/Cirugias';
 import OtrasEnfermedades from '../../Routes/OtrasEnfermedades';
-import Transfuciones from '../../Routes/Transfuciones'
+import Transfuciones from '../../Routes/Transfuciones';
+import RoutesInmunizacion from '../../Routes/Inmunizacion';
 const data = {
     nombre:'',
     descripcion:''
@@ -70,7 +71,11 @@ function ANTptl(props){
                 if(props.selectAnt.route === 'Otras Enfermedades'){
                     const OtrEnfermedades = await OtrasEnfermedades.CreateEnf(form);               
                     resp = OtrEnfermedades;
-                }              
+                } 
+                if(props.selectAnt.route === 'Inmunizaciones'){
+                    const OtrEnfermedades = await RoutesInmunizacion.createInmunizacion(form);               
+                    resp = OtrEnfermedades;
+                }                           
                 if(resp.data.success === false){
                     setLoad(false);
                     setErro({
@@ -118,7 +123,11 @@ function ANTptl(props){
             if(props.selectAnt.route === 'Otras Enfermedades'){
                 const OtrEnfermedades = await OtrasEnfermedades.OneOtrEnf(id);               
                 resp = OtrEnfermedades;
-            }       
+            }    
+            if(props.selectAnt.route === 'Inmunizaciones'){
+                const vacuna = await RoutesInmunizacion.oneVacuna(id);               
+                resp = vacuna;
+            }   
             if(resp.data.success === false){
                 setLoad(false);
                 setErro({
@@ -187,6 +196,10 @@ function ANTptl(props){
                         const OtrEnfermedades = await OtrasEnfermedades.updateOtrEnf(select,dataDescripcion);               
                         resp = OtrEnfermedades;
                     }
+                    if(props.selectAnt.route === 'Inmunizaciones'){
+                        const vacuna = await RoutesInmunizacion.updateVacuna(select,dataDescripcion);               
+                        resp = vacuna;
+                    }
                     if(resp.data.success === false){
                         setLoad(false);
                         setErro({
@@ -239,6 +252,10 @@ function ANTptl(props){
                     if(props.selectAnt.route === 'Otras Enfermedades'){
                         const OtrEnfermedades = await OtrasEnfermedades.updateOtrEnf(select,dataNombre);               
                         resp = OtrEnfermedades;
+                    }
+                    if(props.selectAnt.route === 'Inmunizaciones'){
+                        const vacuna = await RoutesInmunizacion.updateVacuna(select,dataNombre);               
+                        resp = vacuna;
                     }
                     if(resp.data.success === false){
                         setLoad(false);
@@ -320,8 +337,7 @@ function ANTptl(props){
                     
                             <li className="page-item">                       
                                 <select name='limite' onChange={props.limit}  className="form-control">                                                                                
-                                    <option value='10'>10</option>  
-                                    <option value='2'>2</option>                                                       
+                                    <option value='10'>10</option>                                                                                    
                                     <option value='25'>25</option>
                                     <option value='50'>50</option>
                                     <option value='100'>100</option>
