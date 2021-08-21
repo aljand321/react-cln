@@ -118,7 +118,42 @@ class Pacientes {
             return {data:{success:false,error:'500'}};
         }
     }
-
+    static async regArchivos (id_paciente,datas){
+        console.log(datas,'esto es desde las rutas')
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };    
+        
+        const data = new FormData();
+        data.append('descripcion', datas.descripcion);
+        data.append('files',datas.files);
+        
+        try {
+            const resp = await axios.post(`${Url.urlBackEnd}/api/archivos/${id_paciente}/${token.user.id}`,data,{
+                headers: {
+                    'c_token': token.t
+                }
+            });
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false,error:'500'}};
+        } catch (error) {
+            return {data:{success:false,error:'500'}};
+        }
+    }
+    static async listArchivosPaciente (id_paciente){
+        const token = await Token.getToken();
+        if(!token) return {data:{success:false,msg:"no hay token"} };        
+        try {
+            const resp = await axios.get(`${Url.urlBackEnd}/api/listArchivosPaciente/${id_paciente}`,{
+                headers: {
+                    'c_token': token.t
+                }
+            });
+            if(resp.status === 200) return resp;
+            if(resp.status === 500) return {data:{success:false,error:'500'}};
+        } catch (error) {
+            return {data:{success:false,error:'500'}};
+        }
+    }
     
 }
 export default Pacientes;

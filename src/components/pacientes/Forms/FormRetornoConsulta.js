@@ -10,9 +10,8 @@ const form1 ={
     tmp:'',
     ta:'',
     fc:'',
-    fr:0,
-    sao:0,
-    temp:'',
+    fr:'',
+    sao:'',
     r1:''
 } 
 function FormRetornoConsulta (props){
@@ -24,10 +23,7 @@ function FormRetornoConsulta (props){
     const [erroResp, setErroResp] = useState({erro:''})
     const [resp, setResp] = useState(false);
 
-    const [err2, setErro2] = useState({
-        fr:'',
-        sao:'',
-    })
+    const [err2, setErro2] = useState(form1)
     
     const handleChange = (e) => {
         const {value, name} = e.target;
@@ -81,21 +77,33 @@ function FormRetornoConsulta (props){
                 })
             }
         } 
+
+        if(name !== 'fr' && name !== 'sao'){
+            setErro2({
+                ...err2,
+                [name]:value.length === 0 ? 'Obligatorio' : ''
+            })
+        }
     }
     
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        let obj = {}
+        let obj = {}, obj1 = {}
         for(const p in data){
             if(!data[p]){
                 obj[p] = `obligatorio`
             }
         }
+        for(const p in data1){
+            if(!data1[p]){
+                obj1[p] = `obligatorio`
+            }
+        }
         setErr(obj) 
-        
-        if(Object.keys(obj).length === 0){
+        setErro2(obj1)
+        if(Object.keys(obj).length === 0 && Object.keys(obj1).length === 0){
 
-            let n = data1.fr / data1.sao
+            let n = (data1.fr / (data1.sao * data1.sao))
            
             if(data1.fr > 0 || data1.fr < 0){
                
@@ -127,7 +135,7 @@ function FormRetornoConsulta (props){
                     fr:isNaN(data1.fr) || !data1.fr || data1.fr <= 0 ? '' : data1.fr,
                     sao:!data1.fr || isNaN(data1.fr) || data1.fr <= 0 ? '' : data1.sao,
                     temp:{
-                        imc:isNaN(n) || n === Infinity || n === 0 ? '' : data1.fr / data1.sao,
+                        imc:isNaN(n) || n === Infinity || n === 0 ? '' : (data1.fr / (data1.sao * data1.sao)),
                         r1:data1.r1
                     }                    
                 }
@@ -174,6 +182,109 @@ function FormRetornoConsulta (props){
             }
             <form onSubmit={handleSubmit}>
                 <div className="card-body">
+                <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="exampleInputEmail2">mmHg / Glasgow {err2.ta && <code>{err2.ta}</code>}</label>                                
+                                <textarea 
+                                name="ta" 
+                                onChange={handleChange1}
+                                className="form-control"  
+                                rows="2" 
+                                value={data1.ta}
+                                placeholder=" mmHg / Glasgow"></textarea>
+                            </div>                            
+                            <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Peso Kg {err2.fr && <code>{err2.fr}</code>}</label>
+                                <input  
+                                name="fr"
+                                onChange={handleChange1}
+                                value={data1.fr}
+                                className="form-control" type="number" placeholder="Peso Kg"></input>
+                                
+                            </div>
+                            
+
+                            <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Auxiliar, Rectal {err2.r1 && <code>{err2.r1}</code>}</label>          
+                                <div className="form-group clearfix">
+                                    <div className="icheck-primary d-inline">
+                                        <input onChange={handleChange1} 
+                                        type="radio" 
+                                        id="radioPrimary100" 
+                                        name="r1" 
+                                        checked={data1.r1 ===  'aux'}
+                                        value="aux" />
+                                        <label htmlFor="radioPrimary100">
+                                            Aux.
+                                        </label>
+                                    </div>
+                                    <div className="icheck-primary d-inline">
+                                        <input 
+                                        onChange={handleChange1}
+                                        type="radio" 
+                                        id="radioPrimary200" 
+                                        name="r1" 
+                                        checked={data1.r1 ===  'rec'}
+                                        value="rec" />
+                                        <label htmlFor="radioPrimary200">
+                                            Rec.
+                                        </label>
+                                    </div>                                    
+                                </div>
+                                <label htmlFor="exampleInputEmail1">IMC. cm </label>                      
+                                <input 
+                                    className="form-control"
+                                    type="text"                     
+                                    value={data1.fr <= 0 || data1.sao <= 0  ? 0 : (data1.fr / (data1.sao * data1.sao))}
+                                    disabled
+                                ></input>
+                                
+                            </div>
+                            
+
+                        </div>
+                        <div className="col-md-6">
+                            
+                            
+                            <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">F.C. lat/min {err2.fc && <code>{err2.fc}</code>}</label>
+                                <textarea
+                                className="form-control"  
+                                rows="2" 
+                                name="fc"
+                                onChange={handleChange1}
+                                value={data1.fc}
+                                placeholder="F.C. lat/min"></textarea>
+                            </div>
+                            
+                            {data1.fr > 0 && <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Talla cm {err2.sao && <code>{err2.sao}</code>}</label>
+                                <input  
+                                name="sao"
+                                onChange={handleChange1}
+                                value={data1.sao}
+                                className="form-control" type="number" placeholder="Talla cm"></input>
+                               {/*  <textarea 
+                                className="form-control"  
+                                rows="2"
+                                name="sao"
+                                onChange={handleChange1}
+                                value={data1.sao} 
+                                placeholder="Talla cm"></textarea> */}
+                            </div>}
+                            <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Temp. {err2.tmp && <code>{err2.tmp}</code>}</label>
+                                <input  
+                                name="tmp"
+                                onChange={handleChange1}
+                                value={data1.tmp}
+                                className="form-control" type="text" placeholder="Temperatura °C"></input>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>      
                     <div className="form-group">
                         <label htmlFor="exampleInputEmail1">Subjetivo: {err.subjetivo && <code>{err.subjetivo}</code>}</label>
                         <textarea 
@@ -219,110 +330,7 @@ function FormRetornoConsulta (props){
                         value={data.tratamiento}
                         ></textarea>        
                     </div>
-
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail2">mmHg / Glasgow</label>                                
-                                <textarea 
-                                name="ta" 
-                                onChange={handleChange1}
-                                className="form-control"  
-                                rows="2" 
-                                value={data1.ta}
-                                placeholder=" mmHg / Glasgow"></textarea>
-                            </div>                            
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Peso Kg {err2.fr && <code>{err2.fr}</code>}</label>
-                                <input  
-                                name="fr"
-                                onChange={handleChange1}
-                                value={data1.fr}
-                                className="form-control" type="number" placeholder="Peso Kg"></input>
-                                
-                            </div>
-                            
-
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Aux. Rec.</label>          
-                                <div className="form-group clearfix">
-                                    <div className="icheck-primary d-inline">
-                                        <input onChange={handleChange1} 
-                                        type="radio" 
-                                        id="radioPrimary100" 
-                                        name="r1" 
-                                        checked={data1.r1 ===  'aux'}
-                                        value="aux" />
-                                        <label htmlFor="radioPrimary100">
-                                            Aux.
-                                        </label>
-                                    </div>
-                                    <div className="icheck-primary d-inline">
-                                        <input 
-                                        onChange={handleChange1}
-                                        type="radio" 
-                                        id="radioPrimary200" 
-                                        name="r1" 
-                                        checked={data1.r1 ===  'rec'}
-                                        value="rec" />
-                                        <label htmlFor="radioPrimary200">
-                                            Rec.
-                                        </label>
-                                    </div>                                    
-                                </div>
-                                <label htmlFor="exampleInputEmail1">IMC. cm</label>                      
-                                <input 
-                                    className="form-control"
-                                    type="text"                     
-                                    value={data1.fr <= 0 || data1.sao <= 0  ? 0 : data1.fr / data1.sao}
-                                    disabled
-                                ></input>
-                                
-                            </div>
-                            
-
-                        </div>
-                        <div className="col-md-6">
-                            
-                            
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">F.C. lat/min</label>
-                                <textarea
-                                className="form-control"  
-                                rows="2" 
-                                name="fc"
-                                onChange={handleChange1}
-                                value={data1.fc}
-                                placeholder="F.C. lat/min"></textarea>
-                            </div>
-                            
-                            {data1.fr > 0 && <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Talla cm {err2.sao && <code>{err2.sao}</code>}</label>
-                                <input  
-                                name="sao"
-                                onChange={handleChange1}
-                                value={data1.sao}
-                                className="form-control" type="number" placeholder="Talla cm"></input>
-                               {/*  <textarea 
-                                className="form-control"  
-                                rows="2"
-                                name="sao"
-                                onChange={handleChange1}
-                                value={data1.sao} 
-                                placeholder="Talla cm"></textarea> */}
-                            </div>}
-                            <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Temp.</label>
-                                <input  
-                                name="tmp"
-                                onChange={handleChange1}
-                                value={data1.tmp}
-                                className="form-control" type="text" placeholder="Temperatura °C"></input>
-                                
-                            </div>
-                            
-                        </div>
-                    </div>                    
+                                  
                 </div>
                 {/* /.card-body */}
                 <div className="d-flex">

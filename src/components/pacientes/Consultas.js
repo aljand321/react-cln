@@ -225,7 +225,7 @@ function DataConsulta(props) {
                                 return (
                                     <div key={key} className="tab-pane fade" id={`p${data.id}`} role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
                                         <div className="overlay-wrapper">
-                                            <VerConsultaRetorno dataPaciente={paciente} loading={loadConsulta} consulta={data} erro={errConsulta}/>
+                                            <VerConsultaRetorno dataPaciente={paciente} loading={loadConsulta} primeraConsulta={consulta} consulta={data} erro={errConsulta}/>
                                         </div>
                                     </div>
                                 );

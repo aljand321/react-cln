@@ -107,19 +107,7 @@ function ExamenFisico(props) {
                                                <strong>Torax:</strong>
                                                 <p>{data.torax}</p>
                                             </div>
-                                        }
-                                        {data.pulmones && 
-                                            <div className="card-body">
-                                               <strong>Pulmones:</strong>
-                                                <p>{data.pulmones}</p>
-                                            </div>
-                                        }
-                                        {data.corazon && 
-                                            <div className="card-body">
-                                                <strong>Corazon:</strong>
-                                                <p>{data.corazon}</p>
-                                            </div>
-                                        }
+                                        }                                        
                                         {data.abdomen && 
                                             <div className="card-body">
                                                <strong>Abdomen:</strong>

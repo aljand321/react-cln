@@ -212,7 +212,7 @@ function FormAntNoPatl(props) {
                                 <div className="form-check d-inline">
                                     <input   
                                     className="form-check-input"  id="flexRadioDefault4" onChange={handleChange1}  type="radio" checked={data.instruccion === 'profecional'} name="instruccion" value="profecional"/>
-                                    <label htmlFor="radioPrimary2">Profecional
+                                    <label htmlFor="radioPrimary2">Profesional
                                     </label>
                                 </div>
                         </div>                   

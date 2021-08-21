@@ -8,6 +8,7 @@ import ExamenFisico from "./Antece/ExamenFisico";
 import AntGincoObs from "./Antece/AntGincoObs";
 import Responsable from './Responsable';
 import AntPediatricos from './Antece/AntPediatricos';
+import ArchivosPaciente from './Archivos';
 function  DataPaciente(props){   
     const [select, setSelect] = useState(0)
     const selected = (p) =>{
@@ -65,6 +66,7 @@ function  DataPaciente(props){
                                         }                                        
                                         <li className="nav-item"><a onClick={()=> selected(6)} className={select === 6 ? "nav-link active": "nav-link"} href="#examenFisico" data-toggle="tab">Examen Fisico</a></li>
                                         <li className="nav-item"><a onClick={()=> selected(8)} className={select === 8 ? "nav-link active": "nav-link"} href="#AntPediatricos" data-toggle="tab">Antecedentes Pediatricos</a></li>
+                                        <li className="nav-item"><a onClick={()=> selected(9)} className={select === 9 ? "nav-link active": "nav-link"} href="#datas" data-toggle="tab">Adjuntar Estudio</a></li>
                                     </ul>
                                 </div>
                                 <div className="card-body">
@@ -106,6 +108,11 @@ function  DataPaciente(props){
                                         <div className={select === 8 ? "active tab-pane" : "tab-pane"} id="AntPediatricos">
                                             <div className="overlay-wrapper">
                                                 <AntPediatricos dataPaciente={dataPaciente} identify={props.identify}/>
+                                            </div>
+                                        </div>
+                                        <div className={select === 9 ? "active tab-pane" : "tab-pane"} id="datas">
+                                            <div className="overlay-wrapper">
+                                                <ArchivosPaciente dataPaciente={dataPaciente} identify={props.identify}/>
                                             </div>
                                         </div>
                                     </div>

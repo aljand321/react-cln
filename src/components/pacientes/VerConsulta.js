@@ -39,23 +39,6 @@ function VerConsulta(props) {
                                 </div>
                             </div>
                         </div>}
-                        <div className="form-group">
-                            <label htmlFor="exampleInputEmail1">Motivo de Consulta</label>
-                            <p>{dataConsulta.motivo}</p>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual</label>
-                            <p> {dataConsulta.enfermedadActual} </p>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="exampleInputPassword1">Diagnosticos Presuntivos</label>
-                            <p> {dataConsulta.diagPresuntivo} </p>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual</label>
-                            <p> {dataConsulta.conducta} </p>
-                        </div>
-
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
@@ -105,7 +88,7 @@ function VerConsulta(props) {
                             </div>
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <label htmlFor="exampleInputEmail1">F.C. lat/min / 15 Glicemia</label>
+                                    <label htmlFor="exampleInputEmail1">F.C. lat/min</label>
                                     <p>{dataConsulta.signosVitales.fc}</p>
                                 </div>
                                 <div className="form-group">
@@ -118,7 +101,25 @@ function VerConsulta(props) {
                                 </div>
                                 
                             </div>
-                        </div>                    
+                        </div> 
+                        <div className="form-group">
+                            <label htmlFor="exampleInputEmail1">Motivo de Consulta</label>
+                            <p>{dataConsulta.motivo}</p>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual</label>
+                            <p> {dataConsulta.enfermedadActual} </p>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Diagnosticos Presuntivos</label>
+                            <p> {dataConsulta.diagPresuntivo} </p>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputPassword1">Historia de la enfermedad actual</label>
+                            <p> {dataConsulta.conducta} </p>
+                        </div>
+
+                                           
                     </div>
                     {/* /.card-body */}
                     <div className="d-flex">

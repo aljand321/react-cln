@@ -4,8 +4,6 @@ const form = {
     cabeza:'',
     cuello:'',
     torax:'',
-    pulmones:'',
-    corazon:'',
     abdomen:'',
     ginecoUrinario:'',
     locomotor:'',
@@ -112,26 +110,6 @@ function FormExamenFisico(props) {
                             name="torax"
                             className="form-control" placeholder="Leave a comment here" style={{height: 120}}/>
                             <label htmlFor="floatingTextarea2">Torax:</label>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="form-floating">
-                            <textarea 
-                            onChange={handleChange}
-                            value={data.pulmones}
-                            name="pulmones"
-                            className="form-control" placeholder="Leave a comment here" style={{height: 120}}/>
-                            <label htmlFor="floatingTextarea2">Pulmones:</label>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="form-floating">
-                            <textarea 
-                            onChange={handleChange}
-                            value={data.corazon}
-                            name="corazon"
-                            className="form-control" placeholder="Leave a comment here" style={{height: 120}}/>
-                            <label htmlFor="floatingTextarea2">Corazones:</label>
                         </div>
                     </div>
                     <div className="form-group">

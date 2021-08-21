@@ -73,7 +73,7 @@ function AntNoPatologicos(props) {
                                 <tr>
                                     <th style={{width: 10}}>#</th>
                                     <th>Instruccion</th>
-                                    <th>funa</th>
+                                    <th>Fuma</th>
                                     <th>Cigarrillos por dia</th>
                                     <th>Desde hace...</th>
                                     <th>Bebe</th>
